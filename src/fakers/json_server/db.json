@@ -1,1 +1,78 @@
-{}
+{
+    "products": [
+      {
+        "id": 1,
+        "name": "Apple iPhone 12",
+        "price": 999
+      },
+      {
+        "id": 2,
+        "name": "Samsung Galaxy S21",
+        "price": 799
+      },
+      {
+        "id": 3,
+        "name": "Xiaomi Mi 11",
+        "price": 699
+      },
+      {
+        "id": 4,
+        "name": "OnePlus 9",
+        "price": 899
+      }
+    ],
+    
+    "price-offer": [
+      {
+          "id": 1,
+          "title": "invoice1",
+          "price": 100
+      },
+      {
+          "id": 2,
+          "title": "invoice2",
+          "price": 200
+      },
+      {
+          "id": 3,
+          "title": "invoice3",
+          "price": 300
+      },
+      {
+          "id": 4,
+          "title": "invoice4",
+          "price": 400
+      },
+      {
+          "id": 5,
+          "title": "invoice5",
+          "price": 500
+      },
+      {
+          "id": 6,
+          "title": "invoice6",
+          "price": 600
+      },
+      {
+          "id": 7,
+          "title": "invoice7",
+          "price": 700
+      },
+      {
+          "id": 8,
+          "title": "invoice8",
+          "price": 800
+      },
+      {
+          "id": 9,
+          "title": "invoice9",
+          "price": 900
+      },
+      {
+          "id": 10,
+          "title": "invoice10",
+          "price": 1000
+      }
+  ]
+}
+  

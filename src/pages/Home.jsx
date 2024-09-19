@@ -1,16 +1,21 @@
 import React from 'react';
 import ProductTable from '../components/ProductTable';
 import { ProductsProvider } from '../providers/ProductsProvider';
-// import { Link } from 'react-router-dom';
-// import './Home.css';
+import {
+    QueryClient,
+    QueryClientProvider
+  } from '@tanstack/react-query'
 
 const Home = () => {
+    const queryClient = new QueryClient();
 
     return (
         <div className="home">
-            <ProductsProvider>
-                <ProductTable />
-            </ProductsProvider>
+            <QueryClientProvider client={queryClient}>
+                <ProductsProvider>
+                    <ProductTable />
+                </ProductsProvider>
+            </QueryClientProvider>
         </div>  
     )
 }    
