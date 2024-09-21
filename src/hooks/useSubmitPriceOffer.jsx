@@ -1,6 +1,7 @@
 import { useState } from "react";
+import { useUniversalPost } from "../api/UniversalPost";
 
-const useSubmitPriceOffer = (onSubmit, onClose) => {
+const useSubmitPriceOffer = (onClose, updatePriceOffer) => {
     const initialState = {
         title: "",
         description: "",
@@ -11,6 +12,7 @@ const useSubmitPriceOffer = (onSubmit, onClose) => {
       };
 
     const [formData, setFormData] = useState(initialState);
+    const [sendData, isLoading, error] = useUniversalPost("PRICE_OFFER");
 
     const validate = () => {
         let isValid = true;
@@ -34,15 +36,24 @@ const useSubmitPriceOffer = (onSubmit, onClose) => {
         return isValid;
     }
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         
         if (!validate()) {
             return;
         }
 
-        setFormData(initialState);
-        onClose();
-        // onSubmit({ title: state.title, description: state.description });
+        try {
+            const priceOffer = await sendData({
+              title: formData.title,
+              description: formData.description,
+            });
+
+            updatePriceOffer(priceOffer);
+            setFormData(initialState);
+            onClose();
+          } catch (err) {
+            console.log(err);
+        }
     };
 
     const handleInputChange = (e) => {
@@ -61,6 +72,7 @@ const useSubmitPriceOffer = (onSubmit, onClose) => {
         handleSubmit,
         handleInputChange,
         errors: formData.errors,
+        isLoading
     };
 };
 

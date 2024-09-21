@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Modal, Box, TextField, Button, Typography } from '@mui/material';
 import { styled } from '@mui/system';
 import useSubmitPriceOffer from '../hooks/useSubmitPriceOffer';
+import Loading from './Loading';
+import { PriceOfferContext } from '../providers/PriceOfferProvider';
 
 const ModalContainer = styled(Box)(({ theme }) => ({
     position: 'absolute',
@@ -19,19 +21,21 @@ const ModalContainer = styled(Box)(({ theme }) => ({
 
 const Title = styled(Typography)(({ theme }) => ({
     textAlign: 'center',
-    color: 'black',
-    fontWeight: 'bold',
+    color: 'lightblack',
+    fontWeight: '600',
     fontSize: 18,
     marginBottom: 10,
-    marginTop: 15,
+    marginTop: 25,
 }));
 
-const CreatePriceOfferModal = ({ open, onClose, onSubmit }) => {
+const CreatePriceOfferModal = ({ open, onClose }) => {
+    const { updatePriceOffer } = useContext(PriceOfferContext);
     const {
         handleSubmit,
         handleInputChange,
         errors,
-    } = useSubmitPriceOffer(onSubmit, onClose);
+        isLoading,
+    } = useSubmitPriceOffer(onClose, updatePriceOffer);
 
     return (
         <Modal
@@ -41,37 +45,46 @@ const CreatePriceOfferModal = ({ open, onClose, onSubmit }) => {
             aria-describedby="modal-description"
         >
             <ModalContainer>
+
                 <Title id="modal-title" variant="h6">
                     Vytvorenie novej cenovej ponuky
                 </Title>
-                <div style={{ padding: '20px', width: '80%', justifyContent: 'center', margin: 'auto' }}>
-                    <TextField
-                        label="Názov"
-                        fullWidth
-                        margin="normal"
-                        variant="outlined"
-                        name='title'
-                        error={errors.titleError}
-                        onChange={handleInputChange}
-                    />
-                    <TextField
-                        label="Popis"
-                        fullWidth
-                        margin="normal"
-                        variant="outlined"
-                        name='description'
-                        error={errors.descriptionError}
-                        onChange={handleInputChange}
-                    />
-                </div>
-                <Box mt={2} display="flex" justifyContent="flex-end">
-                    <Button onClick={onClose} variant="outlined" color="secondary" sx={{ p: 2, borderRadius: 25, m: 2, mr: -0.5 }}>
-                        Zatvoriť
-                    </Button>
-                    <Button onClick={handleSubmit} variant="contained" color="primary" sx={{ p: 2, borderRadius: 25, m: 2 }}>
-                        Vytvoriť
-                    </Button>
-                </Box>
+                {isLoading ? (
+                    <Loading />
+                ) : (
+                    <>
+                    <div style={{ padding: '20px', width: '80%', justifyContent: 'center', margin: 'auto' }}>
+                        <TextField
+                            label="Názov"
+                            fullWidth
+                            margin="normal"
+                            variant="outlined"
+                            name='title'
+                            error={errors.titleError}
+                            onChange={handleInputChange}
+                        />
+                        <TextField
+                            label="Popis"
+                            fullWidth
+                            margin="normal"
+                            variant="outlined"
+                            name='description'
+                            error={errors.descriptionError}
+                            onChange={handleInputChange}
+                        />
+                    </div>
+
+                    <Box mt={2} display="flex" justifyContent="flex-end">
+                        <Button onClick={onClose} variant="outlined" color="secondary" sx={{ p: 2, borderRadius: 25, m: 2, mr: -0.5 }}>
+                            Zatvoriť
+                        </Button>
+                        <Button onClick={handleSubmit} variant="contained" color="primary" sx={{ p: 2, borderRadius: 25, m: 2 }}>
+                            Vytvoriť
+                        </Button>
+                    </Box>
+                    </>
+                )}
+
             </ModalContainer>
         </Modal>
     );

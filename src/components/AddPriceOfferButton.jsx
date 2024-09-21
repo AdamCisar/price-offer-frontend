@@ -6,7 +6,6 @@ import CreatePriceOfferModal from './CreatePriceOfferModal';
 
 const AddPriceOfferButton = () => {
     const [modalOpen, setModalOpen] = useState(false);
-    // const { addPriceOffer } = useAddPriceOffer();
 
     const handleAddClick = () => {
         setModalOpen(true);
@@ -14,11 +13,6 @@ const AddPriceOfferButton = () => {
 
     const handleCloseModal = () => {
         setModalOpen(false);
-    };
-
-    const handleSubmit = (offerData) => {
-        // addPriceOffer(offerData);
-        handleCloseModal();
     };
 
     return (
@@ -44,7 +38,6 @@ const AddPriceOfferButton = () => {
             <CreatePriceOfferModal
                 open={modalOpen}
                 onClose={handleCloseModal}
-                onSubmit={handleSubmit}
             />
         </>
     );
