@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-import useDeletePriceOffer from '../hooks/useDeletePriceOffer';
 
 export const PencilEditContext = React.createContext(null);
 
 export const PencilEditProvider = ({ children }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [selectedCards, setSelectedCards] = useState([]);
-  const { deletePriceOffer } = useDeletePriceOffer();
 
   const handleSelectedPriceOfferCard = (id) => {
       if (selectedCards.includes(id)) {
@@ -17,7 +15,7 @@ export const PencilEditProvider = ({ children }) => {
   };
   
   return (
-    <PencilEditContext.Provider value={{ isEditing, setIsEditing, handleSelectedPriceOfferCard, deletePriceOffer, selectedCards }}>
+    <PencilEditContext.Provider value={{ isEditing, setIsEditing, handleSelectedPriceOfferCard, selectedCards }}>
       {children}
     </PencilEditContext.Provider>
   );

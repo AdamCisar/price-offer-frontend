@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useUniversalPost } from "../api/UniversalPost";
 
-const useSubmitPriceOffer = (onClose, updatePriceOffer) => {
+const useSubmitPriceOffer = (onClose, addToPriceOfferList) => {
     const initialState = {
         title: "",
         description: "",
@@ -48,7 +48,7 @@ const useSubmitPriceOffer = (onClose, updatePriceOffer) => {
               description: formData.description,
             });
 
-            updatePriceOffer(priceOffer);
+            addToPriceOfferList(priceOffer);
             setFormData(initialState);
             onClose();
           } catch (err) {

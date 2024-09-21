@@ -25,7 +25,7 @@ import {
    *  endpoint constant suffix
    * @returns 
    */
-  export const useUniversalFetch = (endpoint) => {
+  export const useUniversalGet = (endpoint) => {
     const { data, isLoading, error } = useQuery({
       queryKey: [endpoint],    
       queryFn: () => fetchData(endpoint),   

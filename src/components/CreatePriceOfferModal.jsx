@@ -29,13 +29,13 @@ const Title = styled(Typography)(({ theme }) => ({
 }));
 
 const CreatePriceOfferModal = ({ open, onClose }) => {
-    const { updatePriceOffer } = useContext(PriceOfferContext);
+    const { addToPriceOfferList } = useContext(PriceOfferContext);
     const {
         handleSubmit,
         handleInputChange,
         errors,
         isLoading,
-    } = useSubmitPriceOffer(onClose, updatePriceOffer);
+    } = useSubmitPriceOffer(onClose, addToPriceOfferList);
 
     return (
         <Modal

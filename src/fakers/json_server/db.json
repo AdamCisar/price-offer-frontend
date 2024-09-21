@@ -23,11 +23,6 @@
   ],
   "price-offer": [
     {
-      "id": 1,
-      "title": "invoice1",
-      "price": 100
-    },
-    {
       "id": 2,
       "title": "invoice2",
       "price": 200
@@ -51,66 +46,6 @@
       "id": 6,
       "title": "invoice6",
       "price": 600
-    },
-    {
-      "id": 7,
-      "title": "invoice7",
-      "price": 700
-    },
-    {
-      "id": 8,
-      "title": "invoice8",
-      "price": 800
-    },
-    {
-      "id": 9,
-      "title": "invoice9",
-      "price": 900
-    },
-    {
-      "id": 10,
-      "title": "invoice10",
-      "price": 1000
-    },
-    {
-      "title": "test",
-      "description": "test",
-      "id": 11
-    },
-    {
-      "title": "faktura",
-      "description": "saas",
-      "id": 12
-    },
-    {
-      "title": "adam",
-      "description": "ad",
-      "id": 13
-    },
-    {
-      "title": "michal",
-      "description": "mic",
-      "id": 14
-    },
-    {
-      "title": "treti",
-      "description": "2",
-      "id": 15
-    },
-    {
-      "title": "stbrt",
-      "description": "2",
-      "id": 16
-    },
-    {
-      "title": "piat",
-      "description": "2",
-      "id": 17
-    },
-    {
-      "title": "siesty",
-      "description": "23",
-      "id": 18
     }
   ]
 }

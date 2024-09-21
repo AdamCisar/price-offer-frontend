@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PriceOfferSnapshot from './snapshots/PriceOfferSnapshot';
 import { PriceOfferContext } from '../providers/PriceOfferProvider';
 import { useContext } from "react";
