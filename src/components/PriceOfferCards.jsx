@@ -1,12 +1,12 @@
 import React from 'react';
 import PriceOfferSnapshot from './snapshots/PriceOfferSnapshot';
-import { PriceOfferContext } from '../providers/PriceOfferProvider';
+import { PriceOfferListContext } from '../providers/PriceOfferListProvider';
 import { useContext } from "react";
 import AddPriceOfferButton from './AddPriceOfferButton';
 import Loading from './Loading';
 
 const PriceOfferCards = () => {
-    const { priceOffer, isLoading, error } = useContext(PriceOfferContext);
+    const { priceOffer, isLoading, error } = useContext(PriceOfferListContext);
 
     return (
       <div style={{ padding: '10px' }}>

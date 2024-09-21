@@ -2,12 +2,15 @@ import React, { useContext, useState } from 'react';
 import { Card, CardActionArea, CardContent, CardMedia, Typography, Box } from '@mui/material';
 import { styled } from '@mui/system';
 import { PencilEditContext } from '../../providers/PencilEditProvider';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const PriceOfferSnapshot = ({ ...props }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [selected, setSelected] = useState(false);
   const { isEditing, handleSelectedPriceOfferCard } = useContext(PencilEditContext);
 
-  const handleClick = () => {
+  const handleSelectClick = () => {
     if (!isEditing) {
       return;
     }
@@ -16,8 +19,20 @@ const PriceOfferSnapshot = ({ ...props }) => {
     setSelected((prev) => !prev);
   };
 
+  const handlePriceOfferDetails = () => {
+    if (isEditing) {
+      return;
+    }
+    navigate(location.pathname + '/' + props.id);
+  };
+
   return (
-    <BounceCard onClick={handleClick} isEditing={isEditing}>
+    <BounceCard   onClick={() => {
+                          handleSelectClick(); 
+                          handlePriceOfferDetails();
+                        }} 
+                  isEditing={isEditing}>
+
       {isEditing && <CircleIndicator selected={selected} />}
       <CardActionArea sx={{ maxWidth: 200, minWidth: 200, maxHeight: 350, minHeight: 350, textAlign: 'center', padding: 2 }}>
         <CardMedia
@@ -30,7 +45,7 @@ const PriceOfferSnapshot = ({ ...props }) => {
             {props.title}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Price: ${props.price}
+            {props.description}
           </Typography>
         </CardContent>
       </CardActionArea>

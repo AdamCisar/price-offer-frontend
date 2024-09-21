@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
-import { Outlet } from 'react-router-dom';
 import Navbar from './Navbar';
 
-const Layout = () => {
+const Layout = ({children, isPencilWrapper}) => {
   return (
     <div>
       <header>
-        <Navbar />
+        <Navbar isPencilWrapper={isPencilWrapper}/>
       </header>
 
       <main>
-        <Outlet />
+        {children}
       </main>
 
       <footer>

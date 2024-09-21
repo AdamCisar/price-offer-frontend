@@ -1,11 +1,11 @@
 import React from 'react';
 import PriceOfferCards from '../components/PriceOfferCards';
 
-const PriceOffer = () => {
+const PriceOfferList = () => {
 
     return (
         <PriceOfferCards />
     );
 };
 
-export default PriceOffer;
+export default PriceOfferList;

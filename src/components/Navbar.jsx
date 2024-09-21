@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -6,13 +6,9 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
-import Pencil from './Pencil';
-import TrashCan from './TrashCan';
-import { PencilEditContext } from '../providers/PencilEditProvider';
+import { PencilWrapper } from './PencilWrapper';
 
-const Navbar = () => {
-    const { isEditing } = useContext(PencilEditContext);
-
+const Navbar = ({isPencilWrapper}) => {
     return (
         <AppBar position="static">
             <Container maxWidth="xl">
@@ -42,11 +38,9 @@ const Navbar = () => {
                             Cenové ponuky
                         </Button>
                     </Box>
-                    <div style={{'gap': '10px', 'display': 'flex'}}>
-                        {isEditing ? <TrashCan /> : null}
-                        <Pencil />
 
-                    </div>
+                    {isPencilWrapper ? <PencilWrapper /> : null}
+
                 </Toolbar>
             </Container>
         </AppBar>

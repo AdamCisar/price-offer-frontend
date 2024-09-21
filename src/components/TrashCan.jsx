@@ -2,12 +2,11 @@ import React, { useContext } from 'react';
 import { Box } from '@mui/material';
 import { styled } from '@mui/system';
 import { PencilEditContext } from '../providers/PencilEditProvider';
-import { PriceOfferContext } from '../providers/PriceOfferProvider';
-
+import { PriceOfferListContext } from '../providers/PriceOfferListProvider';
 
 const TrashCan = () => {
     const { selectedCards } = useContext(PencilEditContext);
-    const { deleteFromPriceOfferList } = useContext(PriceOfferContext);
+    const { deleteFromPriceOfferList } = useContext(PriceOfferListContext);
 
   return (
     <TrashBox className="trash-box" onClick={() => deleteFromPriceOfferList(selectedCards)}>

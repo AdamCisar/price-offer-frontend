@@ -3,7 +3,7 @@ import { Modal, Box, TextField, Button, Typography } from '@mui/material';
 import { styled } from '@mui/system';
 import useSubmitPriceOffer from '../hooks/useSubmitPriceOffer';
 import Loading from './Loading';
-import { PriceOfferContext } from '../providers/PriceOfferProvider';
+import { PriceOfferListContext } from '../providers/PriceOfferListProvider';
 
 const ModalContainer = styled(Box)(({ theme }) => ({
     position: 'absolute',
@@ -29,7 +29,7 @@ const Title = styled(Typography)(({ theme }) => ({
 }));
 
 const CreatePriceOfferModal = ({ open, onClose }) => {
-    const { addToPriceOfferList } = useContext(PriceOfferContext);
+    const { addToPriceOfferList } = useContext(PriceOfferListContext);
     const {
         handleSubmit,
         handleInputChange,

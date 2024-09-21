@@ -17,7 +17,7 @@ const AddPriceOfferButton = () => {
 
     return (
         <>
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: 200 }}>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: 200, minHeight: 350 }}>
                 <IconButton
                     onClick={handleAddClick}
                     sx={{

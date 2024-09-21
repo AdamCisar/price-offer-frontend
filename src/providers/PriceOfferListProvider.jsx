@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useUniversalGet } from '../api/UniversalGet';
 import useDeletePriceOffer from '../hooks/useDeletePriceOffer';
+import { PencilEditContext } from "./PencilEditProvider";
 
-export const PriceOfferContext = React.createContext(null);
+export const PriceOfferListContext = React.createContext(null);
 
-export function PriceOfferProvider({ children }) {
+export function PriceOfferListProvider({ children }) {
     const [priceOffer, isLoading, error] = useUniversalGet('PRICE_OFFER');
     const [priceOfferList, setPriceOfferList] = useState(priceOffer);
     const { deletePriceOffer } = useDeletePriceOffer();
+    const { setIsEditing } = useContext(PencilEditContext);
 
     useEffect(() => {
       if (priceOffer) {
@@ -27,11 +29,13 @@ export function PriceOfferProvider({ children }) {
             priceOfferList.filter((priceOffer) => priceOffer.id !== id)
         );
       }
+
+      setIsEditing(false);
     }
 
   return (
-    <PriceOfferContext.Provider value={{ priceOffer: priceOfferList, isLoading, error, addToPriceOfferList, deleteFromPriceOfferList }}>
+    <PriceOfferListContext.Provider value={{ priceOffer: priceOfferList, isLoading, error, addToPriceOfferList, deleteFromPriceOfferList }}>
       {children}
-    </PriceOfferContext.Provider>
+    </PriceOfferListContext.Provider>
   );
 }
