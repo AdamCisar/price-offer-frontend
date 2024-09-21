@@ -7,9 +7,9 @@ export const PencilWrapper = () => {
     const { isEditing } = useContext(PencilEditContext);
     
     return (
-        <div style={{'gap': '10px', 'display': 'flex'}}>
+        <>
             {isEditing ? <TrashCan /> : null}
             <Pencil />
-        </div>
+        </>
     )
 }

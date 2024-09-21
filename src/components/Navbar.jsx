@@ -7,6 +7,7 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import { PencilWrapper } from './PencilWrapper';
+import ProfileEdit from './ProfileEdit';
 
 const Navbar = ({isPencilWrapper}) => {
     return (
@@ -39,7 +40,10 @@ const Navbar = ({isPencilWrapper}) => {
                         </Button>
                     </Box>
 
-                    {isPencilWrapper ? <PencilWrapper /> : null}
+                    <div style={{gap: '10px', display: 'flex'}}>
+                        {isPencilWrapper ? <PencilWrapper /> : null}
+                        <ProfileEdit />
+                    </div>
 
                 </Toolbar>
             </Container>
