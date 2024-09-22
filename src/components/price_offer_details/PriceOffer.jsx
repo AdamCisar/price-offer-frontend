@@ -14,6 +14,8 @@ import useUpdatePriceOfferDetails from '../../hooks/useUpdatePriceOfferDetails';
 import { PriceOfferContext } from '../../providers/price_offer_providers/PriceOfferProvider';
 import { UserInfoContext } from '../../providers/UserInfoProvider';
 import Loading from '../Loading';
+import usePriceOfferCalculation from '../../hooks/usePriceOfferCalculation';
+import BulkPriceEditModal from './BulkPriceEditModal';
 
 const PriceOffer = () => {
   const {
@@ -23,25 +25,30 @@ const PriceOffer = () => {
         handleDeleteSelectedPriceOfferItems
       } = useUpdatePriceOfferDetails();
 
+  const { calculateTotal, handleEditSelectedPriceOfferItems } = usePriceOfferCalculation();
+
   const { priceOfferDetails, isLoading, error } = useContext(PriceOfferContext);
   const { userInfo, setUserInfo } = useContext(UserInfoContext);
-  const [showDeleteButton, setShowDeleteButton] = useState(false);
+
+  const [isRowSelected, setRowSelected] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
 
   const toggleDeleteButton = (ids) => {
     if (ids.length > 0) {
-      setShowDeleteButton(true);
+      setRowSelected(true);
     } else {
-      setShowDeleteButton(false);
+      setRowSelected(false);
     }
   };
 
+  const [bulkPriceEditModal, setBulkPriceEditModal] = useState(false);
 
-  const calculateTotal = () => {
-    return priceOfferDetails.items?.reduce(
-      (total, item) => total + item.quantity * item.price,
-      0
-    );
+  const openBulkPriceEditModal = () => {
+    setBulkPriceEditModal(true);
+  };
+
+  const closeBulkPriceEditModal = () => {
+    setBulkPriceEditModal(false);
   };
 
   return (
@@ -72,18 +79,18 @@ const PriceOffer = () => {
                 <TextField
                     fullWidth
                     variant="outlined"
-                    label="Adresa"
-                    name="adress" 
-                    value={priceOfferDetails.customer?.adress}
+                    label="Mesto/Obec"
+                    name="city" 
+                    value={priceOfferDetails.customer?.city}
                     onChange={handleCustomerInputChange}
                     sx={{ marginBottom: 2 }}
                 />
                 <TextField
                     fullWidth
                     variant="outlined"
-                    label="Mesto/Obec"
-                    name="city" 
-                    value={priceOfferDetails.customer?.city}
+                    label="Adresa"
+                    name="adress" 
+                    value={priceOfferDetails.customer?.adress}
                     onChange={handleCustomerInputChange}
                     sx={{ marginBottom: 2 }}
                 />
@@ -99,15 +106,22 @@ const PriceOffer = () => {
               </div>
               <Divider orientation="vertical" flexItem sx={{ margin: '0 20px' }} />
                 <div style={{ width: '40%' }}>
-                  {/* You can add any additional info you want on the right side here */}
-                  <Typography variant="h6">{userInfo?.name}</Typography>
-                  {/* For example, another TextField or just plain text */}
+                  <Typography variant="h6" sx={{ display: 'flex' ,justifyContent: 'center' }}>{userInfo?.name}</Typography>
+                  <Typography variant="h6" sx={{ display: 'flex' ,justifyContent: 'center' }}>{userInfo?.city}</Typography>
+                  <Typography variant="h6" sx={{ display: 'flex' ,justifyContent: 'center' }}>{userInfo?.adress}</Typography>
+                  <Typography variant="h6" sx={{ display: 'flex' ,justifyContent: 'center' }}>{userInfo?.zip}</Typography>
                 </div>
             </Box>
             <Divider sx={{ margin: '20px 0' }} />
             <Box display="flex" flexDirection="row" alignItems="center" gap={1} style={{ marginBottom: 5 }}>
               <AddItemToPriceOfferButton />
-              {showDeleteButton && <Button variant="contained" color="error" onClick={() => handleDeleteSelectedPriceOfferItems(selectedItems)} >Vymazať</Button>}
+              {isRowSelected && 
+              <>
+              <Button variant="contained" color="secondary" onClick={openBulkPriceEditModal} >Upraviť hromadne ceny</ Button>
+              <BulkPriceEditModal open={bulkPriceEditModal} onClose={closeBulkPriceEditModal} handleEditSelectedPriceOfferItems={handleEditSelectedPriceOfferItems} selectedItems={selectedItems} />
+              <Button variant="contained" color="error" onClick={() => handleDeleteSelectedPriceOfferItems(selectedItems)} >Vymazať</ Button>
+              </>
+              }
             </Box>
             <PriceOfferItems 
               priceOfferItems={priceOfferDetails.items} 
@@ -116,7 +130,7 @@ const PriceOffer = () => {
               setSelectedItems={setSelectedItems}
             />
             <Divider sx={{ margin: '20px 0' }} />
-            <Typography variant="h5">Spolu: {calculateTotal()?.toFixed(2)} €</Typography>
+            <Typography variant="h5">Spolu: {calculateTotal(priceOfferDetails)?.toFixed(2)} €</Typography>
           </CardContent>
           <CardContent>
             <Box display="flex" justifyContent="space-between" alignItems="center">

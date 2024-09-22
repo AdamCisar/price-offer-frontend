@@ -37,7 +37,7 @@ const PriceOfferSnapshot = ({ ...props }) => {
       <CardActionArea sx={{ maxWidth: 200, minWidth: 200, maxHeight: 350, minHeight: 350, textAlign: 'center', padding: 2 }}>
         <CardMedia
           component="img"
-          image='/invoice_thumb.png'
+          image="/invoice_thumb.png"
           alt={props.title}
         />
         <CardContent>

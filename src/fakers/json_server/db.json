@@ -2,32 +2,42 @@
   "users": [
     {
       "id": 1,
-      "name": "adam",
+      "name": "Adam Čisár",
       "adress": "13",
-      "city": "klcov",
-      "zip": "312231"
+      "city": "Klčov",
+      "zip": "053 02"
     }
   ],
-  "products": [
+  "items": [
     {
       "id": 1,
-      "name": "Apple iPhone 12",
+      "title": "Product1",
+      "quantity": 1,
       "price": 999
     },
     {
       "id": 2,
-      "name": "Samsung Galaxy S21",
+      "title": "Product2",
+      "quantity": 1,
       "price": 799
     },
     {
       "id": 3,
-      "name": "Xiaomi Mi 11",
+      "title": "Product3",
+      "quantity": 1,
       "price": 699
     },
     {
       "id": 4,
-      "name": "OnePlus 9",
-      "price": 899
+      "title": "Product4",
+      "quantity": 1,
+      "price": 599
+    },
+    {
+      "id": 5,
+      "title": "Product5",
+      "quantity": 1,
+      "price": 499
     }
   ],
   "price-offers": [
@@ -58,22 +68,28 @@
       },
       "items": [
         {
+          "id": 1,
+          "title": "Product1",
+          "quantity": 1,
+          "price": 999
+        },
+        {
+          "id": 2,
+          "title": "Product2",
+          "quantity": 1,
+          "price": 799
+        },
+        {
           "id": 3,
           "title": "Product3",
-          "quantity": "2",
-          "price": 7
+          "quantity": 1,
+          "price": 699
         },
         {
           "id": 4,
           "title": "Product4",
-          "quantity": "2",
-          "price": 7
-        },
-        {
-          "id": 5,
-          "title": "Product5",
-          "quantity": "2",
-          "price": 7
+          "quantity": 1,
+          "price": 899
         }
       ]
     },

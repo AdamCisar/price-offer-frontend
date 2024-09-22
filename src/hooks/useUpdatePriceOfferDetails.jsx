@@ -18,7 +18,7 @@ const useUpdatePriceOfferDetails = () => {
         setPriceOfferDetails((prevData) => ({
             ...prevData,
             'items': prevData['items'].filter((item) => !ids.includes(item.id)),
-            }));
+        }));
     };
 
     const handleCustomerInputChange = (event) => {

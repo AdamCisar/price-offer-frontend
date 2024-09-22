@@ -2,9 +2,12 @@ import React, { useContext, useState } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button } from '@mui/material';
 import { UserInfoContext } from '../../providers/UserInfoProvider';
 import Loading from '../Loading';
+import { useUniversalPost } from '../../api/UniversalPost';
+import ApiRoutes from '../../configuration/api_routes/ApiRoutes';
 
 const ProfileEditModal = ({ open, onClose }) => {
   const { userInfo, setUserInfo, isLoading, error } = useContext(UserInfoContext);
+  const [sendData] = useUniversalPost("USER");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -15,6 +18,7 @@ const ProfileEditModal = ({ open, onClose }) => {
   };
 
   const handleSave = () => {
+    sendData(userInfo,userInfo.id);
     onClose();
   };
 
@@ -35,6 +39,14 @@ const ProfileEditModal = ({ open, onClose }) => {
           />
           <TextField
             margin="dense"
+            label="Mesto/Obec"
+            name="city"
+            value={userInfo.city}
+            onChange={handleChange}
+            fullWidth
+          />
+          <TextField
+            margin="dense"
             label="Adresa"
             name="address"
             value={userInfo.adress}
@@ -46,14 +58,6 @@ const ProfileEditModal = ({ open, onClose }) => {
             label="PSČ"
             name="zip"
             value={userInfo.zip}
-            onChange={handleChange}
-            fullWidth
-          />
-          <TextField
-            margin="dense"
-            label="Mesto/Obec"
-            name="city"
-            value={userInfo.city}
             onChange={handleChange}
             fullWidth
           />
