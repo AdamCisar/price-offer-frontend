@@ -1,12 +1,9 @@
 import { useContext } from "react";
 import { useUniversalPost } from "../api/UniversalPost";
 import { PriceOfferContext } from "../providers/price_offer_providers/PriceOfferProvider";
-import ApiRoutes from "../configuration/api_routes/ApiRoutes";
-import { useUniversalDelete } from "../api/UniversalDelete";
 
 const useUpdatePriceOfferDetails = () => {
     const [sendData, isLoading, error] = useUniversalPost("PRICE_OFFER");
-    const [deleteData ] = useUniversalDelete();
     const { priceOfferDetails, setPriceOfferDetails } = useContext(PriceOfferContext);
 
     const handleSavePriceOfferDetails = async () => {
@@ -18,17 +15,10 @@ const useUpdatePriceOfferDetails = () => {
     };
 
     const handleDeleteSelectedPriceOfferItems = async (ids) => {
-        try {
-            const apiRoute = ApiRoutes["PRICE_OFFER_ITEM"].replace(':priceOfferId', priceOfferDetails.id);
-            // await deleteData(apiRoute, ids);
-
-            setPriceOfferDetails((prevData) => ({
-                ...prevData,
-                'items': prevData['items'].filter((item) => !ids.includes(item.id)),
-              }));
-        } catch (err) {
-            console.log(err);
-        }
+        setPriceOfferDetails((prevData) => ({
+            ...prevData,
+            'items': prevData['items'].filter((item) => !ids.includes(item.id)),
+            }));
     };
 
     const handleCustomerInputChange = (event) => {

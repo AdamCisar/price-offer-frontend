@@ -20,7 +20,7 @@ const ProfileEditModal = ({ open, onClose }) => {
 
   return (
     <>
-    {isLoading ? <Loading /> : (
+    {isLoading ? <Loading /> : ( userInfo &&
       <div>
       <Dialog open={open} onClose={onClose}>
         <DialogTitle>Úprava profilu</DialogTitle>

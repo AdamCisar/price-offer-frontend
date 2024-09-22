@@ -58,18 +58,6 @@
       },
       "items": [
         {
-          "id": 1,
-          "title": "Product1",
-          "quantity": "2",
-          "price": 7
-        },
-        {
-          "id": 2,
-          "title": "Product2",
-          "quantity": "2",
-          "price": 7
-        },
-        {
           "id": 3,
           "title": "Product3",
           "quantity": "2",

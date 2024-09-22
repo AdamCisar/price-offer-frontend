@@ -2,7 +2,7 @@ import { useUniversalDelete } from "../api/UniversalDelete";
 import ApiRoutes from "../configuration/api_routes/ApiRoutes";
 
 const useDeletePriceOffer = () => {
-    const [deleteData, isLoading, error] = useUniversalDelete();
+    const [deleteData, isLoading, error] = useUniversalDelete("PRICE_OFFER");
 
     const deletePriceOffer = async (idList) => {
         if (idList.length === 0) {
