@@ -1,29 +1,27 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button } from '@mui/material';
+import { UserInfoContext } from '../../providers/UserInfoProvider';
+import Loading from '../Loading';
 
 const ProfileEditModal = ({ open, onClose }) => {
-  const [profile, setProfile] = useState({
-    name: '',
-    address: '',
-    zip: '',
-    city: '',
-  });
+  const { userInfo, setUserInfo, isLoading, error } = useContext(UserInfoContext);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setProfile({
-      ...profile,
+    setUserInfo({
+      ...userInfo,
       [name]: value,
     });
   };
 
   const handleSave = () => {
-    console.log('Profile Data:', profile);
     onClose();
   };
 
   return (
-    <div>
+    <>
+    {isLoading ? <Loading /> : (
+      <div>
       <Dialog open={open} onClose={onClose}>
         <DialogTitle>Úprava profilu</DialogTitle>
         <DialogContent>
@@ -31,7 +29,7 @@ const ProfileEditModal = ({ open, onClose }) => {
             margin="dense"
             label="Meno"
             name="name"
-            value={profile.name}
+            value={userInfo.name}
             onChange={handleChange}
             fullWidth
           />
@@ -39,7 +37,7 @@ const ProfileEditModal = ({ open, onClose }) => {
             margin="dense"
             label="Adresa"
             name="address"
-            value={profile.address}
+            value={userInfo.adress}
             onChange={handleChange}
             fullWidth
           />
@@ -47,7 +45,7 @@ const ProfileEditModal = ({ open, onClose }) => {
             margin="dense"
             label="PSČ"
             name="zip"
-            value={profile.zip}
+            value={userInfo.zip}
             onChange={handleChange}
             fullWidth
           />
@@ -55,7 +53,7 @@ const ProfileEditModal = ({ open, onClose }) => {
             margin="dense"
             label="Mesto/Obec"
             name="city"
-            value={profile.city}
+            value={userInfo.city}
             onChange={handleChange}
             fullWidth
           />
@@ -70,6 +68,8 @@ const ProfileEditModal = ({ open, onClose }) => {
         </DialogActions>
       </Dialog>
     </div>
+    )}
+  </>
   );
 };
 

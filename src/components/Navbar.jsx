@@ -7,7 +7,7 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import { PencilWrapper } from './PencilWrapper';
-import ProfileEdit from './ProfileEdit';
+import ProfileEdit from './profile/ProfileEdit';
 
 const Navbar = ({isPencilWrapper}) => {
     return (
@@ -20,7 +20,7 @@ const Navbar = ({isPencilWrapper}) => {
                         component="div"
                         sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
                     >
-                        Price Offer
+                       Adam Čisár
                     </Typography>
 
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>

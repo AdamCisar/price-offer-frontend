@@ -1,23 +1,9 @@
 import React, { useContext } from 'react';
-import { Modal, Box, TextField, Button, Typography } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, Typography } from '@mui/material';
 import { styled } from '@mui/system';
 import useSubmitPriceOffer from '../hooks/useSubmitPriceOffer';
 import Loading from './Loading';
 import { PriceOfferListContext } from '../providers/PriceOfferListProvider';
-
-const ModalContainer = styled(Box)(({ theme }) => ({
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    minWidth: '50%',
-    maxWidth: 600,
-    backgroundColor: 'white',
-    borderRadius: 25,
-    boxShadow: 'white',
-    padding: '4',
-    outline: 'none',
-}));
 
 const Title = styled(Typography)(({ theme }) => ({
     textAlign: 'center',
@@ -38,22 +24,15 @@ const CreatePriceOfferModal = ({ open, onClose }) => {
     } = useSubmitPriceOffer(onClose, addToPriceOfferList);
 
     return (
-        <Modal
-            open={open}
-            onClose={onClose}
-            aria-labelledby="modal-title"
-            aria-describedby="modal-description"
-        >
-            <ModalContainer>
-
-                <Title id="modal-title" variant="h6">
-                    Vytvorenie novej cenovej ponuky
-                </Title>
+        <Dialog open={open} onClose={onClose} aria-labelledby="dialog-title" aria-describedby="dialog-description">
+            <DialogTitle id="dialog-title">
+                Vytvorenie novej cenovej ponuky
+            </DialogTitle>
+            <DialogContent>
                 {isLoading ? (
                     <Loading />
                 ) : (
-                    <>
-                    <div style={{ padding: '20px', width: '80%', justifyContent: 'center', margin: 'auto' }}>
+                    <div style={{ width: '80%', justifyContent: 'center', margin: 'auto' }}>
                         <TextField
                             label="Názov"
                             fullWidth
@@ -73,20 +52,17 @@ const CreatePriceOfferModal = ({ open, onClose }) => {
                             onChange={handleInputChange}
                         />
                     </div>
-
-                    <Box mt={2} display="flex" justifyContent="flex-end">
-                        <Button onClick={onClose} variant="outlined" color="secondary" sx={{ p: 2, borderRadius: 25, m: 2, mr: -0.5 }}>
-                            Zatvoriť
-                        </Button>
-                        <Button onClick={handleSubmit} variant="contained" color="primary" sx={{ p: 2, borderRadius: 25, m: 2 }}>
-                            Vytvoriť
-                        </Button>
-                    </Box>
-                    </>
                 )}
-
-            </ModalContainer>
-        </Modal>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={onClose} color="secondary">
+                    Zatvoriť
+                </Button>
+                <Button onClick={handleSubmit} color="primary">
+                    Vytvoriť
+                </Button>
+            </DialogActions>
+        </Dialog>
     );
 };
 

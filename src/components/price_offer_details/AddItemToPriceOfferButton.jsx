@@ -3,7 +3,7 @@ import { Button } from '@mui/material';
 import { useState } from 'react';
 import ProductSearchModal from './ProductSearchModal';
 
-const AddProductButton = () => {
+const AddItemToPriceOfferButton = () => {
     const [modalOpen, setModalOpen] = useState(false);
 
     const handleAddClick = () => {
@@ -15,7 +15,7 @@ const AddProductButton = () => {
     };
 
     return (
-        <div style={{ marginBottom: 5 }}>
+        <div>
             <Button variant="contained" color="s" onClick={handleAddClick}>
                 Pridať položku
             </Button>
@@ -28,4 +28,4 @@ const AddProductButton = () => {
     );
 };
 
-export default AddProductButton;
+export default AddItemToPriceOfferButton;

@@ -1,4 +1,13 @@
 {
+  "users": [
+    {
+      "id": 1,
+      "name": "adam",
+      "adress": "13",
+      "city": "klcov",
+      "zip": "312231"
+    }
+  ],
   "products": [
     {
       "id": 1,
@@ -21,7 +30,7 @@
       "price": 899
     }
   ],
-  "price-offer": [
+  "price-offers": [
     {
       "id": 2,
       "title": "invoice2",
@@ -40,7 +49,45 @@
     {
       "id": 5,
       "title": "invoice5",
-      "price": 500
+      "price": 500,
+      "customer": {
+        "name": "adam",
+        "adress": "13",
+        "city": "klcov",
+        "zip": "312231"
+      },
+      "items": [
+        {
+          "id": 1,
+          "title": "Product1",
+          "quantity": "2",
+          "price": 7
+        },
+        {
+          "id": 2,
+          "title": "Product2",
+          "quantity": "2",
+          "price": 7
+        },
+        {
+          "id": 3,
+          "title": "Product3",
+          "quantity": "2",
+          "price": 7
+        },
+        {
+          "id": 4,
+          "title": "Product4",
+          "quantity": "2",
+          "price": 7
+        },
+        {
+          "id": 5,
+          "title": "Product5",
+          "quantity": "2",
+          "price": 7
+        }
+      ]
     },
     {
       "id": 6,
@@ -48,8 +95,8 @@
       "price": 600
     },
     {
-      "title": "inovice7",
-      "description": "2",
+      "title": "Testovacia",
+      "description": "23",
       "id": 7
     }
   ]

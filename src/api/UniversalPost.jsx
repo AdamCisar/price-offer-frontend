@@ -5,12 +5,13 @@ export const useUniversalPost = (endpoint) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const sendData = async (payload) => {
+  const sendData = async (payload, id) => {
+    const urlId = id ? `/${id}` : "";
     setIsLoading(true);
 
     try {
-      const response = await fetch(ApiRoutes[endpoint], {
-        method: "POST",
+      const response = await fetch(ApiRoutes[endpoint] + urlId, {
+        method: urlId ? "PATCH" : "POST",
         headers: {
           "Content-Type": "application/json",
         },

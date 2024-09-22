@@ -1,17 +1,16 @@
 import { useState } from "react";
-import ApiRoutes from '../configuration/api_routes/ApiRoutes';
 
-export const useUniversalDelete = (endpoint) => {
+export const useUniversalDelete = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const deleteData = async (payload) => {
+  const deleteData = async (apiRoute, payload) => {
     setIsLoading(true);
   
     try {
         let data = {};
         for (let key in payload) {
-            const response = await fetch(ApiRoutes[endpoint]+ "/" + payload[key] , {
+            const response = await fetch(apiRoute + "/" + payload[key] , {
                 method: "DELETE",
                 headers: {
                 "Content-Type": "application/json",
