@@ -9,9 +9,26 @@ export function PriceOfferProvider({ children }) {
     const [priceOffer, isLoading, error] = useUniversalGet('PRICE_OFFER', id);
     const [priceOfferDetails, setPriceOfferDetails] = useState({});
 
+    const calculateTotalPriceForItem = (priceOffer) => {
+      const updatedItems = priceOffer?.items?.map(item => ({
+          ...item,
+          total: item.quantity * item.price,
+      }));
+  
+      return {
+          ...priceOffer,
+          items: updatedItems,
+      };
+  }
+
     useEffect(() => {
       setPriceOfferDetails(priceOffer);
     }, [priceOffer]);
+
+    useEffect(() => {
+      const calculatedPriceOfferData = calculateTotalPriceForItem(priceOfferDetails);
+      setPriceOfferDetails(calculatedPriceOfferData);
+    }, [priceOfferDetails]);
 
   return (
     <PriceOfferContext.Provider value={{ priceOfferDetails, isLoading, error, setPriceOfferDetails }}>

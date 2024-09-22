@@ -11,8 +11,7 @@ const usePriceOfferCalculation = () => {
         );
       };
 
-      
-    const handleEditSelectedPriceOfferItems = (ids, percentage) => {
+    const handleEditSelectedPriceOfferItemsPrices = (ids, percentage) => {
         if (!percentage) {
           return;
         }
@@ -34,7 +33,7 @@ const usePriceOfferCalculation = () => {
     };
 
     return {
-        handleEditSelectedPriceOfferItems,
+        handleEditSelectedPriceOfferItemsPrices,
         calculateTotal,
     };
 };

@@ -25,7 +25,7 @@ const PriceOffer = () => {
         handleDeleteSelectedPriceOfferItems
       } = useUpdatePriceOfferDetails();
 
-  const { calculateTotal, handleEditSelectedPriceOfferItems } = usePriceOfferCalculation();
+  const { calculateTotal, handleEditSelectedPriceOfferItemsPrices } = usePriceOfferCalculation();
 
   const { priceOfferDetails, isLoading, error } = useContext(PriceOfferContext);
   const { userInfo, setUserInfo } = useContext(UserInfoContext);
@@ -118,7 +118,7 @@ const PriceOffer = () => {
               {isRowSelected && 
               <>
               <Button variant="contained" color="secondary" onClick={openBulkPriceEditModal} >Upraviť hromadne ceny</ Button>
-              <BulkPriceEditModal open={bulkPriceEditModal} onClose={closeBulkPriceEditModal} handleEditSelectedPriceOfferItems={handleEditSelectedPriceOfferItems} selectedItems={selectedItems} />
+              <BulkPriceEditModal open={bulkPriceEditModal} onClose={closeBulkPriceEditModal} handleEditSelectedPriceOfferItemsPrices={handleEditSelectedPriceOfferItemsPrices} selectedItems={selectedItems} />
               <Button variant="contained" color="error" onClick={() => handleDeleteSelectedPriceOfferItems(selectedItems)} >Vymazať</ Button>
               </>
               }

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button } from '@mui/material';
 
-const BulkPriceEditModal = ({ open, onClose, handleEditSelectedPriceOfferItems, selectedItems }) => {
+const BulkPriceEditModal = ({ open, onClose, handleEditSelectedPriceOfferItemsPrices, selectedItems }) => {
     const [percent, setPercent] = useState(0);
 
     const handleChange = (event) => {
@@ -34,7 +34,7 @@ const BulkPriceEditModal = ({ open, onClose, handleEditSelectedPriceOfferItems, 
             Zatvoriť
           </Button>
           <Button    onClick={() => {
-                        handleEditSelectedPriceOfferItems(selectedItems, percent);
+                        handleEditSelectedPriceOfferItemsPrices(selectedItems, percent);
                         onClose();
                     }}  
             color="primary" >

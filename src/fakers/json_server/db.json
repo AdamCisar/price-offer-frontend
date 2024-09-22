@@ -70,13 +70,13 @@
         {
           "id": 1,
           "title": "Product1",
-          "quantity": 1,
+          "quantity": 2,
           "price": 999
         },
         {
           "id": 2,
           "title": "Product2",
-          "quantity": 1,
+          "quantity": 3,
           "price": 799
         },
         {
@@ -102,6 +102,16 @@
       "title": "Testovacia",
       "description": "23",
       "id": 7
+    },
+    {
+      "title": "adww",
+      "description": "dw",
+      "id": 8
+    },
+    {
+      "title": "awdwad",
+      "description": "daw",
+      "id": 9
     }
   ]
 }

@@ -4,14 +4,14 @@ import Paper from '@mui/material/Paper';
 
 const PriceOfferItems = ({ priceOfferItems, handleItemsInputChange, toggleDeleteButton, setSelectedItems }) => {
 
+    const paginationModel = { page: 0, pageSize: 5 };
     const columns = [
         { field: 'id', headerName: 'ID', width: 70 },
         { field: 'title', headerName: 'Názov', width: 130 },
         { field: 'quantity', headerName: 'Množstvo', width: 130 },
         { field: 'price', headerName: 'Cena', width: 130 },
+        { field: 'total', headerName: 'Celkom', width: 130 },
       ];
-
-    const paginationModel = { page: 0, pageSize: 5 };
 
     const handleItemSelection = (ids) => {
       setSelectedItems(ids);
