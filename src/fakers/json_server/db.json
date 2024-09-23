@@ -72,14 +72,16 @@
           "unit": "ks",
           "title": "Product1",
           "quantity": 2,
-          "price": "150"
+          "price": "150",
+          "total": 300
         },
         {
           "id": 2,
           "unit": "ks",
           "title": "Product2",
           "quantity": 3,
-          "price": "500"
+          "price": "500",
+          "total": 1500
         },
         {
           "id": 3,

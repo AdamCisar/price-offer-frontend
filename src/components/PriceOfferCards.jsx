@@ -13,7 +13,7 @@ const PriceOfferCards = () => {
           {isLoading ? (
               <Loading />
           ) : (
-              priceOffer ? (
+              priceOffer && priceOffer.length > 0 ? (
                   <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
                       {priceOffer.map((item) => (
                           <PriceOfferSnapshot key={item.id} {...item} />

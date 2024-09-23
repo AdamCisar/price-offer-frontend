@@ -6,10 +6,12 @@ const useUpdatePriceOfferDetails = () => {
     const [sendData, isLoading, error] = useUniversalPost("PRICE_OFFER");
     const { priceOfferDetails, setPriceOfferDetails } = useContext(PriceOfferContext);
 
-    const handleSavePriceOfferDetails = async () => {
+    const handleSavePriceOfferDetails = async (handleSnackbarOpen) => {
         try {
             await sendData(priceOfferDetails, priceOfferDetails.id);
+            handleSnackbarOpen('Cenová ponuka bola uložená!', 'success');
           } catch (err) {
+            handleSnackbarOpen('Cenová ponuka sa neuložila!', 'error');
             console.log(err);
         }
     };

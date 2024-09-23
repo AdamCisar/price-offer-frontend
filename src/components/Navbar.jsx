@@ -11,7 +11,7 @@ import ProfileEdit from './profile/ProfileEdit';
 
 const Navbar = ({isPencilWrapper}) => {
     return (
-        <AppBar position="static">
+        <AppBar position="static" sx={{ height: '70px' }}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     <Typography

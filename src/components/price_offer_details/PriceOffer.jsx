@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import {
   Box,
   Card,
@@ -16,6 +16,7 @@ import { UserInfoContext } from '../../providers/UserInfoProvider';
 import Loading from '../Loading';
 import usePriceOfferCalculation from '../../hooks/usePriceOfferCalculation';
 import BulkPriceEditModal from './BulkPriceEditModal';
+import { SnackBarContext } from '../../providers/SnackBarProvider';
 
 const PriceOffer = () => {
   const {
@@ -28,6 +29,7 @@ const PriceOffer = () => {
 
   const { priceOfferDetails, isLoading, error, setPriceOfferDetails } = useContext(PriceOfferContext);
   const { userInfo, setUserInfo } = useContext(UserInfoContext);
+  const { handleSnackbarOpen } = useContext(SnackBarContext);
 
   const [isRowSelected, setRowSelected] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
@@ -49,12 +51,7 @@ const PriceOffer = () => {
   const closeBulkPriceEditModal = () => {
     setBulkPriceEditModal(false);
   };
-
-  const [priceOfferItemsExpanded, setPriceOfferItemsExpanded] = useState(false);
-  const handleExpandPriceOfferItems = () => {
-    setPriceOfferItemsExpanded(!priceOfferItemsExpanded);
-  }
-
+  
   return (
     <Box
       display="flex"
@@ -147,7 +144,7 @@ const PriceOffer = () => {
                   Stiahnuť PDF
                 </Button>
               </Box>
-              <Button variant="contained" color="primary" onClick={handleSavePriceOfferDetails}>
+              <Button variant="contained" color="primary" onClick={() => handleSavePriceOfferDetails(handleSnackbarOpen)}>
                 Uložiť
               </Button>
             </Box>

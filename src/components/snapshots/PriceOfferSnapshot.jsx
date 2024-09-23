@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { Card, CardActionArea, CardContent, CardMedia, Typography, Box } from '@mui/material';
 import { styled } from '@mui/system';
 import { PencilEditContext } from '../../providers/PencilEditProvider';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const PriceOfferSnapshot = ({ ...props }) => {
   const navigate = useNavigate();

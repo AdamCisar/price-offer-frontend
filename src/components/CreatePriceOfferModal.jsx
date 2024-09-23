@@ -29,30 +29,26 @@ const CreatePriceOfferModal = ({ open, onClose }) => {
                 Vytvorenie novej cenovej ponuky
             </DialogTitle>
             <DialogContent>
-                {isLoading ? (
-                    <Loading />
-                ) : (
-                    <div style={{ width: '80%', justifyContent: 'center', margin: 'auto' }}>
-                        <TextField
-                            label="Názov"
-                            fullWidth
-                            margin="normal"
-                            variant="outlined"
-                            name='title'
-                            error={errors.titleError}
-                            onChange={handleInputChange}
-                        />
-                        <TextField
-                            label="Popis"
-                            fullWidth
-                            margin="normal"
-                            variant="outlined"
-                            name='description'
-                            error={errors.descriptionError}
-                            onChange={handleInputChange}
-                        />
-                    </div>
-                )}
+                <div style={{ width: '80%', justifyContent: 'center', margin: 'auto' }}>
+                    <TextField
+                        label="Názov"
+                        fullWidth
+                        margin="normal"
+                        variant="outlined"
+                        name='title'
+                        error={errors.titleError}
+                        onChange={handleInputChange}
+                    />
+                    <TextField
+                        label="Popis"
+                        fullWidth
+                        margin="normal"
+                        variant="outlined"
+                        name='description'
+                        error={errors.descriptionError}
+                        onChange={handleInputChange}
+                    />
+                </div>
             </DialogContent>
             <DialogActions>
                 <Button onClick={onClose} color="secondary">

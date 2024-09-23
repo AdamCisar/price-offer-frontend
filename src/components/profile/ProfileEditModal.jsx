@@ -1,12 +1,12 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button } from '@mui/material';
 import { UserInfoContext } from '../../providers/UserInfoProvider';
-import Loading from '../Loading';
 import { useUniversalPost } from '../../api/UniversalPost';
-import ApiRoutes from '../../configuration/api_routes/ApiRoutes';
+import { SnackBarContext } from '../../providers/SnackBarProvider';
 
 const ProfileEditModal = ({ open, onClose }) => {
   const { userInfo, setUserInfo, isLoading, error } = useContext(UserInfoContext);
+  const { handleSnackbarOpen } = useContext(SnackBarContext);
   const [sendData] = useUniversalPost("USER");
 
   const handleChange = (e) => {
@@ -18,13 +18,19 @@ const ProfileEditModal = ({ open, onClose }) => {
   };
 
   const handleSave = () => {
-    sendData(userInfo,userInfo.id);
-    onClose();
+    try {
+      sendData(userInfo, userInfo.id);
+      handleSnackbarOpen('Profil bol uložený!', 'success');
+      onClose();
+    } catch (err) {
+      handleSnackbarOpen('Profil sa neuložil!', 'error');
+      console.log(err);
+    }
   };
 
   return (
     <>
-    {isLoading ? <Loading /> : ( userInfo &&
+    {userInfo &&
       <div>
       <Dialog open={open} onClose={onClose}>
         <DialogTitle>Úprava profilu</DialogTitle>
@@ -72,7 +78,7 @@ const ProfileEditModal = ({ open, onClose }) => {
         </DialogActions>
       </Dialog>
     </div>
-    )}
+    }
   </>
   );
 };
