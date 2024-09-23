@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { PriceOfferContext } from "../providers/price_offer_providers/PriceOfferProvider";
 
 const usePriceOfferCalculation = () => {
-    const { priceOfferDetails, setPriceOfferDetails } = useContext(PriceOfferContext);
+    const{ priceOfferDetails, setPriceOfferDetails } = useContext(PriceOfferContext); 
 
     const calculateTotal = (priceOfferDetails) => {
         return priceOfferDetails.items?.reduce(
@@ -32,9 +32,19 @@ const usePriceOfferCalculation = () => {
         }));
     };
 
+    const calculateTotalPriceForItem = (items) => {
+        const calculatedItems = items?.map(item => ({
+            ...item,
+            total: item.quantity * item.price,
+        }));
+    
+        return calculatedItems;
+    }
+
     return {
         handleEditSelectedPriceOfferItemsPrices,
         calculateTotal,
+        calculateTotalPriceForItem,
     };
 };
 

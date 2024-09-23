@@ -21,13 +21,12 @@ const PriceOffer = () => {
   const {
         handleSavePriceOfferDetails, 
         handleCustomerInputChange, 
-        handleItemsInputChange, 
         handleDeleteSelectedPriceOfferItems
       } = useUpdatePriceOfferDetails();
 
-  const { calculateTotal, handleEditSelectedPriceOfferItemsPrices } = usePriceOfferCalculation();
+  const { calculateTotal, handleEditSelectedPriceOfferItemsPrices, calculateTotalPriceForItem } = usePriceOfferCalculation();
 
-  const { priceOfferDetails, isLoading, error } = useContext(PriceOfferContext);
+  const { priceOfferDetails, isLoading, error, setPriceOfferDetails } = useContext(PriceOfferContext);
   const { userInfo, setUserInfo } = useContext(UserInfoContext);
 
   const [isRowSelected, setRowSelected] = useState(false);
@@ -51,6 +50,11 @@ const PriceOffer = () => {
     setBulkPriceEditModal(false);
   };
 
+  const [priceOfferItemsExpanded, setPriceOfferItemsExpanded] = useState(false);
+  const handleExpandPriceOfferItems = () => {
+    setPriceOfferItemsExpanded(!priceOfferItemsExpanded);
+  }
+
   return (
     <Box
       display="flex"
@@ -72,7 +76,7 @@ const PriceOffer = () => {
                     variant="outlined"
                     label="Meno"
                     name="name"
-                    value={priceOfferDetails.customer?.name}
+                    value={priceOfferDetails.customer?.name || ''}
                     onChange={handleCustomerInputChange}
                     sx={{ marginBottom: 2 }}
                 />
@@ -81,7 +85,7 @@ const PriceOffer = () => {
                     variant="outlined"
                     label="Mesto/Obec"
                     name="city" 
-                    value={priceOfferDetails.customer?.city}
+                    value={priceOfferDetails.customer?.city || ''}
                     onChange={handleCustomerInputChange}
                     sx={{ marginBottom: 2 }}
                 />
@@ -90,7 +94,7 @@ const PriceOffer = () => {
                     variant="outlined"
                     label="Adresa"
                     name="adress" 
-                    value={priceOfferDetails.customer?.adress}
+                    value={priceOfferDetails.customer?.adress || ''}
                     onChange={handleCustomerInputChange}
                     sx={{ marginBottom: 2 }}
                 />
@@ -99,7 +103,7 @@ const PriceOffer = () => {
                     variant="outlined"
                     label="PSČ"
                     name="zip" 
-                    value={priceOfferDetails.customer?.zip}
+                    value={priceOfferDetails.customer?.zip || ''}
                     onChange={handleCustomerInputChange}
                     sx={{ marginBottom: 2 }}
                 />
@@ -125,9 +129,10 @@ const PriceOffer = () => {
             </Box>
             <PriceOfferItems 
               priceOfferItems={priceOfferDetails.items} 
-              handleItemsInputChange={handleItemsInputChange} 
               toggleDeleteButton={toggleDeleteButton} 
               setSelectedItems={setSelectedItems}
+              setPriceOfferDetails={setPriceOfferDetails}
+              calculateTotalPriceForItem={calculateTotalPriceForItem}
             />
             <Divider sx={{ margin: '20px 0' }} />
             <Typography variant="h5">Spolu: {calculateTotal(priceOfferDetails)?.toFixed(2)} €</Typography>

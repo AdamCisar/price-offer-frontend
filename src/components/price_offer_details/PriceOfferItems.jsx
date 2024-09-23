@@ -1,22 +1,48 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
 
-const PriceOfferItems = ({ priceOfferItems, handleItemsInputChange, toggleDeleteButton, setSelectedItems }) => {
-
+const PriceOfferItems = ({ priceOfferItems, toggleDeleteButton, setSelectedItems, setPriceOfferDetails, calculateTotalPriceForItem }) => {
     const paginationModel = { page: 0, pageSize: 5 };
     const columns = [
         { field: 'id', headerName: 'ID', width: 70 },
-        { field: 'title', headerName: 'Názov', width: 130 },
-        { field: 'quantity', headerName: 'Množstvo', width: 130 },
-        { field: 'price', headerName: 'Cena', width: 130 },
+        { field: 'unit', headerName: 'Jednotka', width: 130 },
+        { field: 'title', headerName: 'Názov', width: 320 },
+        { field: 'quantity', headerName: 'Množstvo', width: 130, editable: true },
+        { field: 'price', headerName: 'Cena', width: 130, editable: true },
         { field: 'total', headerName: 'Celkom', width: 130 },
       ];
+
 
     const handleItemSelection = (ids) => {
       setSelectedItems(ids);
       toggleDeleteButton(ids);
     } 
+
+    const processRowUpdate = (newRow) => {
+      const updatedItems = updateRow(newRow); 
+      const calculatedItems = calculateTotalPriceForItem(updatedItems); 
+
+      setPriceOfferDetails(prevData => {
+        return {
+          ...prevData,
+          'items': calculatedItems
+        }
+      });
+
+      return calculatedItems.find(item => item.id === newRow.id);
+    }
+
+    const updateRow = (newRow) => {
+      const updatedItems = priceOfferItems.map((item) => {
+        if (item.id === newRow.id) {
+          return newRow;
+        }
+        return item;
+      });
+
+      return updatedItems;
+    }
 
     const localeText = {
       // Pagination
@@ -24,7 +50,6 @@ const PriceOfferItems = ({ priceOfferItems, handleItemsInputChange, toggleDelete
       noResultsOverlayLabel: 'Žiadne výsledky',
       errorOverlayDefaultLabel: 'Niečo sa pokazilo.',
       page: 'Strana',
-      
       // Column menu
       columnMenuLabel: 'Menu stĺpca',
       columnMenuShow: 'Zobraziť',
@@ -34,17 +59,27 @@ const PriceOfferItems = ({ priceOfferItems, handleItemsInputChange, toggleDelete
   };
 
   return (
-    <Paper sx={{ height: 400, width: '100%' }}>
+    <Paper sx={{ height: 'auto', width: '100%' }}>
     <DataGrid
+      checkboxSelection
+      disableColumnResize 
+      localeText={localeText}
+      autoHeight
+
       rows={priceOfferItems}
       columns={columns}
+
       initialState={{ pagination: { paginationModel } }}
-      pageSizeOptions={[5, 10]}
-      checkboxSelection
-      slotProps={{ pagination: { labelRowsPerPage: 'Riadkov na stránku' } }}
+      pageSizeOptions={[5, 10,  25, 50, 100]}
+      slotProps={{ pagination: {  
+                                  labelRowsPerPage: 'Riadkov na stránku' 
+                                } 
+                }}
+
       onRowSelectionModelChange={(ids) => handleItemSelection(ids)}
+      processRowUpdate={processRowUpdate}
+
       sx={{ border: 0 }}
-      localeText={localeText}
     />
   </Paper>
   );
