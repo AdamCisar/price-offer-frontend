@@ -9,23 +9,22 @@ const PriceOfferCards = () => {
     const { priceOffer, isLoading, error } = useContext(PriceOfferListContext);
 
     return (
-      <div style={{ padding: '10px', width: '100%' }}>
+        <div style={{ padding: '10px', width: '100%' }}>
           {isLoading ? (
-              <Loading />
+            <Loading />
+          ) : ( priceOffer && priceOffer.length > 0) ? (
+            <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+                {priceOffer?.map((item) => (
+                <PriceOfferSnapshot key={item.id} {...item} />
+                ))}
+                <AddPriceOfferButton />
+            </div>
           ) : (
-              priceOffer && priceOffer.length > 0 ? (
-                  <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-                      {priceOffer.map((item) => (
-                          <PriceOfferSnapshot key={item.id} {...item} />
-                      ))}
-                      <AddPriceOfferButton />
-                  </div>
-              ) : (
-                  <p>No price offers available.</p>
-              )
+                null
           )}
-      </div>
-  );
+        </div>
+      );
+      
 }
 
 export default PriceOfferCards

@@ -31,10 +31,12 @@ const PriceOfferSnapshot = ({ ...props }) => {
                           handleSelectClick(); 
                           handlePriceOfferDetails();
                         }} 
-                  isEditing={isEditing}>
+                  isEditing={isEditing}
+        sx={{ maxHeight: 320, minHeight: 320,}}
+    >
 
       {isEditing && <CircleIndicator selected={selected} />}
-      <CardActionArea sx={{ maxWidth: 200, minWidth: 200, maxHeight: 350, minHeight: 350, textAlign: 'center', padding: 2 }}>
+      <CardActionArea sx={{ maxWidth: 200, minWidth: 200, textAlign: 'center', padding: 2 }}>
         <CardMedia
           component="img"
           image="/invoice_thumb.png"
