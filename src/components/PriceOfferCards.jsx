@@ -9,7 +9,7 @@ const PriceOfferCards = () => {
     const { priceOffer, isLoading, error } = useContext(PriceOfferListContext);
 
     return (
-      <div style={{ padding: '10px' }}>
+      <div style={{ padding: '10px', width: '100%' }}>
           {isLoading ? (
               <Loading />
           ) : (

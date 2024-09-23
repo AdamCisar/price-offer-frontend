@@ -15,7 +15,7 @@ export const PencilEditProvider = ({ children }) => {
   };
   
   return (
-    <PencilEditContext.Provider value={{ isEditing, setIsEditing, handleSelectedPriceOfferCard, selectedCards }}>
+    <PencilEditContext.Provider value={{ isEditing, setIsEditing, handleSelectedPriceOfferCard, selectedCards, setSelectedCards }}>
       {children}
     </PencilEditContext.Provider>
   );

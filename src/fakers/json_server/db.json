@@ -42,16 +42,6 @@
   ],
   "price-offers": [
     {
-      "id": 2,
-      "title": "invoice2",
-      "price": 200
-    },
-    {
-      "id": 3,
-      "title": "invoice3",
-      "price": 300
-    },
-    {
       "id": 4,
       "title": "invoice4",
       "price": 400
@@ -158,24 +148,19 @@
       ]
     },
     {
-      "id": 6,
-      "title": "invoice6",
-      "price": 600
+      "title": "test2",
+      "description": "w",
+      "id": 6
     },
     {
-      "title": "Testovacia",
-      "description": "23",
+      "title": "wrq",
+      "description": "1",
       "id": 7
     },
     {
-      "title": "adww",
-      "description": "dw",
+      "title": "adwwd",
+      "description": "adw",
       "id": 8
-    },
-    {
-      "title": "awdwad",
-      "description": "daw",
-      "id": 9
     }
   ]
 }

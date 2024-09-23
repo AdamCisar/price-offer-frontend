@@ -22,6 +22,10 @@ export function PriceOfferListProvider({ children }) {
   const deleteFromPriceOfferList = async (idList) => {
     const deletedIds = await deletePriceOffer(idList);
 
+    if (!deletedIds || deletedIds.length === 0) {
+      return;
+    }
+
     for (let id of deletedIds) {
       setPriceOfferList(priceOfferList => 
           priceOfferList.filter((priceOffer) => priceOffer.id !== id)

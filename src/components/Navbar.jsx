@@ -24,13 +24,13 @@ const Navbar = ({isPencilWrapper}) => {
                     </Typography>
 
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                        <Button
+                        {/* <Button
                             component={Link}
                             to="/"
                             sx={{ my: 2, color: 'white', display: 'block' }}
                         >
                             Home
-                        </Button>
+                        </Button> */}
                         <Button
                             component={Link}
                             to="/cenove-ponuky"

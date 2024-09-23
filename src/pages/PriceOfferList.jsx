@@ -10,7 +10,7 @@ const PriceOfferList = () => {
         display="flex"
         justifyContent="center"
         alignItems="flex-start"
-        sx={{ backgroundColor: '#f5f5f5', minHeight: '100vh' }}
+        sx={{ backgroundColor: '#f5f5f5', minHeight: '100vh', width: '100%' }}
       >
         <PriceOfferCards />
       </Box>

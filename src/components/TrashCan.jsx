@@ -5,11 +5,16 @@ import { PencilEditContext } from '../providers/PencilEditProvider';
 import { PriceOfferListContext } from '../providers/PriceOfferListProvider';
 
 const TrashCan = () => {
-    const { selectedCards } = useContext(PencilEditContext);
+    const { selectedCards, setSelectedCards } = useContext(PencilEditContext);
     const { deleteFromPriceOfferList } = useContext(PriceOfferListContext);
 
   return (
-    <TrashBox className="trash-box" onClick={() => deleteFromPriceOfferList(selectedCards)}>
+    <TrashBox className="trash-box" 
+              onClick={() => {
+                        deleteFromPriceOfferList(selectedCards);
+                        setSelectedCards([]);
+                      }}
+    >
       <Trash className="trash" />
       <TrashTop className="trash-top" />
       <TrashBtm className="trash-btm">
