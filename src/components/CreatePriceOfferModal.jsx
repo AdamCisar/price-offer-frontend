@@ -14,7 +14,7 @@ const Title = styled(Typography)(({ theme }) => ({
     marginTop: 25,
 }));
 
-const CreatePriceOfferModal = ({ open, onClose }) => {
+const CreatePriceOfferModal = ({ open, onClose, inputTitleRef }) => {
     const { addToPriceOfferList } = useContext(PriceOfferListContext);
     const {
         handleSubmit,
@@ -38,6 +38,7 @@ const CreatePriceOfferModal = ({ open, onClose }) => {
                         name='title'
                         error={errors.titleError}
                         onChange={handleInputChange}
+                        inputRef={inputTitleRef}
                     />
                     <TextField
                         label="Popis"

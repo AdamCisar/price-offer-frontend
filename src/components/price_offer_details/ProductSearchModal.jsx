@@ -1,13 +1,7 @@
 import React, { useState } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button } from '@mui/material';
 
-const ProductSearchModal = ({ open, onClose }) => {
-
-    const [searchTerm, setSearchTerm] = useState('');
-
-    const handleChange = (event) => {
-        setSearchTerm(event.target.value);
-    };
+const ProductSearchModal = ({ open, onClose, inputSearchRef }) => {
 
     const handleSave = () => {
 
@@ -25,11 +19,10 @@ const ProductSearchModal = ({ open, onClose }) => {
         <TextField
             margin="dense"
             name="search"
-            value={searchTerm}
-            onChange={handleChange}
             fullWidth
             placeholder="Začnite písať..."
             variant="outlined"
+            inputRef={inputSearchRef}
         />
         </DialogContent>
         <DialogActions>

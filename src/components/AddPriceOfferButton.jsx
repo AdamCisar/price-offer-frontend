@@ -6,9 +6,13 @@ import CreatePriceOfferModal from './CreatePriceOfferModal';
 
 const AddPriceOfferButton = () => {
     const [modalOpen, setModalOpen] = useState(false);
+    const inputTitleRef = useRef(null);
 
     const handleAddClick = () => {
         setModalOpen(true);
+        setTimeout(() => {
+            inputTitleRef.current.focus();
+        });
     };
 
     const handleCloseModal = () => {
@@ -38,6 +42,7 @@ const AddPriceOfferButton = () => {
             <CreatePriceOfferModal
                 open={modalOpen}
                 onClose={handleCloseModal}
+                inputTitleRef={inputTitleRef}
             />
         </>
     );
