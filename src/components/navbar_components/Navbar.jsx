@@ -7,7 +7,10 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import { PencilWrapper } from './PencilWrapper';
-import ProfileEdit from './profile/ProfileEdit';
+import ResizeWindow from './ResizeWindow';
+import AppButtonModal from '../utilities/AppButtonModal';
+import ProfileEditModal from '../profile/ProfileEditModal';
+import PersonIcon from '@mui/icons-material/Person';
 
 const Navbar = ({isPencilWrapper}) => {
     return (
@@ -41,8 +44,17 @@ const Navbar = ({isPencilWrapper}) => {
                     </Box>
 
                     <div style={{gap: '10px', display: 'flex'}}>
+                        
                         {isPencilWrapper ? <PencilWrapper /> : null}
-                        <ProfileEdit />
+
+                        <AppButtonModal
+                            sx={{ fontSize: 30, cursor: 'pointer' }}
+                            title={''}
+                            Button={PersonIcon}
+                            ModalComponent={ProfileEditModal}
+                        />
+
+                        <ResizeWindow />  
                     </div>
 
                 </Toolbar>

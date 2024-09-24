@@ -8,15 +8,16 @@ import {
   Button,
   Divider,
 } from '@mui/material';
-import AddItemToPriceOfferButton from './AddItemToPriceOfferButton';
 import PriceOfferItems from './PriceOfferItems';
 import useUpdatePriceOfferDetails from '../../hooks/useUpdatePriceOfferDetails';
 import { PriceOfferContext } from '../../providers/price_offer_providers/PriceOfferProvider';
 import { UserInfoContext } from '../../providers/UserInfoProvider';
-import Loading from '../Loading';
+import Loading from '../utilities/Loading';
 import usePriceOfferCalculation from '../../hooks/usePriceOfferCalculation';
 import BulkPriceEditModal from './BulkPriceEditModal';
 import { SnackBarContext } from '../../providers/SnackBarProvider';
+import AppButtonModal from '../utilities/AppButtonModal';
+import ProductSearchModal from './ProductSearchModal';
 
 const PriceOffer = () => {
   const {
@@ -34,22 +35,12 @@ const PriceOffer = () => {
   const [isRowSelected, setRowSelected] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
 
-  const toggleDeleteButton = (ids) => {
+  const toggleSelectedRowButton = (ids) => {
     if (ids.length > 0) {
       setRowSelected(true);
     } else {
       setRowSelected(false);
     }
-  };
-
-  const [bulkPriceEditModal, setBulkPriceEditModal] = useState(false);
-
-  const openBulkPriceEditModal = () => {
-    setBulkPriceEditModal(true);
-  };
-
-  const closeBulkPriceEditModal = () => {
-    setBulkPriceEditModal(false);
   };
   
   return (
@@ -115,24 +106,35 @@ const PriceOffer = () => {
             </Box>
             <Divider sx={{ margin: '20px 0' }} />
             <Box display="flex" flexDirection="row" alignItems="center" gap={1} style={{ marginBottom: 5 }}>
-              <AddItemToPriceOfferButton />
+              <AppButtonModal 
+                styles={{ variant: 'contained', color: '' }}
+                title={"Pridať položku"} 
+                Button={Button}
+                ModalComponent={ProductSearchModal}
+              />
               {isRowSelected && 
               <>
-              <Button variant="contained" color="secondary" onClick={openBulkPriceEditModal} >Upraviť hromadne ceny</ Button>
-              <BulkPriceEditModal open={bulkPriceEditModal} onClose={closeBulkPriceEditModal} handleEditSelectedPriceOfferItemsPrices={handleEditSelectedPriceOfferItemsPrices} selectedItems={selectedItems} />
+              <AppButtonModal
+                styles={{ variant: 'contained', color: 'secondary' }}
+                title={"Upraviť hromadne ceny"} 
+                Button={Button}
+                ModalComponent={BulkPriceEditModal}
+                handleEditSelectedPriceOfferItemsPrices={handleEditSelectedPriceOfferItemsPrices} 
+                selectedItems={selectedItems}
+              />
               <Button variant="contained" color="error" onClick={() => handleDeleteSelectedPriceOfferItems(selectedItems)} >Vymazať</ Button>
               </>
               }
             </Box>
             <PriceOfferItems 
               priceOfferItems={priceOfferDetails.items} 
-              toggleDeleteButton={toggleDeleteButton} 
+              toggleSelectedRowButton={toggleSelectedRowButton} 
               setSelectedItems={setSelectedItems}
               setPriceOfferDetails={setPriceOfferDetails}
               calculateTotalPriceForItem={calculateTotalPriceForItem}
             />
             <Divider sx={{ margin: '20px 0' }} />
-            <Typography variant="h5">Spolu: {calculateTotal(priceOfferDetails)?.toFixed(2)} €</Typography>
+            <Typography variant="h5">Spolu: {calculateTotal(priceOfferDetails)?.round()} €</Typography>
           </CardContent>
           <CardContent>
             <Box display="flex" justifyContent="space-between" alignItems="center">

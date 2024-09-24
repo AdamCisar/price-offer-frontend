@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button } from '@mui/material';
 
-const BulkPriceEditModal = ({ open, onClose, handleEditSelectedPriceOfferItemsPrices, selectedItems }) => {
-    const [percent, setPercent] = useState(0);
+const BulkPriceEditModal = ({ open, onClose, handleEditSelectedPriceOfferItemsPrices, selectedItems, focusInputRef }) => {
+  const [percent, setPercent] = useState('');
 
-    const handleChange = (event) => {
-        setPercent(event.target.value);
-    };
+  const handleChange = (event) => {
+      if (isNaN(event.target.value) && event.target.value !== '-') {
+          setPercent(0);
+          return;
+      }
+
+      setPercent(event.target.value);
+  };
 
   return (
     <div>
@@ -25,6 +30,7 @@ const BulkPriceEditModal = ({ open, onClose, handleEditSelectedPriceOfferItemsPr
                 variant="outlined"
                 value={percent}
                 onChange={handleChange}
+                inputRef={focusInputRef}
             />
             <span style={{ marginLeft: '4px', lineHeight: 'normal' }}>%</span>
         </div>
@@ -35,6 +41,7 @@ const BulkPriceEditModal = ({ open, onClose, handleEditSelectedPriceOfferItemsPr
           </Button>
           <Button    onClick={() => {
                         handleEditSelectedPriceOfferItemsPrices(selectedItems, percent);
+                        setPercent('');
                         onClose();
                     }}  
             color="primary" >

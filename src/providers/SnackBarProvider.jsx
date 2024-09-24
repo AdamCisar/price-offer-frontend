@@ -1,5 +1,5 @@
 import React, { createContext, useRef, useState } from 'react';
-import CustomSnackbar from '../components/CustomSnackbar';
+import CustomSnackbar from '../components/utilities/CustomSnackbar';
 
 export const SnackBarContext = createContext();
 

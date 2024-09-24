@@ -1,9 +1,8 @@
 import React, { useContext } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, Typography } from '@mui/material';
 import { styled } from '@mui/system';
-import useSubmitPriceOffer from '../hooks/useSubmitPriceOffer';
-import Loading from './Loading';
-import { PriceOfferListContext } from '../providers/PriceOfferListProvider';
+import useSubmitPriceOffer from '../../hooks/useSubmitPriceOffer';
+import { PriceOfferListContext } from '../../providers/PriceOfferListProvider';
 
 const Title = styled(Typography)(({ theme }) => ({
     textAlign: 'center',
@@ -14,7 +13,7 @@ const Title = styled(Typography)(({ theme }) => ({
     marginTop: 25,
 }));
 
-const CreatePriceOfferModal = ({ open, onClose, inputTitleRef }) => {
+const CreatePriceOfferModal = ({ open, onClose, focusInputRef }) => {
     const { addToPriceOfferList } = useContext(PriceOfferListContext);
     const {
         handleSubmit,
@@ -38,7 +37,7 @@ const CreatePriceOfferModal = ({ open, onClose, inputTitleRef }) => {
                         name='title'
                         error={errors.titleError}
                         onChange={handleInputChange}
-                        inputRef={inputTitleRef}
+                        inputRef={focusInputRef}
                     />
                     <TextField
                         label="Popis"

@@ -1,6 +1,6 @@
 import EditIcon from '@mui/icons-material/Edit';
 import { useContext } from 'react';
-import { PencilEditContext } from '../providers/PencilEditProvider';
+import { PencilEditContext } from '../../providers/PencilEditProvider';
 
 const Pencil = () => {
     const { setIsEditing } = useContext(PencilEditContext);

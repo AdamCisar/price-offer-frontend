@@ -1,12 +1,13 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
-import Layout from './components/Layout';
+import Layout from './pages/Layout';
 import PriceOfferList from './pages/PriceOfferList';
 import PriceOfferListProviders from './providers/PriceOfferListProviders';
 import PriceOfferDetails from './pages/PriceOfferDetails';
 import Home from './pages/Home';
 import PriceOfferProviders from './providers/price_offer_providers/PriceOfferProviders';
 import GeneralAppProviders from './providers/GeneralAppProviders';
+import './components/utilities/RoundPrice';
 
 function App() {
   return (

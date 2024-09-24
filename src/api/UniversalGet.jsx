@@ -25,7 +25,7 @@ import {
    * 
    * @param {string} endpoint
    *  endpoint constant suffix
-   * @returns 
+   * @returns [data, isLoading, error] 
    */
   export const useUniversalGet = (endpoint, id) => {
     const { data, isLoading, error } = useQuery({

@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { PriceOfferContext } from "../providers/price_offer_providers/PriceOfferProvider";
-import Loading from "../components/Loading";
+import Loading from "../components/utilities/Loading";
 import PriceOffer from "../components/price_offer_details/PriceOffer";
 
 const PriceOfferDetails = () => {

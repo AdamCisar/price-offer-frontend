@@ -1,5 +1,5 @@
 import React from 'react';
-import PriceOfferCards from '../components/PriceOfferCards';
+import PriceOfferCards from '../components/price_offer_cards/PriceOfferCards';
 import {
     Box,
   } from '@mui/material';

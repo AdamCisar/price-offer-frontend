@@ -18,9 +18,11 @@ const usePriceOfferCalculation = () => {
         
         const updatedItems = priceOfferDetails.items.map((item) => {
             if (ids.includes(item.id)) {
+                item.price = (item.price * (1 + percentage / 100)).round(4);
                 return {
                     ...item,
-                    price: (item.price * (1 + percentage / 100)).toFixed(4),
+                    price: item.price,
+                    total: (item.quantity * item.price).round(4),
                 };
             }
             return item;
@@ -35,10 +37,14 @@ const usePriceOfferCalculation = () => {
     const calculateTotalPriceForItem = (items) => {
         const calculatedItems = items?.map(item => ({
             ...item,
-            total: item.quantity * item.price,
+            total: (item.quantity * item.price).round(4),
         }));
     
         return calculatedItems;
+    }
+
+    const roundPrice = (price) => {
+        return Math.round(price * 100) / 100;
     }
 
     return {

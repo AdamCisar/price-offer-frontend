@@ -1,5 +1,4 @@
 import React from 'react';
-import ProductTable from '../components/ProductTable';
 import { ProductsProvider } from '../providers/ProductsProvider';
 import {
     QueryClient,
@@ -13,7 +12,7 @@ const Home = () => {
         <div className="home">
             <QueryClientProvider client={queryClient}>
                 <ProductsProvider>
-                    <ProductTable />
+                    
                 </ProductsProvider>
             </QueryClientProvider>
         </div>  

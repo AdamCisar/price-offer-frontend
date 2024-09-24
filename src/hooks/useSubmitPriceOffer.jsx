@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useUniversalPost } from "../api/UniversalPost";
+import { SnackBarContext } from "../providers/SnackBarProvider";
 
 const useSubmitPriceOffer = (onClose, addToPriceOfferList) => {
     const initialState = {
@@ -11,6 +12,7 @@ const useSubmitPriceOffer = (onClose, addToPriceOfferList) => {
         }
       };
 
+    const { handleSnackbarOpen } = useContext(SnackBarContext);
     const [formData, setFormData] = useState(initialState);
     const [sendData, isLoading, error] = useUniversalPost("PRICE_OFFER");
 
@@ -48,10 +50,12 @@ const useSubmitPriceOffer = (onClose, addToPriceOfferList) => {
               description: formData.description,
             });
 
+            handleSnackbarOpen('Cenová ponuka bola vytvorená!', 'success');
             addToPriceOfferList(priceOffer);
             setFormData(initialState);
             onClose();
           } catch (err) {
+            handleSnackbarOpen('Cenovú ponuku sa nepodarilo vytvoriť!', 'error');
             console.log(err);
         }
     };

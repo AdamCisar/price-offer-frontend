@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
 
-const PriceOfferItems = ({ priceOfferItems, toggleDeleteButton, setSelectedItems, setPriceOfferDetails, calculateTotalPriceForItem }) => {
+const PriceOfferItems = ({ priceOfferItems, toggleSelectedRowButton, setSelectedItems, setPriceOfferDetails, calculateTotalPriceForItem }) => {
     const paginationModel = { page: 0, pageSize: 5 };
     const columns = [
         { field: 'id', headerName: 'ID', width: 70 },
@@ -16,7 +15,7 @@ const PriceOfferItems = ({ priceOfferItems, toggleDeleteButton, setSelectedItems
 
     const handleItemSelection = (ids) => {
       setSelectedItems(ids);
-      toggleDeleteButton(ids);
+      toggleSelectedRowButton(ids);
     } 
 
     const processRowUpdate = (newRow) => {
@@ -36,6 +35,7 @@ const PriceOfferItems = ({ priceOfferItems, toggleDeleteButton, setSelectedItems
     const updateRow = (newRow) => {
       const updatedItems = priceOfferItems.map((item) => {
         if (item.id === newRow.id) {
+          newRow.price = Number(newRow.price).round(4);
           return newRow;
         }
         return item;

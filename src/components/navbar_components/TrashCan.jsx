@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { Box } from '@mui/material';
 import { styled } from '@mui/system';
-import { PencilEditContext } from '../providers/PencilEditProvider';
-import { PriceOfferListContext } from '../providers/PriceOfferListProvider';
+import { PencilEditContext } from '../../providers/PencilEditProvider';
+import { PriceOfferListContext } from '../../providers/PriceOfferListProvider';
 
 const TrashCan = () => {
     const { selectedCards, setSelectedCards } = useContext(PencilEditContext);
