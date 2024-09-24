@@ -23,7 +23,15 @@ const CreatePriceOfferModal = ({ open, onClose, focusInputRef }) => {
     } = useSubmitPriceOffer(onClose, addToPriceOfferList);
 
     return (
-        <Dialog open={open} onClose={onClose} aria-labelledby="dialog-title" aria-describedby="dialog-description">
+        <Dialog aria-labelledby="dialog-title" aria-describedby="dialog-description"
+            open={open} 
+            onClose={onClose} 
+            onKeyUp={(e) => {
+                if (e.key === 'Enter') {
+                    handleSubmit();
+                }
+            }}
+        >
             <DialogTitle id="dialog-title">
                 Vytvorenie novej cenovej ponuky
             </DialogTitle>

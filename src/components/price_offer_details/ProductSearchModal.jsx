@@ -2,8 +2,8 @@ import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button } 
 
 const ProductSearchModal = ({ open, onClose, focusInputRef }) => {
 
-    const handleSave = () => {
-
+    const onSubmit = () => {
+        onClose();
     };
 
   return (
@@ -12,6 +12,12 @@ const ProductSearchModal = ({ open, onClose, focusInputRef }) => {
             PaperProps={{
                 style: { width: 500 }
             }} 
+
+            onKeyUp={(e) => {
+              if (e.key === 'Enter') {
+                onSubmit();
+              }
+            }}
         >
         <DialogTitle>Vyhľadať produkt</DialogTitle>
         <DialogContent>
@@ -28,7 +34,7 @@ const ProductSearchModal = ({ open, onClose, focusInputRef }) => {
           <Button onClick={onClose} color="secondary">
             Zatvoriť
           </Button>
-          <Button onClick={handleSave} color="primary">
+          <Button onClick={onSubmit} color="primary">
             Pridať
           </Button>
         </DialogActions>

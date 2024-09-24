@@ -21,8 +21,8 @@ const usePriceOfferCalculation = () => {
                 item.price = item.price * (1 + percentage / 100);
                 return {
                     ...item,
-                    price: item.price,
-                    total: item.quantity * item.price,
+                    price: (item.price).toFixed(4),
+                    total: (item.quantity * item.price).toFixed(4),
                 };
             }
             return item;
@@ -37,7 +37,7 @@ const usePriceOfferCalculation = () => {
     const calculateTotalPriceForItem = (items) => {
         const calculatedItems = items?.map(item => ({
             ...item,
-            total: item.quantity * item.price,
+            total: (item.quantity * item.price).toFixed(4),
         }));
     
         return calculatedItems;

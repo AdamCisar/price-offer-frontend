@@ -5,12 +5,21 @@ const BulkPriceEditModal = ({ open, onClose, handleEditSelectedPriceOfferItemsPr
   const [percent, setPercent] = useState('');
 
   const handleChange = (event) => {
-      if (isNaN(event.target.value) && event.target.value !== '-') {
-          setPercent(0);
+      let { value } = event.target;
+      value = value.replace(',', '.');
+
+      if (isNaN(value) && value !== '-') {
+          setPercent('');
           return;
       }
 
-      setPercent(event.target.value);
+      setPercent(value);
+  };
+
+  const onSubmit = () => {
+      handleEditSelectedPriceOfferItemsPrices(selectedItems, percent);
+      setPercent('');
+      onClose();
   };
 
   return (
@@ -19,6 +28,12 @@ const BulkPriceEditModal = ({ open, onClose, handleEditSelectedPriceOfferItemsPr
             PaperProps={{
                 style: { width: 500 }
             }} 
+
+            onKeyUp={(e) => {
+              if (e.key === 'Enter') {
+                onSubmit();
+              }
+            }}
         >
         <DialogTitle>Zadajte o koľko percent chcete upraviť ceny</DialogTitle>
         <DialogContent>
@@ -39,11 +54,8 @@ const BulkPriceEditModal = ({ open, onClose, handleEditSelectedPriceOfferItemsPr
           <Button onClick={onClose} color="secondary">
             Zatvoriť
           </Button>
-          <Button    onClick={() => {
-                        handleEditSelectedPriceOfferItemsPrices(selectedItems, percent);
-                        setPercent('');
-                        onClose();
-                    }}  
+          <Button 
+            onClick={onSubmit}  
             color="primary" >
             Upraviť
           </Button>

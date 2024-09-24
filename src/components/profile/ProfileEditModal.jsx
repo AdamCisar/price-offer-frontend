@@ -32,7 +32,15 @@ const ProfileEditModal = ({ open, onClose }) => {
     <>
     {userInfo &&
       <div>
-      <Dialog open={open} onClose={onClose}>
+      <Dialog 
+        open={open} 
+        onClose={onClose}
+        onKeyUp={(e) => {
+          if (e.key === 'Enter') {
+            handleSave();
+          }
+        }}
+      >
         <DialogTitle>Úprava profilu</DialogTitle>
         <DialogContent>
           <TextField

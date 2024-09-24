@@ -35,6 +35,8 @@ const PriceOfferItems = ({ priceOfferItems, toggleSelectedRowButton, setSelected
     const updateRow = (newRow) => {
       const updatedItems = priceOfferItems.map((item) => {
         if (item.id === newRow.id) {
+          newRow.price = newRow.price.toString().replace(',', '.');
+          newRow.quantity = newRow.quantity.toString().replace(',', '.');
           return newRow;
         }
         return item;
