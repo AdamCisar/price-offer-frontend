@@ -35,7 +35,6 @@ const PriceOfferItems = ({ priceOfferItems, toggleSelectedRowButton, setSelected
     const updateRow = (newRow) => {
       const updatedItems = priceOfferItems.map((item) => {
         if (item.id === newRow.id) {
-          newRow.price = Number(newRow.price).round(4);
           return newRow;
         }
         return item;
