@@ -1,6 +1,6 @@
 import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button } from '@mui/material';
 
-const ProductSearchModal = ({ open, onClose, focusInputRef }) => {
+const ItemSearchModal = ({ open, onClose, focusInputRef }) => {
 
     const onSubmit = () => {
         onClose();
@@ -43,4 +43,4 @@ const ProductSearchModal = ({ open, onClose, focusInputRef }) => {
   );
 };
 
-export default ProductSearchModal;
+export default ItemSearchModal;

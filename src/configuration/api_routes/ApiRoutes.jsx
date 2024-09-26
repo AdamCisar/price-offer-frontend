@@ -7,6 +7,7 @@ const ApiRoutes = {
     USER: `${API_BASE_URL}/users`,
 
     ITEM_SEARCH: `${API_BASE_URL}/items/search/:searchTerm`,
+    ITEM: `${API_BASE_URL}/items`,
     
     LOGIN: `${API_BASE_URL}/auth/login`,
     REGISTER: `${API_BASE_URL}/auth/register`,

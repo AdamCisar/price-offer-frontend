@@ -1,42 +1,23 @@
 import { useContext, useState } from "react";
 import { useUniversalPost } from "../api/UniversalPost";
 import { SnackBarContext } from "../providers/SnackBarProvider";
+import useValidate from "./useValidate";
+
+const initialState = {
+    title: "",
+    description: "",
+    errors: {
+        title: false,
+        description: false,
+    }
+};
 
 const useSubmitPriceOffer = (onClose, addToPriceOfferList) => {
-    const initialState = {
-        title: "",
-        description: "",
-        errors: {
-            titleError: false,
-            descriptionError: false,
-        }
-      };
-
-    const { handleSnackbarOpen } = useContext(SnackBarContext);
+    
     const [formData, setFormData] = useState(initialState);
+    const { handleSnackbarOpen } = useContext(SnackBarContext);
     const [sendData, isLoading, error] = useUniversalPost("PRICE_OFFER");
-
-    const validate = () => {
-        let isValid = true;
-        let errors = { ...formData.errors };
-
-        if (!formData.title) {
-            isValid = false;
-            errors.titleError = true;
-        }
-
-        if (!formData.description) {
-            isValid = false;
-            errors.descriptionError = true;
-        }
-
-        setFormData({
-            ...formData,
-            errors
-        });
-
-        return isValid;
-    }
+    const { validate, handleInputChange, errors } = useValidate(onClose, addToPriceOfferList, initialState, setFormData, formData);
 
     const handleSubmit = async () => {
         
@@ -58,18 +39,6 @@ const useSubmitPriceOffer = (onClose, addToPriceOfferList) => {
             handleSnackbarOpen('Cenovú ponuku sa nepodarilo vytvoriť!', 'error');
             console.log(err);
         }
-    };
-
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({
-          ...formData,
-          [name]: value,
-          errors: {
-            ...formData.errors,
-            [`${name}Error`]: false,
-          },
-        });
     };
 
     return {

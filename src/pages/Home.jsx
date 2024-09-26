@@ -1,4 +1,3 @@
-import React from 'react';
 import { ProductsProvider } from '../providers/ProductsProvider';
 import {
     QueryClient,
@@ -12,7 +11,7 @@ const Home = () => {
         <div className="home">
             <QueryClientProvider client={queryClient}>
                 <ProductsProvider>
-                    
+                    Home
                 </ProductsProvider>
             </QueryClientProvider>
         </div>  

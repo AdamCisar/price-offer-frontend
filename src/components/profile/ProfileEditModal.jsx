@@ -1,9 +1,17 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button } from '@mui/material';
 import { UserInfoContext } from '../../providers/UserInfoProvider';
 import { useUniversalPost } from '../../api/UniversalPost';
 import { SnackBarContext } from '../../providers/SnackBarProvider';
 
+/**
+ * ProfileEditModal Component
+ *
+ * @param {Object} props - Component props
+ * @param {boolean} props.open - Determines if the modal is open or closed
+ * @param {function} props.onClose - Function to call when the modal should close
+ * @returns {JSX.Element} The rendered modal component
+ */
 const ProfileEditModal = ({ open, onClose }) => {
   const { userInfo, setUserInfo, isLoading, error } = useContext(UserInfoContext);
   const { handleSnackbarOpen } = useContext(SnackBarContext);
@@ -63,7 +71,7 @@ const ProfileEditModal = ({ open, onClose }) => {
             margin="dense"
             label="Adresa"
             name="address"
-            value={userInfo.adress}
+            value={userInfo.address}
             onChange={handleChange}
             fullWidth
           />

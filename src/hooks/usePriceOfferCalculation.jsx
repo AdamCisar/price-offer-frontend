@@ -1,14 +1,18 @@
 import { useContext } from "react";
 import { PriceOfferContext } from "../providers/price_offer_providers/PriceOfferProvider";
 
+const itemRounding = 3;
+
 const usePriceOfferCalculation = () => {
     const{ priceOfferDetails, setPriceOfferDetails } = useContext(PriceOfferContext); 
 
-    const calculateTotal = (priceOfferDetails) => {
-        return priceOfferDetails.items?.reduce(
+    const calculateTotal = (items) => {
+        let total = items.reduce(
           (total, item) => total + item.quantity * item.price,
           0
         );
+
+        return total.round();
       };
 
     const handleEditSelectedPriceOfferItemsPrices = (ids, percentage) => {
@@ -21,26 +25,29 @@ const usePriceOfferCalculation = () => {
                 item.price = item.price * (1 + percentage / 100);
                 return {
                     ...item,
-                    price: (item.price).toFixed(4),
-                    total: (item.quantity * item.price).toFixed(4),
+                    price: (item.price).round(itemRounding),
+                    total: (item.quantity * item.price).round(itemRounding),
                 };
             }
+
             return item;
         })
 
+        const total = calculateTotal(updatedItems);
         setPriceOfferDetails((prevData) => ({
             ...prevData,
             items: updatedItems,
+            "total": total
         }));
     };
 
-    const calculateTotalPriceForItem = (items) => {
-        const calculatedItems = items?.map(item => ({
-            ...item,
-            total: (item.quantity * item.price).toFixed(4),
-        }));
-    
-        return calculatedItems;
+    const calculateTotalPriceForItem = (item) => {
+        if (!item) {
+            return;
+        }
+
+        item.total = (item.quantity * item.price).round(itemRounding);
+        return item;
     }
 
     return {

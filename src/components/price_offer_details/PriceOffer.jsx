@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Box,
   Card,
@@ -17,7 +17,11 @@ import usePriceOfferCalculation from '../../hooks/usePriceOfferCalculation';
 import BulkPriceEditModal from './BulkPriceEditModal';
 import { SnackBarContext } from '../../providers/SnackBarProvider';
 import AppButtonModal from '../utilities/AppButtonModal';
-import ProductSearchModal from './ProductSearchModal';
+import ItemSearchModal from './ItemSearchModal';
+import ItemCreateModal from './ItemCreateModal';
+import PdfPreviewer from '../price_offer_pdf/PdfPreviewer';
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import PdfDocument from '../price_offer_pdf/PdfDocument';
 
 const PriceOffer = () => {
   const {
@@ -42,7 +46,7 @@ const PriceOffer = () => {
       setRowSelected(false);
     }
   };
-  
+
   return (
     <Box
       display="flex"
@@ -81,8 +85,8 @@ const PriceOffer = () => {
                     fullWidth
                     variant="outlined"
                     label="Adresa"
-                    name="adress" 
-                    value={priceOfferDetails.customer?.adress || ''}
+                    name="address" 
+                    value={priceOfferDetails.customer?.address || ''}
                     onChange={handleCustomerInputChange}
                     sx={{ marginBottom: 2 }}
                 />
@@ -100,30 +104,38 @@ const PriceOffer = () => {
                 <div style={{ width: '40%' }}>
                   <Typography variant="h6" sx={{ display: 'flex' ,justifyContent: 'center' }}>{userInfo?.name}</Typography>
                   <Typography variant="h6" sx={{ display: 'flex' ,justifyContent: 'center' }}>{userInfo?.city}</Typography>
-                  <Typography variant="h6" sx={{ display: 'flex' ,justifyContent: 'center' }}>{userInfo?.adress}</Typography>
+                  <Typography variant="h6" sx={{ display: 'flex' ,justifyContent: 'center' }}>{userInfo?.address}</Typography>
                   <Typography variant="h6" sx={{ display: 'flex' ,justifyContent: 'center' }}>{userInfo?.zip}</Typography>
                 </div>
             </Box>
             <Divider sx={{ margin: '20px 0' }} />
-            <Box display="flex" flexDirection="row" alignItems="center" gap={1} style={{ marginBottom: 5 }}>
-              <AppButtonModal 
-                styles={{ variant: 'contained', color: '' }}
-                title={"Pridať položku"} 
-                Button={Button}
-                ModalComponent={ProductSearchModal}
-              />
+            <Box display="flex" justifyContent={'space-between'} gap={1} style={{ marginBottom: 5 }}>
+              <Box display="flex" gap={1}>
+                <AppButtonModal 
+                  styles={{ variant: 'contained', color: '' }}
+                  title={"Pridať položku"} 
+                  Button={Button}
+                  ModalComponent={ItemSearchModal}
+                />
+                <AppButtonModal 
+                  styles={{ variant: 'contained', color: '' }}
+                  title={"Vytvoriť položku"} 
+                  Button={Button}
+                  ModalComponent={ItemCreateModal}
+                />
+              </Box>
               {isRowSelected && 
-              <>
-              <AppButtonModal
-                styles={{ variant: 'contained', color: 'secondary' }}
-                title={"Upraviť hromadne ceny"} 
-                Button={Button}
-                ModalComponent={BulkPriceEditModal}
-                handleEditSelectedPriceOfferItemsPrices={handleEditSelectedPriceOfferItemsPrices} 
-                selectedItems={selectedItems}
-              />
-              <Button variant="contained" color="error" onClick={() => handleDeleteSelectedPriceOfferItems(selectedItems)} >Vymazať</ Button>
-              </>
+              <Box display="flex" gap={1}>
+                <AppButtonModal
+                  styles={{ variant: 'contained', color: 'secondary' }}
+                  title={"Upraviť hromadne ceny"} 
+                  Button={Button}
+                  ModalComponent={BulkPriceEditModal}
+                  handleEditSelectedPriceOfferItemsPrices={handleEditSelectedPriceOfferItemsPrices} 
+                  selectedItems={selectedItems}
+                />
+                <Button variant="contained" color="error" onClick={() => handleDeleteSelectedPriceOfferItems(selectedItems)} >Vymazať</ Button>
+              </Box>
               }
             </Box>
             <PriceOfferItems 
@@ -132,19 +144,42 @@ const PriceOffer = () => {
               setSelectedItems={setSelectedItems}
               setPriceOfferDetails={setPriceOfferDetails}
               calculateTotalPriceForItem={calculateTotalPriceForItem}
+              calculateTotal={calculateTotal}
             />
             <Divider sx={{ margin: '20px 0' }} />
-            <Typography variant="h5">Spolu: {calculateTotal(priceOfferDetails)?.round()} €</Typography>
+            <Typography variant="h5">Spolu: {priceOfferDetails.total} €</Typography>
           </CardContent>
           <CardContent>
             <Box display="flex" justifyContent="space-between" alignItems="center">
-              <Box>
-                <Button variant="outlined" color="primary" sx={{ marginRight: 1 }}>
-                  Ukážka
-                </Button>
-                <Button variant="outlined" color="secondary">
-                  Stiahnuť PDF
-                </Button>
+              <Box display="flex">
+                <AppButtonModal
+                  styles={{ variant:"outlined", color:"primary" }}
+                  sx={{ marginRight: 1 }}
+                  title={"Ukážka"} 
+                  Button={Button}
+                  ModalComponent={PdfPreviewer}
+                  priceOfferDetails={priceOfferDetails}
+                  userInfo={userInfo}
+                />
+                {priceOfferDetails && priceOfferDetails.items.length > 0 && (
+                  <PDFDownloadLink
+                    document={
+                          <PdfDocument 
+                          priceOfferDetails={priceOfferDetails} 
+                          userInfo={userInfo} />} 
+                          fileName={"cenova_ponuka_"+ priceOfferDetails.customer.name + ".pdf"}> 
+                       {({ blob, url, loading, error }) => (
+                          <Button
+                              variant="outlined"
+                              color="secondary"
+                              disabled={loading}
+                              style={{ width: '100%' }} 
+                          >
+                              {'Stiahnuť PDF'}
+                          </Button>
+                      )}
+                  </PDFDownloadLink>
+                )}
               </Box>
               <Button variant="contained" color="primary" onClick={() => handleSavePriceOfferDetails(handleSnackbarOpen)}>
                 Uložiť

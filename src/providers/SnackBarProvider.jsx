@@ -1,18 +1,20 @@
-import React, { createContext, useRef, useState } from 'react';
+import { createContext, useRef, useState } from 'react';
 import CustomSnackbar from '../components/utilities/CustomSnackbar';
 
-export const SnackBarContext = createContext();
 
+export const SnackBarContext = createContext(null);
+
+/**
+ * 
+ * @param {Object} props
+ * @param {JSX.Element} props.children 
+ * @returns {JSX.Element}
+ */
 export const SnackBarProvider = ({ children }) => {
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const snackbarMessage = useRef('');
     const snackbarSeverity = useRef('');
   
-    /**
-     * 
-     * @param {string} message Co sa ma zobrazit
-     * @param {string} severityType akej farby ma by sprava|typ (success|error|warning|info)
-     */
     const handleSnackbarOpen = (message, severityType) => {
       snackbarMessage.current = message;
       snackbarSeverity.current = severityType;

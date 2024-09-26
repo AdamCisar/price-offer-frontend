@@ -10,7 +10,7 @@ const useDeletePriceOffer = () => {
         if (idList.length === 0) {
             return;
         }
-      console.log(idList)
+        
         try {
             const priceOfferIdList = await deleteData(idList);
             handleSnackbarOpen('Označené cenové ponuky boli vymazané!', 'success');
