@@ -55,7 +55,7 @@ const PriceOffer = () => {
       padding={4}
       sx={{ backgroundColor: '#f5f5f5', minHeight: '100vh' }}
     >
-      {isLoading ? <Loading /> : ( priceOfferDetails &&
+      {isLoading ? <Loading /> : ( priceOfferDetails && userInfo &&
         <Card sx={{ width: '100%', maxWidth: 1000 }}>
           <CardContent>
             <Typography variant="h4" gutterBottom sx={{ marginBottom: 5 }}>
@@ -161,7 +161,7 @@ const PriceOffer = () => {
                   priceOfferDetails={priceOfferDetails}
                   userInfo={userInfo}
                 />
-                {priceOfferDetails && priceOfferDetails.items.length > 0 && (
+                {priceOfferDetails && priceOfferDetails.items && (
                   <PDFDownloadLink
                     document={
                           <PdfDocument 

@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Layout from './pages/Layout';
 import PriceOfferList from './pages/PriceOfferList';
@@ -14,7 +14,8 @@ function App() {
     <GeneralAppProviders>
     <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Layout children={<Home />} />} />
+          {/* <Route path="/" redirect element={<Layout children={<Home />} />} /> */}
+          <Route path="/" element={<Navigate to="/cenove-ponuky" replace />} />
           <Route path="/cenove-ponuky" >
             <Route index element={
                                   <PriceOfferListProviders><Layout children={<PriceOfferList />} isPencilWrapper={true} />
