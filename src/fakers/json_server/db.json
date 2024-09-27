@@ -88,10 +88,10 @@
       "price": 500,
       "total": 4447,
       "customer": {
-        "name": "adam",
-        "address": "13",
-        "city": "klcov",
-        "zip": "312231"
+        "name": "Milan Hruška",
+        "address": "56/23",
+        "city": "Spišská nová ves",
+        "zip": "05368"
       },
       "items": [
         {

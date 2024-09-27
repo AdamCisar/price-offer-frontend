@@ -1,18 +1,21 @@
 import { Document, Page, Text, View, StyleSheet, Font, Image } from '@react-pdf/renderer';
-
-const logo = require('../../assets/cisar_logo.png');
+import logo from '../../assets/cisar_logo.png';
+import NotoSans from '../../assets/fonts/NotoSans-Regular.ttf';
 
 Font.register({
-    family: "Noto sans",
+    family: 'NotoSans',
     fonts: [
-        {src: "http://fonts.gstatic.com/s/notosans/v6/LeFlHvsZjXu2c3ZRgBq9nKCWcynf_cDxXwCLxiixG1c.ttf"},
+        {
+            src: NotoSans, 
+        }
     ]
 });
 
 const styles = StyleSheet.create({
     page: {
         padding: 20,
-        fontFamily: 'Noto sans',
+        fontFamily: 'NotoSans',
+        display: 'flex',
     },
     header: {
         display: 'flex',
@@ -23,7 +26,6 @@ const styles = StyleSheet.create({
     subHeader: {
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'space-between'
     },
     footer: {
         flexDirection: 'row', 
@@ -56,12 +58,15 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     customerInfo: {
-        width: '50%',
-        float: 'left',
+        width: '35%',
+        padding: 5,
+        border: '1px 1px 1px 1px solid black',
+        marginBottom: 10,
     },
     userInfo: {
-        float: 'right',
-        textAlign: 'right',
+        width: '35%',
+        padding: 5,
+        border: '1px 1px 1px 1px solid black',
     },
     itemsContainer: {
         border: '1px 1px 1px 1px solid black',
@@ -134,17 +139,17 @@ const styles = StyleSheet.create({
     },
 });
 
-
 const PdfDocument = ({ priceOfferDetails, userInfo }) => {
   return (
-    <Document>
-        <Page size="A4" style={styles.page}>
-            <View style={styles.header}>
-                <Text style={styles.title}>Cenová ponuka</Text>
-                <Image src={logo} style={styles.image} />
-            </View>
+    <>
+    {priceOfferDetails && userInfo &&
+        <Document title={`cenova_ponuka_${priceOfferDetails.customer.name}`}>
+            <Page size="A4" style={styles.page}>
+                <View style={styles.header}>
+                    <Text style={styles.title}>Cenová ponuka</Text>
+                    <Image src={logo} style={styles.image} alt="cisar_logo" />
+                </View>
 
-            <View style={styles.subHeader}>
                 <View style={styles.customerInfo}>
                     <Text style={styles.subTitle}>Zákazník:</Text>
                     <Text style={styles.text}>Meno: {priceOfferDetails.customer.name}</Text>
@@ -152,44 +157,46 @@ const PdfDocument = ({ priceOfferDetails, userInfo }) => {
                     <Text style={styles.text}>PSČ: {priceOfferDetails.customer.zip}</Text>
                 </View>
                 <View style={styles.userInfo}>
-                    <Text style={[styles.subTitle, { textAlign: 'center'}]}>Spracoval:</Text>
+                    <Text style={styles.subTitle}>Spracoval:</Text>
                     <Text style={styles.text}>{userInfo.name}</Text>
-                    <Text style={styles.text}>{priceOfferDetails.customer.city} {userInfo.address}</Text>
+                    <Text style={styles.text}>{userInfo.city} {userInfo.address}</Text>
                     <Text style={styles.text}>{userInfo.zip}</Text>
                 </View>
-            </View>
 
-            <View style={styles.section}>
-                <Text style={styles.space}> </Text>
-                <Text style={styles.text}>Vypracované: {new Date().toLocaleDateString()}</Text>
-            </View>
-
-            <View style={styles.table}>
-                <View style={[styles.tableRow, styles.tableHeader]}>
-                    <Text style={[styles.tableColTitle, { flex: 2, textAlign: 'start' }]}>Názov položky</Text>
-                    <Text style={[styles.tableCol, { flex: 1 }]}>Jednotka</Text>
-                    <Text style={[styles.tableCol, { flex: 1 }]}>Množstvo</Text>
-                    <Text style={[styles.tableCol, { flex: 1 }]}>Cena</Text>
-                    <Text style={[styles.tableCol, { flex: 1 }]}>Celkom</Text>
+                <View style={[styles.section, { flexDirection: 'row', justifyContent: 'flex-end'}]}>
+                    <Text style={[styles.text, { textAlign: 'right' }]}>
+                        Vypracované dňa: {new Date().toLocaleDateString()}
+                    </Text>
                 </View>
                 
-                {priceOfferDetails.items.map((item, index) => (
-                    <View key={index} style={styles.tableRow}>
-                        <Text style={[styles.tableColTitle, { flex: 2 }]}>{item.title}</Text>
-                        <Text style={[styles.tableCol, { flex: 1 }]}>{item.unit}</Text>
-                        <Text style={[styles.tableCol, { flex: 1 }]}>{item.quantity}</Text>
-                        <Text style={[styles.tableCol, { flex: 1 }]}>{String(item.price).replace('.', ',')}</Text>
-                        <Text style={[styles.tableCol, { flex: 1 }]}>{String(item.total).replace('.', ',')}</Text>
+                <View style={styles.table}>
+                    <View style={[styles.tableRow, styles.tableHeader]}>
+                        <Text style={[styles.tableColTitle, { flex: 2, textAlign: 'start' }]}>Názov položky</Text>
+                        <Text style={[styles.tableCol, { flex: 1 }]}>Jednotka</Text>
+                        <Text style={[styles.tableCol, { flex: 1 }]}>Množstvo</Text>
+                        <Text style={[styles.tableCol, { flex: 1 }]}>Cena</Text>
+                        <Text style={[styles.tableCol, { flex: 1 }]}>Celkom</Text>
                     </View>
-                ))}
-            </View>
+                    
+                    {priceOfferDetails.items.map((item, index) => (
+                        <View key={index} style={styles.tableRow}>
+                            <Text style={[styles.tableColTitle, { flex: 2 }]}>{item.title}</Text>
+                            <Text style={[styles.tableCol, { flex: 1 }]}>{item.unit}</Text>
+                            <Text style={[styles.tableCol, { flex: 1 }]}>{item.quantity}</Text>
+                            <Text style={[styles.tableCol, { flex: 1 }]}>{String(item.price).replace('.', ',')}</Text>
+                            <Text style={[styles.tableCol, { flex: 1 }]}>{String(item.total).replace('.', ',')}</Text>
+                        </View>
+                    ))}
+                </View>
 
-            <View style={styles.footer}>
-                <Text style={styles.totalPriceCell}>Spolu: </Text>
-                <Text style={[{width: 'auto'}, styles.totalPriceCell]}>{String(priceOfferDetails.total).replace('.', ',')} €</Text>
-            </View>
-        </Page>
-    </Document>
+                <View style={styles.footer}>
+                    <Text style={styles.totalPriceCell}>Spolu: </Text>
+                    <Text style={[{width: 'auto'}, styles.totalPriceCell]}>{String(priceOfferDetails.total).replace('.', ',')} €</Text>
+                </View>
+            </Page>
+        </Document>
+    }
+    </>
   );
 };
 

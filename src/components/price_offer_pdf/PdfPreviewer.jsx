@@ -9,7 +9,7 @@ const PdfPreviewer = ({ open, onClose, priceOfferDetails, userInfo }) => {
                 style: { width: '100%', height: '100%' }
             }} 
         >   
-            <PDFViewer style={{ width: '100%', height: '100%' }} >
+            <PDFViewer style={{ width: '100%', height: '100%' }} showToolbar={false}>
                 <PdfDocument priceOfferDetails={priceOfferDetails} userInfo={userInfo} />
             </PDFViewer> 
         </Dialog>
