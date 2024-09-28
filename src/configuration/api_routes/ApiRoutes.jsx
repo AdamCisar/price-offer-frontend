@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.REACT_APP_API_URL;
+const API_BASE_URL = process.env.REACT_APP_API_URL + '/api';
 
 const ApiRoutes = {
     PRICE_OFFER: `${API_BASE_URL}/price-offers`,
@@ -6,7 +6,7 @@ const ApiRoutes = {
 
     USER: `${API_BASE_URL}/users`,
 
-    ITEM_SEARCH: `${API_BASE_URL}/items/search/:searchTerm`,
+    ITEM_SEARCH: `${API_BASE_URL}/items/search`,
     ITEM: `${API_BASE_URL}/items`,
     
     LOGIN: `${API_BASE_URL}/auth/login`,

@@ -1,7 +1,9 @@
 import { useContext, useState } from "react";
 import { useUniversalPost } from "../api/UniversalPost";
 import { SnackBarContext } from "../providers/SnackBarProvider";
+import { PriceOfferContext } from "../providers/price_offer_providers/PriceOfferProvider";
 import useValidate from "./useValidate";
+
 
 const initialState = {
     title: "",
@@ -13,10 +15,11 @@ const initialState = {
     }
 };
 
-const useSubmitPriceOfferItem = (onClose, setPriceOfferDetails) => {
+const useSubmitPriceOfferItem = (onClose) => {
     
     const [formData, setFormData] = useState(initialState);
     const { handleSnackbarOpen } = useContext(SnackBarContext);
+    const { priceOfferDetails, setPriceOfferDetails } = useContext(PriceOfferContext);
     const [sendData, isLoading, error] = useUniversalPost("ITEM");
     const { validate, handleInputChange, errors } = useValidate(onClose, setPriceOfferDetails, initialState, setFormData, formData);
 
@@ -33,20 +36,9 @@ const useSubmitPriceOfferItem = (onClose, setPriceOfferDetails) => {
               price: formData.price,
             });
 
-            if (!priceOfferItem.quantity) {
-                priceOfferItem.quantity = 1;
-            }
-
-            if (!priceOfferItem.total) {
-                priceOfferItem.total = priceOfferItem.price;
-            }
-
-            handleSnackbarOpen('Položka bola vytvorená!', 'success');
-            setPriceOfferDetails((prevData) => ({
-              ...prevData,
-              'items': [...prevData['items'], priceOfferItem],
-            }));
+            addPriceOfferItemToContext(priceOfferItem);
             setFormData(initialState);
+            handleSnackbarOpen('Položka bola vytvorená!', 'success');
             onClose();
           } catch (err) {
             handleSnackbarOpen('Položku sa nepodarilo vytvoriť!', 'error');
@@ -54,9 +46,34 @@ const useSubmitPriceOfferItem = (onClose, setPriceOfferDetails) => {
         }
     };
 
+    const addPriceOfferItemToContext = (priceOfferItem) => {
+
+        if (!priceOfferItem) {
+            return false;
+        }
+
+        if (priceOfferDetails.items?.find((item) => item.id === priceOfferItem.id)) {
+            return false;
+        }
+
+        if (!priceOfferItem.quantity) {
+            priceOfferItem.quantity = 1;
+        }
+
+        if (!priceOfferItem.total) {
+            priceOfferItem.total = priceOfferItem.price;
+        }
+
+        setPriceOfferDetails((prevData) => ({
+          ...prevData,
+          'items': [...(prevData?.items || []), priceOfferItem],
+        }));
+    };
+
     return {
         handleSubmit,
         handleInputChange,
+        addPriceOfferItemToContext,
         errors: formData.errors,
         isLoading
     };

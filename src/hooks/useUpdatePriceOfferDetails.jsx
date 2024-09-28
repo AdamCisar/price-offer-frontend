@@ -10,7 +10,7 @@ const useUpdatePriceOfferDetails = () => {
 
     const handleSavePriceOfferDetails = async (handleSnackbarOpen) => {
         try {
-            await sendData(priceOfferDetails, priceOfferDetails.id);
+            await sendData(priceOfferDetails);
             handleSnackbarOpen('Cenová ponuka bola uložená!', 'success');
           } catch (err) {
             handleSnackbarOpen('Cenová ponuka sa neuložila!', 'error');

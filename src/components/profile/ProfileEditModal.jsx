@@ -25,9 +25,9 @@ const ProfileEditModal = ({ open, onClose }) => {
     });
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     try {
-      sendData(userInfo, userInfo.id);
+      await sendData(userInfo);
       handleSnackbarOpen('Profil bol uložený!', 'success');
       onClose();
     } catch (err) {

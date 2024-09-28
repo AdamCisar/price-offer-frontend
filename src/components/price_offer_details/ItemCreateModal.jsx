@@ -1,6 +1,4 @@
 import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button, Box, Divider } from '@mui/material';
-import { PriceOfferContext } from '../../providers/price_offer_providers/PriceOfferProvider';
-import { useContext } from 'react';
 import useSubmitPriceOfferItem from '../../hooks/useSubmitPriceOfferItem';
 
 const textFieldStyle = {
@@ -8,13 +6,12 @@ const textFieldStyle = {
 }
 
 const ItemCreateModal = ({ open, onClose, focusInputRef }) => {
-  const { setPriceOfferDetails } = useContext(PriceOfferContext);
     const {
         handleSubmit,
         handleInputChange,
         errors,
         isLoading,
-    } = useSubmitPriceOfferItem(onClose, setPriceOfferDetails);
+    } = useSubmitPriceOfferItem(onClose);
 
     const onSubmit = () => {
         handleSubmit();

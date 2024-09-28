@@ -13,38 +13,40 @@ const PriceOfferCards = () => {
 
     return (
         <div style={{ padding: '10px', width: '100%' }}>
-          {isLoading ? (
-            <Loading />
-          ) : ( priceOffer && priceOffer.length > 0) ? (
-            <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-                {priceOffer?.map((item) => (
-                <PriceOfferSnapshot key={item.id} {...item} />
-                ))}
+            {isLoading ? (
+                <Loading />
+            ) : (
+                <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+                    {priceOffer && priceOffer.length > 0 ? (
+                        priceOffer.map((item) => (
+                            <PriceOfferSnapshot key={item.id} {...item} />
+                        ))
+                    ) : (
+                        null
+                    )}
 
-                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: 200, minHeight: 350 }}>
-                  <AppButtonModal
-                    Button={IconButton}
-                    ModalComponent={CreatePriceOfferModal}
-                    InnerComponent={AddIcon}
-                    sx={{
-                      width: 106,
-                      height: 106,
-                      borderRadius: '100%',
-                      backgroundColor: 'darkgrey', 
-                      color: 'white',
-                      '&:hover': {
-                      backgroundColor: 'grey',
-                      },
-                    }}
-                  />
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: 200, minHeight: 350 }}>
+                        <AppButtonModal
+                            Button={IconButton}
+                            ModalComponent={CreatePriceOfferModal}
+                            InnerComponent={AddIcon}
+                            sx={{
+                                width: 106,
+                                height: 106,
+                                borderRadius: '100%',
+                                backgroundColor: 'darkgrey',
+                                color: 'white',
+                                '&:hover': {
+                                    backgroundColor: 'grey',
+                                },
+                            }}
+                        />
+                    </div>
                 </div>
-
-            </div>
-          ) : (
-                null
-          )}
+            )}
         </div>
-      );
+  );
+  
       
 }
 

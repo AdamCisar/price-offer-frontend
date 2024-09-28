@@ -143,7 +143,7 @@ const PdfDocument = ({ priceOfferDetails, userInfo }) => {
   return (
     <>
     {priceOfferDetails && userInfo &&
-        <Document title={`cenova_ponuka_${priceOfferDetails.customer.name}`}>
+        <Document title={`cenova_ponuka_${priceOfferDetails.customer?.name}`}>
             <Page size="A4" style={styles.page}>
                 <View style={styles.header}>
                     <Text style={styles.title}>Cenová ponuka</Text>
@@ -152,9 +152,9 @@ const PdfDocument = ({ priceOfferDetails, userInfo }) => {
 
                 <View style={styles.customerInfo}>
                     <Text style={styles.subTitle}>Zákazník:</Text>
-                    <Text style={styles.text}>Meno: {priceOfferDetails.customer.name}</Text>
-                    <Text style={styles.text}>Adresa: {priceOfferDetails.customer.city} {priceOfferDetails.customer.address}</Text>
-                    <Text style={styles.text}>PSČ: {priceOfferDetails.customer.zip}</Text>
+                    <Text style={styles.text}>Meno: {priceOfferDetails.customer?.name}</Text>
+                    <Text style={styles.text}>Adresa: {priceOfferDetails.customer?.city} {priceOfferDetails.customer?.address}</Text>
+                    <Text style={styles.text}>PSČ: {priceOfferDetails.customer?.zip}</Text>
                 </View>
                 <View style={styles.userInfo}>
                     <Text style={styles.subTitle}>Spracoval:</Text>

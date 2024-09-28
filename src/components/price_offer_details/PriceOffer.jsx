@@ -167,7 +167,7 @@ const PriceOffer = () => {
                           <PdfDocument 
                           priceOfferDetails={priceOfferDetails} 
                           userInfo={userInfo} />} 
-                          fileName={"cenova_ponuka_"+ priceOfferDetails.customer.name + ".pdf"}> 
+                          fileName={"cenova_ponuka_"+ (priceOfferDetails.customer?.name || 'bez_nazvu') + ".pdf"}> 
                        {({ blob, url, loading, error }) => (
                           <Button
                               variant="outlined"
