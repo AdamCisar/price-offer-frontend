@@ -56,7 +56,7 @@ const PriceOfferItems = ({
   }
 
   const updateRow = (newRow) => {
-    newRow.price = Number(newRow.price.toString().replace(',', '.'));
+    newRow.price = (Number(newRow.price.toString().replace(',', '.'))).round();
     newRow.quantity = Number(newRow.quantity.toString().replace(',', '.'));
 
     return newRow;

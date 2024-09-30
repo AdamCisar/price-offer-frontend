@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useCallback, useContext } from "react";
 import { useUniversalPost } from "../api/UniversalPost";
 import { PriceOfferContext } from "../providers/price_offer_providers/PriceOfferProvider";
 import usePriceOfferCalculation from "./usePriceOfferCalculation";
@@ -8,7 +8,7 @@ const useUpdatePriceOfferDetails = () => {
     const { priceOfferDetails, setPriceOfferDetails } = useContext(PriceOfferContext);
     const { calculateTotal } = usePriceOfferCalculation();
 
-    const handleSavePriceOfferDetails = async (handleSnackbarOpen) => {
+    const handleSavePriceOfferDetails = useCallback(async (handleSnackbarOpen) => {
         try {
             await sendData(priceOfferDetails);
             handleSnackbarOpen('Cenová ponuka bola uložená!', 'success');
@@ -16,18 +16,18 @@ const useUpdatePriceOfferDetails = () => {
             handleSnackbarOpen('Cenová ponuka sa neuložila!', 'error');
             console.log(err);
         }
-    };
+    });
 
-    const handleDeleteSelectedPriceOfferItems = async (ids) => {
+    const handleDeleteSelectedPriceOfferItems = useCallback(async (ids) => {
         const items = priceOfferDetails.items.filter((item) => !ids.includes(item.id));
         setPriceOfferDetails((prevData) => ({
             ...prevData,
             'items': items,
             'total': calculateTotal(items)
         }));
-    };
+    });
 
-    const handleCustomerInputChange = (event) => {
+    const handleCustomerInputChange = useCallback((event) => {
         const { name, value } = event.target;
         setPriceOfferDetails((prevData) => ({
             ...prevData,
@@ -36,7 +36,7 @@ const useUpdatePriceOfferDetails = () => {
               [name]: value,          
             },
           }));
-      };
+      });
 
     return {
         isLoading,

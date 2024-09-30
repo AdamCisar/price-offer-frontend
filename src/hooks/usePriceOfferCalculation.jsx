@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useCallback, useContext } from "react";
 import { PriceOfferContext } from "../providers/price_offer_providers/PriceOfferProvider";
 
 const itemRounding = 3;
@@ -6,16 +6,16 @@ const itemRounding = 3;
 const usePriceOfferCalculation = () => {
     const{ priceOfferDetails, setPriceOfferDetails } = useContext(PriceOfferContext); 
 
-    const calculateTotal = (items) => {
+    const calculateTotal = useCallback((items) => {
         let total = items.reduce(
           (total, item) => total + item.quantity * item.price,
           0
         );
 
         return total.round();
-      };
+      });
 
-    const handleEditSelectedPriceOfferItemsPrices = (ids, percentage) => {
+    const handleEditSelectedPriceOfferItemsPrices = useCallback((ids, percentage) => {
         if (!percentage) {
           return;
         }
@@ -39,16 +39,16 @@ const usePriceOfferCalculation = () => {
             items: updatedItems,
             "total": total
         }));
-    };
+    });
 
-    const calculateTotalPriceForItem = (item) => {
+    const calculateTotalPriceForItem = useCallback((item) => {
         if (!item) {
             return;
         }
 
         item.total = (item.quantity * item.price).round(itemRounding);
         return item;
-    }
+    });
 
     return {
         handleEditSelectedPriceOfferItemsPrices,
