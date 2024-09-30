@@ -1,5 +1,5 @@
 import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button } from '@mui/material';
-import { useContext, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import debounce from 'lodash.debounce';
 import { useSearchItem } from '../../api/SearchItem';
 import Loading from '../utilities/Loading';
@@ -17,8 +17,6 @@ const ItemRow = styled('div')(({ theme }) => ({
   borderRadius: '30px',
   cursor: 'pointer',
   border: '1px solid #ccc',
-  // backgroundColor: isSelected ? 'black' : 'white', // Change background based on selection
-  // color: isSelected ? 'white' : 'black', // Change text color based on selection
   transition: 'background-color 0.2s',
   '&:hover': {
     backgroundColor: 'black',
@@ -26,7 +24,7 @@ const ItemRow = styled('div')(({ theme }) => ({
   },
 }));
 
-const ItemSearchModal = ({ open, onClose, focusInputRef }) => {
+const ItemSearchModal = React.memo(({ open, onClose, focusInputRef, styles }) => {
   const [searchItems, isLoading, error] = useSearchItem("ITEM_SEARCH");
   const { handleSnackbarOpen } = useContext(SnackBarContext);
   const { addPriceOfferItemToContext } = useSubmitPriceOfferItem(onClose);
@@ -49,7 +47,7 @@ const ItemSearchModal = ({ open, onClose, focusInputRef }) => {
     return () => {
       debouncedResults.cancel();
     };
-  });
+  }, [debouncedResults]);
 
   const handleItemClick = (item) => {
     for (let i = 0; i < selectedItems.current.items.length; i++) {
@@ -135,7 +133,6 @@ const ItemSearchModal = ({ open, onClose, focusInputRef }) => {
               <ItemRow
                 key={item.id}
                 ref={el => selectedItems.current.elems[item.id] = el}
-                // selected={selectedItems.current.some(selectedItem.item => selectedItem.item.id === item.id)}
                 onClick={() => handleItemClick(item)}
                 >
                 <span>{item.title}</span>
@@ -154,6 +151,8 @@ const ItemSearchModal = ({ open, onClose, focusInputRef }) => {
       </Dialog>
     </div>
   );
-};
+}, (prevProps, nextProps) => {
+  return prevProps.open === nextProps.open;
+});
 
 export default ItemSearchModal;

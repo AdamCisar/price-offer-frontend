@@ -1,22 +1,22 @@
-import React, { useRef } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { useState } from 'react';
 
-const AppButtonModal = ({...props}) => {
+const AppButtonModal = React.memo(({...props}) => {
     const [modalOpen, setModalOpen] = useState(false);
     const focusInputRef = useRef();
 
-    const handleButtonClick = () => {
+    const handleButtonClick = useCallback(() => {
         setModalOpen(true);
-        setTimeout(() => {
-            if (focusInputRef.current) { 
-                focusInputRef.current.focus();
-            }
-        });
-    };
-
-    const handleCloseModal = () => {
+        const timer = setTimeout(() => {
+          focusInputRef.current?.focus(); 
+        }, 0);
+    
+        return () => clearTimeout(timer);
+    }, []);
+    
+    const handleCloseModal = useCallback(() => {
         setModalOpen(false);
-    };
+      }, []);
 
     return (
         <div>
@@ -33,6 +33,8 @@ const AppButtonModal = ({...props}) => {
             />
         </div>
     );
-};
+}, (prevProps, nextProps) => {
+    return prevProps === nextProps;
+});
 
 export default AppButtonModal;

@@ -1,11 +1,12 @@
 import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button, Box, Divider } from '@mui/material';
 import useSubmitPriceOfferItem from '../../hooks/useSubmitPriceOfferItem';
+import React from 'react';
 
 const textFieldStyle = {
     width: '50%',
 }
 
-const ItemCreateModal = ({ open, onClose, focusInputRef }) => {
+const ItemCreateModal = React.memo(({ open, onClose, focusInputRef }) => {
     const {
         handleSubmit,
         handleInputChange,
@@ -80,6 +81,6 @@ const ItemCreateModal = ({ open, onClose, focusInputRef }) => {
       </Dialog>
     </div>
   );
-};
+}, (prevProps, nextProps) => prevProps.open === nextProps.open);
 
 export default ItemCreateModal;
