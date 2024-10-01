@@ -1,7 +1,10 @@
 import { TextField } from "@mui/material";
 import React from "react";
+import _ from 'lodash';
+
 
 const CustomerInfo = React.memo(({customerInfo, handleCustomerInputChange}) => {
+    console.log('rendered');
     return (
         <>
         <TextField
@@ -43,7 +46,7 @@ const CustomerInfo = React.memo(({customerInfo, handleCustomerInputChange}) => {
         </>
     )
 }, (prevProps, nextProps) => {
-    return prevProps === nextProps;
+    return _.isEqual(prevProps.customerInfo, nextProps.customerInfo);
 })
 
 export default CustomerInfo

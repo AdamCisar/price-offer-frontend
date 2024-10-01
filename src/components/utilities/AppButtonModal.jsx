@@ -1,5 +1,6 @@
 import React, { useCallback, useRef } from 'react';
 import { useState } from 'react';
+import _ from 'lodash';
 
 const AppButtonModal = React.memo(({...props}) => {
     const [modalOpen, setModalOpen] = useState(false);
@@ -34,7 +35,7 @@ const AppButtonModal = React.memo(({...props}) => {
         </div>
     );
 }, (prevProps, nextProps) => {
-    return prevProps === nextProps;
+    return _.isEqual(prevProps, nextProps);
 });
 
 export default AppButtonModal;

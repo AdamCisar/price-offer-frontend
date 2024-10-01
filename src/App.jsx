@@ -7,7 +7,7 @@ import PriceOfferDetails from './pages/PriceOfferDetails';
 import Home from './pages/Home';
 import PriceOfferProviders from './providers/price_offer_providers/PriceOfferProviders';
 import GeneralAppProviders from './providers/GeneralAppProviders';
-import './components/utilities/RoundPrice';
+import './components/utilities/Functions';
 
 function App() {
   return (

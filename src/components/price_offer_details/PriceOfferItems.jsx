@@ -1,6 +1,7 @@
 import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
 import React, { useCallback, useMemo } from 'react';
+import _ from 'lodash';
 
 const localeText = {
   // Pagination
@@ -86,8 +87,8 @@ const PriceOfferItems = React.memo(({
   );
 }, (prevProps, nextProps) => {
   return (
-    prevProps.priceOfferItems === nextProps.priceOfferItems &&
-    prevProps.selectedItems === nextProps.selectedItems 
+    _.isEqual(prevProps.priceOfferItems, nextProps.priceOfferItems) &&
+    _.isEqual(prevProps.selectedItems, nextProps.selectedItems) 
   );
 });
 

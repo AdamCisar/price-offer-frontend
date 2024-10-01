@@ -1,5 +1,6 @@
 import React from "react";
 import { Typography } from "@mui/material";
+import _ from "lodash";
 
 const UserInfo = React.memo(({userInfo}) => {
     return (
@@ -11,7 +12,7 @@ const UserInfo = React.memo(({userInfo}) => {
         </>
     )
 }, (prevProps, nextProps) => {
-    return prevProps === nextProps;
+    return _.isEqual(prevProps.userInfo, nextProps.userInfo);
 })
 
 export default UserInfo
