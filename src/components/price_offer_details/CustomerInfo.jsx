@@ -4,7 +4,6 @@ import _ from 'lodash';
 
 
 const CustomerInfo = React.memo(({customerInfo, handleCustomerInputChange}) => {
-    console.log('rendered');
     return (
         <>
         <TextField
