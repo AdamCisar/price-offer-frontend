@@ -71,7 +71,7 @@ const PriceOffer = () => {
             </Typography>
             <Box display="flex" flexDirection="row" justifyContent="space-between">
               <div style={{ display: 'flex', flexDirection: 'column', width: '40%' }}>
-                <CustomerInfo customerInfo={priceOfferDetails.customer} setPriceOfferDetails={setPriceOfferDetails} handleCustomerInputChange={handleCustomerInputChange} />
+                <CustomerInfo customerInfo={priceOfferDetails.customer} setPriceOfferDetails={setPriceOfferDetails} handleCustomerInputChange={handleCustomerInputChange} handleSnackbarOpen={handleSnackbarOpen} />
               </div>
               <Divider orientation="vertical" flexItem sx={{ margin: '0 20px' }} />
                 <div style={{ width: '40%' }}>

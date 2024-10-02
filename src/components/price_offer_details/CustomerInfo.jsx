@@ -5,7 +5,6 @@ import { useSearch } from "../../api/Search";
 import Loading from "../utilities/Loading";
 import SearchedResultRow from "../styled_components/SearchedResultRow";
 import styled, { css } from "styled-components";
-import { SnackBarContext } from "../../providers/SnackBarProvider";
 
 const CustomersDivWrapper = styled('div')(
     ({ theme }) => css`
@@ -16,9 +15,8 @@ const CustomersDivWrapper = styled('div')(
     `
 );
 
-const CustomerInfo = React.memo(({customerInfo, setPriceOfferDetails, handleCustomerInputChange}) => {
+const CustomerInfo = React.memo(({customerInfo, setPriceOfferDetails, handleCustomerInputChange, handleSnackbarOpen}) => {
     const { searchedResults, setSearchedResults, debouncedSearch, isLoading, error } = useSearch("PRICE_OFFER_CUSTOMER_SEARCH");
-    const { handleSnackbarOpen } = useContext(SnackBarContext);
     const searchTermRef = useRef('');
 
     const handleSelectedCustomer = (customer) => {
@@ -75,13 +73,15 @@ const CustomerInfo = React.memo(({customerInfo, setPriceOfferDetails, handleCust
                     onClick={() => handleSelectedCustomer(customer)}
                 >
                     <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                    {customer.name}
+                        {customer.name}
                     </Typography>
                     <Typography variant="body2">
-                    {customer.city}
+                        {customer.city} 
+                        {' '}
+                        {customer.address}
                     </Typography>
                     <Typography variant="body2">
-                    {customer.address}
+                        {customer.zip}
                     </Typography>
                 </SearchedResultRow>
                 ))}
