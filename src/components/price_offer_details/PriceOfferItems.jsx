@@ -17,13 +17,20 @@ const localeText = {
   columnMenuSortDesc: 'Triediť zostupne',
 };
 
+const itemRounding = 3;
 const columns = [
   { field: 'id', headerName: 'ID', width: 70 },
   { field: 'title', headerName: 'Názov', width: 320 },
   { field: 'unit', headerName: 'Jednotka', width: 130 },
-  { field: 'quantity', headerName: 'Množstvo', width: 130, editable: true },
-  { field: 'price', headerName: 'Cena', width: 130, editable: true },
-  { field: 'total', headerName: 'Celkom', width: 130 },
+  { field: 'quantity', headerName: 'Množstvo', width: 130, editable: true,
+    renderCell: (params) => (Number(params.value).round(itemRounding))
+  },
+  { field: 'price', headerName: 'Cena', width: 130, 
+    renderCell: (params) => (Number(params.value).round(itemRounding)), editable: true,
+  },
+  { field: 'total', headerName: 'Celkom', width: 130,
+    renderCell: (params) => (Number(params.value).round(itemRounding))
+  },
 ];
 
 const PriceOfferItems = React.memo(({ 
@@ -42,8 +49,7 @@ const PriceOfferItems = React.memo(({
   }, [setSelectedItems, toggleSelectedRowButton]);
 
   const processRowUpdate = useCallback((newRow) => {
-    const updatedItem = updateRow(newRow); 
-    const calculatedItem = calculateTotalPriceForItem(updatedItem);
+    const calculatedItem = calculateTotalPriceForItem(newRow);
     const items = rows.map(item => 
       item.id === newRow.id ? calculatedItem : item
     );
@@ -57,12 +63,6 @@ const PriceOfferItems = React.memo(({
 
     return newRow;
   }, [calculateTotal, calculateTotalPriceForItem, rows, setPriceOfferDetails]);
-
-  const updateRow = (newRow) => {
-    newRow.price = (Number(newRow.price.toString().replace(',', '.'))).round();
-    newRow.quantity = Number(newRow.quantity.toString().replace(',', '.'));
-    return newRow;
-  };
 
   const handleProcessRowUpdateError = (error) => {
     console.error('processRowUpdateError', error);

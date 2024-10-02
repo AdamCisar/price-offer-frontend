@@ -117,7 +117,7 @@ const PriceOffer = () => {
               calculateTotal={calculateTotal}
             />
             <Divider sx={{ margin: '20px 0' }} />
-            <Typography variant="h5">Spolu: {priceOfferDetails.total} €</Typography>
+            <Typography variant="h5">Spolu: {Number(priceOfferDetails.total).round()} €</Typography>
           </CardContent>
           <CardContent>
             <Box display="flex" justifyContent="space-between" alignItems="center">

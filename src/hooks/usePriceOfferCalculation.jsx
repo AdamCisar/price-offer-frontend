@@ -1,8 +1,6 @@
 import { useCallback, useContext } from "react";
 import { PriceOfferContext } from "../providers/price_offer_providers/PriceOfferProvider";
 
-const itemRounding = 3;
-
 const usePriceOfferCalculation = () => {
     const{ priceOfferDetails, setPriceOfferDetails } = useContext(PriceOfferContext); 
 
@@ -25,8 +23,8 @@ const usePriceOfferCalculation = () => {
                 item.price = item.price * (1 + percentage / 100);
                 return {
                     ...item,
-                    price: (item.price).round(itemRounding),
-                    total: (item.quantity * item.price).round(itemRounding),
+                    price: item.price,
+                    total: item.quantity * item.price,
                 };
             }
 
@@ -46,7 +44,8 @@ const usePriceOfferCalculation = () => {
             return;
         }
 
-        item.total = (item.quantity * item.price).round(itemRounding);
+        item.total = item.quantity * item.price;
+        
         return item;
     }, []);
 
