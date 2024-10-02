@@ -16,7 +16,7 @@ const useUpdatePriceOfferDetails = () => {
             handleSnackbarOpen('Cenová ponuka sa neuložila!', 'error');
             console.log(err);
         }
-    });
+    }, [priceOfferDetails, sendData]);
 
     const handleDeleteSelectedPriceOfferItems = useCallback(async (ids) => {
         const items = priceOfferDetails.items.filter((item) => !ids.includes(item.id));
@@ -25,7 +25,7 @@ const useUpdatePriceOfferDetails = () => {
             'items': items,
             'total': calculateTotal(items)
         }));
-    });
+    }, [calculateTotal, priceOfferDetails, setPriceOfferDetails]);
 
     const handleCustomerInputChange = useCallback((event) => {
         const { name, value } = event.target;
@@ -36,7 +36,7 @@ const useUpdatePriceOfferDetails = () => {
               [name]: value,          
             },
           }));
-      });
+      }, [setPriceOfferDetails]);
 
     return {
         isLoading,

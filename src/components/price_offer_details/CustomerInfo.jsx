@@ -1,40 +1,22 @@
-import { Box, TextField, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { TextField, Typography } from "@mui/material";
+import React from "react";
 import _ from 'lodash';
 import { useSearch } from "../../api/Search";
 import Loading from "../utilities/Loading";
-import styled from "styled-components";
+import SearchedResultRow from "../styled_components/SearchedResultRow";
+import styled, { css } from "styled-components";
 
-const CustomerRow = styled('div')(({ theme }) => ({
-    display: 'flex',
-    justifyContent: 'space-between',
-    padding: '10px',
-    margin: 'auto',
-    marginBottom: '10px',
-    width: '95%',
-    alignItems: 'center',
-    borderRadius: '10px',
-    cursor: 'pointer',
-    border: '1px solid #ccc',
-    transition: 'background-color 0.3s ease',
-    '&:hover': {
-      backgroundColor: 'black',
-      color: 'white',
-    },
-  }));
+const CustomersDivWrapper = styled('div')(
+    ({ theme }) => css`
+    padding: '20px';
+    borderRadius: '8px';
+    backgroundColor: '#f0f0f0';
+    marginBottom: '20px';
+    `
+);
 
 const CustomerInfo = React.memo(({customerInfo, handleCustomerInputChange}) => {
-    const [searchedResults, debouncedSearch, isLoading, error] = useSearch("PRICE_OFFER_CUSTOMER_SEARCH");
-    const [isVisible, setIsVisible] = useState(false);
-
-    useEffect(() => {
-      if (searchedResults.length > 0) {
-        const timer = setTimeout(() => setIsVisible(true), 100);
-        return () => clearTimeout(timer); 
-      } else {
-        setIsVisible(false);
-      }
-    }, [searchedResults]);
+    const { searchedResults, debouncedSearch, isLoading, error } = useSearch("PRICE_OFFER_CUSTOMER_SEARCH");
 
     return (
         <>
@@ -50,22 +32,12 @@ const CustomerInfo = React.memo(({customerInfo, handleCustomerInputChange}) => {
                 marginBottom: '20px',
             }}
             >
-            <Box
-                sx={{
-                opacity: isVisible ? 1 : 0,
-                transform: isVisible ? 'translateY(0)' : 'translateY(10px)',
-                transition: 'opacity 0.5s ease, transform 0.5s ease',
-                padding: '20px',
-                borderRadius: '8px',
-                backgroundColor: '#f0f0f0',
-                marginBottom: '20px',
-                }}
-                >
+            <CustomersDivWrapper>
                 <Typography variant="h6" gutterBottom sx={{ marginBottom: 2, color: '#333' }}>
                 Nájdení zákazníci:
                 </Typography>
                 {searchedResults.map((customer, index) => (
-                <CustomerRow
+                <SearchedResultRow
                     key={index}
                 >
                     <Typography variant="body1" sx={{ fontWeight: 500 }}>
@@ -77,9 +49,9 @@ const CustomerInfo = React.memo(({customerInfo, handleCustomerInputChange}) => {
                     <Typography variant="body2">
                     {customer.address}
                     </Typography>
-                </CustomerRow>
+                </SearchedResultRow>
                 ))}
-            </Box>
+            </CustomersDivWrapper>
             </div>
         ) : (
             null

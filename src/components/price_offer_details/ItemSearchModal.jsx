@@ -1,31 +1,13 @@
 import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button } from '@mui/material';
-import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
-import debounce from 'lodash.debounce';
+import React, { useContext, useRef } from 'react';
 import { useSearch } from '../../api/Search';
 import Loading from '../utilities/Loading';
-import styled from 'styled-components';
 import useSubmitPriceOfferItem from '../../hooks/useSubmitPriceOfferItem';
 import { SnackBarContext } from '../../providers/SnackBarProvider';
-
-const ItemRow = styled('div')(({ theme }) => ({
-  display: 'flex',
-  justifyContent: 'space-between',
-  padding: '10px',
-  margin: 'auto',
-  marginBottom: '10px',
-  width: '85%',
-  borderRadius: '30px',
-  cursor: 'pointer',
-  border: '1px solid #ccc',
-  transition: 'background-color 0.2s',
-  '&:hover': {
-    backgroundColor: 'black',
-    color: 'white',
-  },
-}));
+import SearchedResultRow from '../styled_components/SearchedResultRow';
 
 const ItemSearchModal = React.memo(({ open, onClose, focusInputRef, styles }) => {
-  const [searchedResults, setSearchedResults, debouncedSearch, isLoading, error] = useSearch("ITEM_SEARCH");
+  const { searchedResults, setSearchedResults, debouncedSearch, isLoading, error } = useSearch("ITEM_SEARCH");
   const { handleSnackbarOpen } = useContext(SnackBarContext);
   const { addPriceOfferItemToContext } = useSubmitPriceOfferItem(onClose);
   const selectedItems = useRef({
@@ -113,14 +95,14 @@ const ItemSearchModal = React.memo(({ open, onClose, focusInputRef, styles }) =>
           <Loading height={'10vh'} /> :
           searchedResults && 
           searchedResults.map((item) => (
-              <ItemRow
+              <SearchedResultRow
                 key={item.id}
                 ref={el => selectedItems.current.elems[item.id] = el}
                 onClick={() => handleItemClick(item)}
                 >
                 <span>{item.title}</span>
                 <span>{item.price} €</span>
-              </ItemRow>
+              </SearchedResultRow>
             ))
         }
         <DialogActions>

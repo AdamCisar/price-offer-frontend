@@ -13,7 +13,7 @@ const usePriceOfferCalculation = () => {
         );
 
         return total.round();
-      });
+    }, []);
 
     const handleEditSelectedPriceOfferItemsPrices = useCallback((ids, percentage) => {
         if (!percentage) {
@@ -39,7 +39,7 @@ const usePriceOfferCalculation = () => {
             items: updatedItems,
             "total": total
         }));
-    });
+    }, [calculateTotal, priceOfferDetails, setPriceOfferDetails]);
 
     const calculateTotalPriceForItem = useCallback((item) => {
         if (!item) {
@@ -48,7 +48,7 @@ const usePriceOfferCalculation = () => {
 
         item.total = (item.quantity * item.price).round(itemRounding);
         return item;
-    });
+    }, []);
 
     return {
         handleEditSelectedPriceOfferItemsPrices,

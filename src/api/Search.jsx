@@ -53,7 +53,7 @@ export const useSearch = (endpoint) => {
     };
   }, [debouncedSearch]);
   
-  return [searchedResults, setSearchedResults, debouncedSearch, isLoading, error];
+  return {searchedResults, setSearchedResults, debouncedSearch, isLoading, error};
 }
 
   
