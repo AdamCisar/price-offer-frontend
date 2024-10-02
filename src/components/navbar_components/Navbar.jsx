@@ -41,6 +41,13 @@ const Navbar = ({isPencilWrapper}) => {
                         >
                             Cenové ponuky
                         </Button>
+                        <Button
+                            component={Link}
+                            to="/produkty"
+                            sx={{ my: 2, color: 'white', display: 'block' }}
+                        >
+                            Produkty
+                        </Button>
                     </Box>
 
                     <div style={{gap: '10px', display: 'flex'}}>

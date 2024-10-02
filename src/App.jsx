@@ -4,10 +4,11 @@ import Layout from './pages/Layout';
 import PriceOfferList from './pages/PriceOfferList';
 import PriceOfferListProviders from './providers/PriceOfferListProviders';
 import PriceOfferDetails from './pages/PriceOfferDetails';
-import Home from './pages/Home';
 import PriceOfferProviders from './providers/price_offer_providers/PriceOfferProviders';
 import GeneralAppProviders from './providers/GeneralAppProviders';
 import './components/utilities/Functions';
+import { ItemsProvider } from './providers/ItemsProvider';
+import Items from './pages/Items';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
                                 } />
             <Route path=':id' element={<PriceOfferProviders><Layout children={<PriceOfferDetails />}/></PriceOfferProviders>} />
           </Route>
+          <Route path="/produkty" element={<ItemsProvider><Layout children={<Items />} /></ItemsProvider>} />
         </Routes>
     </BrowserRouter>
     </GeneralAppProviders>

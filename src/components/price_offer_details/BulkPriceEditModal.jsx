@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button } from '@mui/material';
+import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button, Divider } from '@mui/material';
 
 const BulkPriceEditModal = ({ open, onClose, handleEditSelectedPriceOfferItemsPrices, selectedItems, focusInputRef }) => {
   const [percent, setPercent] = useState('');
@@ -36,6 +36,7 @@ const BulkPriceEditModal = ({ open, onClose, handleEditSelectedPriceOfferItemsPr
             }}
         >
         <DialogTitle>Zadajte o koľko percent chcete upraviť ceny</DialogTitle>
+        <Divider />
         <DialogContent>
         <div style={{ width: '18%', display: 'flex', justifyContent: 'center', margin: 'auto', alignItems: 'center' }}>
             <TextField

@@ -1,4 +1,4 @@
-const useValidate = (onClose, addToPriceOfferList, initialState, setFormData, formData) => {
+const useValidate = (setFormData, formData) => {
 
     const validate = () => {
         let isValid = true;

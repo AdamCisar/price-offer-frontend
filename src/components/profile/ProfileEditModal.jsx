@@ -3,6 +3,7 @@ import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button } 
 import { UserInfoContext } from '../../providers/UserInfoProvider';
 import { useUniversalPost } from '../../api/UniversalPost';
 import { SnackBarContext } from '../../providers/SnackBarProvider';
+import Loading from '../utilities/Loading';
 
 /**
  * ProfileEditModal Component
@@ -13,9 +14,9 @@ import { SnackBarContext } from '../../providers/SnackBarProvider';
  * @returns {JSX.Element} The rendered modal component
  */
 const ProfileEditModal = ({ open, onClose }) => {
-  const { userInfo, setUserInfo, isLoading, error } = useContext(UserInfoContext);
+  const { userInfo, setUserInfo } = useContext(UserInfoContext);
   const { handleSnackbarOpen } = useContext(SnackBarContext);
-  const [sendData] = useUniversalPost("USER");
+  const [sendData, isLoading, error] = useUniversalPost("USER");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -50,6 +51,9 @@ const ProfileEditModal = ({ open, onClose }) => {
         }}
       >
         <DialogTitle>Úprava profilu</DialogTitle>
+        {isLoading ? (
+          <Loading height={'10vh'} />
+        ) : (
         <DialogContent>
           <TextField
             margin="dense"
@@ -84,6 +88,7 @@ const ProfileEditModal = ({ open, onClose }) => {
             fullWidth
           />
         </DialogContent>
+        )}
         <DialogActions>
           <Button onClick={onClose} color="secondary">
             Zatvoriť

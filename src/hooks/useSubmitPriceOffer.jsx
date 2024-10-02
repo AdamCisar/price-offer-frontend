@@ -17,7 +17,7 @@ const useSubmitPriceOffer = (onClose, addToPriceOfferList) => {
     const [formData, setFormData] = useState(initialState);
     const { handleSnackbarOpen } = useContext(SnackBarContext);
     const [sendData, isLoading, error] = useUniversalPost("PRICE_OFFER");
-    const { validate, handleInputChange, errors } = useValidate(onClose, addToPriceOfferList, initialState, setFormData, formData);
+    const { validate, handleInputChange, errors } = useValidate(setFormData, formData);
 
     const handleSubmit = async () => {
         
@@ -44,7 +44,7 @@ const useSubmitPriceOffer = (onClose, addToPriceOfferList) => {
     return {
         handleSubmit,
         handleInputChange,
-        errors: formData.errors,
+        errors,
         isLoading
     };
 };
