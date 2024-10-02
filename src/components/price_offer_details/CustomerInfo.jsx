@@ -1,10 +1,11 @@
 import { TextField, Typography } from "@mui/material";
-import React from "react";
+import React, { useContext, useRef } from "react";
 import _ from 'lodash';
 import { useSearch } from "../../api/Search";
 import Loading from "../utilities/Loading";
 import SearchedResultRow from "../styled_components/SearchedResultRow";
 import styled, { css } from "styled-components";
+import { SnackBarContext } from "../../providers/SnackBarProvider";
 
 const CustomersDivWrapper = styled('div')(
     ({ theme }) => css`
@@ -15,11 +16,43 @@ const CustomersDivWrapper = styled('div')(
     `
 );
 
-const CustomerInfo = React.memo(({customerInfo, handleCustomerInputChange}) => {
-    const { searchedResults, debouncedSearch, isLoading, error } = useSearch("PRICE_OFFER_CUSTOMER_SEARCH");
+const CustomerInfo = React.memo(({customerInfo, setPriceOfferDetails, handleCustomerInputChange}) => {
+    const { searchedResults, setSearchedResults, debouncedSearch, isLoading, error } = useSearch("PRICE_OFFER_CUSTOMER_SEARCH");
+    const { handleSnackbarOpen } = useContext(SnackBarContext);
+    const searchTermRef = useRef('');
+
+    const handleSelectedCustomer = (customer) => {
+        setPriceOfferDetails((prevData) => ({
+            ...prevData,
+            "customer": 
+                {
+                    id: prevData.customer.id,
+                    name: customer.name,
+                    address: customer.address,
+                    city: customer.city,
+                    zip: customer.zip
+                }
+        }));
+
+        handleSnackbarOpen('Údaje o zákaznikovi boli vyplnené.', 'success');
+        searchTermRef.current.value = '';
+        setSearchedResults([]);
+    };
 
     return (
         <>
+        <TextField
+            fullWidth
+            variant="outlined"
+            placeholder="Vyhľadávanie zákazníkov: meno, adresa..."
+            name="customer_search"
+            inputRef={searchTermRef}
+            onChange={(e) => {
+                debouncedSearch(e);
+              }}
+            sx={{ marginBottom: 2 }}
+        />
+
         {isLoading && searchedResults.length === 0 ? (
             <Loading height={'10vh'} />
         ) : (
@@ -39,6 +72,7 @@ const CustomerInfo = React.memo(({customerInfo, handleCustomerInputChange}) => {
                 {searchedResults.map((customer, index) => (
                 <SearchedResultRow
                     key={index}
+                    onClick={() => handleSelectedCustomer(customer)}
                 >
                     <Typography variant="body1" sx={{ fontWeight: 500 }}>
                     {customer.name}
@@ -66,7 +100,6 @@ const CustomerInfo = React.memo(({customerInfo, handleCustomerInputChange}) => {
             value={customerInfo?.name || ''}
             onChange={(e) => {
                 handleCustomerInputChange(e);
-                debouncedSearch(e);
               }}
             sx={{ marginBottom: 2 }}
         />

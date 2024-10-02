@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
 const PdfDocument = ({ priceOfferDetails, userInfo }) => {
   return (
     <>
-    {priceOfferDetails && userInfo &&
+    {priceOfferDetails.items && priceOfferDetails.customer && userInfo &&
         <Document title={`cenova_ponuka_${priceOfferDetails.customer?.name}`}>
             <Page size="A4" style={styles.page}>
                 <View style={styles.header}>
