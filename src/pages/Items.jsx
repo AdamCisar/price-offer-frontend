@@ -1,10 +1,9 @@
 import { useContext, useState } from "react";
 import { ItemsContext } from "../providers/ItemsProvider";
-import { Box, TextField, Button, Typography, Card, CardContent } from "@mui/material";
+import { Box, TextField, Typography } from "@mui/material";
 import Grid2 from '@mui/material/Grid2';
 import Loading from "../components/utilities/Loading";
-import AppButtonModal from "../components/utilities/AppButtonModal";
-import ItemEditModal from "../components/items/ItemEditModal";
+import ItemCard from "../components/items/ItemCard";
 
 const boxStyles = {
     display: "flex",
@@ -38,7 +37,7 @@ const Items = () => {
                 <Grid2 item xs={12}>
                     <TextField
                         id="search"
-                        label="Search"
+                        label="Filtrovať"
                         variant="outlined"
                         fullWidth
                         onChange={handleSearchChange}
@@ -51,26 +50,7 @@ const Items = () => {
                     {filteredItems && filteredItems.length > 0 ? (
                         <Grid2 container spacing={1}>
                             {filteredItems.map((item) => (
-                                <Grid2 item xs={12} sm={6} md={4} lg={3} key={item.id}>
-                                <Card sx={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', position: 'relative' }}>
-                                    <CardContent sx={{ flex: 'auto', minWidth: 250, maxWidth: 250, minHeight: 100, maxHeight: 100 }}>
-                                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-                                            <Typography variant="p3" sx={{ fontWeight: '500' }}>{item.title}</Typography>
-                                            <Typography variant="p3">{item.price} €</Typography>
-                                        </div>
-                                    </CardContent>
-                                    <Box sx={{ position: 'absolute', bottom: 8, right: 8 }}>
-                                        <AppButtonModal
-                                            styles={{ variant: 'outlined', color: 'primary' }}
-                                            title={"Upraviť"} 
-                                            Button={Button}
-                                            ModalComponent={ItemEditModal}
-                                            item={item}
-                                        />
-                                    </Box>
-                                </Card>
-                            </Grid2>
-                            
+                                <ItemCard key={item.id} item={item} />
                             ))}
                         </Grid2>
                     ) : (
