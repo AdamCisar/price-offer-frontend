@@ -8,8 +8,6 @@ import ItemEditModal from "../components/items/ItemEditModal";
 
 const boxStyles = {
     display: "flex",
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
     padding: 4,
     sx: { backgroundColor: '#f5f5f5', minHeight: '100vh' }
 };
@@ -35,8 +33,8 @@ const Items = () => {
     }
 
     return (
-        <Box sx={boxStyles}>
-            <Grid2 container spacing={2}>
+        <Box {...boxStyles}>
+            <Grid2 container spacing={2} sx={{ flexDirection: 'column', width: '100%' }}>
                 <Grid2 item xs={12}>
                     <TextField
                         id="search"
@@ -45,28 +43,34 @@ const Items = () => {
                         fullWidth
                         onChange={handleSearchChange}
                         value={searchTerm}
-                        sx={{ mb: 2 }} 
+                        sx={{ mb: 2 , width: '20%'}} 
                     />
                 </Grid2>
   
                 <Grid2 item xs={12}>
                     {filteredItems && filteredItems.length > 0 ? (
-                        <Grid2 container spacing={2}>
+                        <Grid2 container spacing={1}>
                             {filteredItems.map((item) => (
                                 <Grid2 item xs={12} sm={6} md={4} lg={3} key={item.id}>
-                                    <Card>
-                                        <CardContent>
-                                            <Typography variant="h6">{item.title}</Typography>
-                                            <AppButtonModal
-                                                styles={{ variant: 'contained', color: '' }}
-                                                title={"Upraviť"} 
-                                                Button={Button}
-                                                ModalComponent={ItemEditModal}
-                                                item={item}
-                                            />
-                                        </CardContent>
-                                    </Card>
-                                </Grid2>
+                                <Card sx={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', position: 'relative' }}>
+                                    <CardContent sx={{ flex: 'auto', minWidth: 250, maxWidth: 250, minHeight: 100, maxHeight: 100 }}>
+                                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                                            <Typography variant="p3" sx={{ fontWeight: '500' }}>{item.title}</Typography>
+                                            <Typography variant="p3">{item.price} €</Typography>
+                                        </div>
+                                    </CardContent>
+                                    <Box sx={{ position: 'absolute', bottom: 8, right: 8 }}>
+                                        <AppButtonModal
+                                            styles={{ variant: 'outlined', color: 'primary' }}
+                                            title={"Upraviť"} 
+                                            Button={Button}
+                                            ModalComponent={ItemEditModal}
+                                            item={item}
+                                        />
+                                    </Box>
+                                </Card>
+                            </Grid2>
+                            
                             ))}
                         </Grid2>
                     ) : (
