@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import ApiRoutes from '../configuration/api_routes/ApiRoutes';
 
-export const useSearchItem = (endpoint) => {
+export const useSearch = (endpoint) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const searchItems = async (searchTerm, signal) => {
+  const search = async (searchTerm, signal) => {
     let data = [];
     
     if (!searchTerm) {
@@ -34,7 +34,7 @@ export const useSearchItem = (endpoint) => {
     return data;
   };
   
-  return [searchItems, isLoading, error];
+  return [search, isLoading, error];
 }
 
   

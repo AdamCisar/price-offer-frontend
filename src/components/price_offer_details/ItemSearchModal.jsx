@@ -1,7 +1,7 @@
 import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button } from '@mui/material';
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import debounce from 'lodash.debounce';
-import { useSearchItem } from '../../api/SearchItem';
+import { useSearch } from '../../api/Search';
 import Loading from '../utilities/Loading';
 import styled from 'styled-components';
 import useSubmitPriceOfferItem from '../../hooks/useSubmitPriceOfferItem';
@@ -25,7 +25,7 @@ const ItemRow = styled('div')(({ theme }) => ({
 }));
 
 const ItemSearchModal = React.memo(({ open, onClose, focusInputRef, styles }) => {
-  const [searchItems, isLoading, error] = useSearchItem("ITEM_SEARCH");
+  const [search, isLoading, error] = useSearch("ITEM_SEARCH");
   const { handleSnackbarOpen } = useContext(SnackBarContext);
   const { addPriceOfferItemToContext } = useSubmitPriceOfferItem(onClose);
   const [items, setItems] = useState([]);
@@ -35,7 +35,7 @@ const ItemSearchModal = React.memo(({ open, onClose, focusInputRef, styles }) =>
   });
 
   const handleChange = async (e) => {
-    const items = await searchItems(e.target.value);
+    const items = await search(e.target.value);
     setItems(items);
   };
 
