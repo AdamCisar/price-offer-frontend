@@ -1,6 +1,6 @@
 import { Box, TextField, Typography } from "@mui/material";
-import React, { useEffect, useMemo, useState } from "react";
-import _, { debounce } from 'lodash';
+import React, { useEffect, useState } from "react";
+import _ from 'lodash';
 import { useSearch } from "../../api/Search";
 import Loading from "../utilities/Loading";
 import styled from "styled-components";
@@ -24,40 +24,24 @@ const CustomerRow = styled('div')(({ theme }) => ({
   }));
 
 const CustomerInfo = React.memo(({customerInfo, handleCustomerInputChange}) => {
-    const [search, isLoading, error] = useSearch("PRICE_OFFER_CUSTOMER_SEARCH");
-    const [customers, setCustomers] = useState([]);
+    const [searchedResults, debouncedSearch, isLoading, error] = useSearch("PRICE_OFFER_CUSTOMER_SEARCH");
     const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
-      if (customers.length > 0) {
+      if (searchedResults.length > 0) {
         const timer = setTimeout(() => setIsVisible(true), 100);
         return () => clearTimeout(timer); 
       } else {
         setIsVisible(false);
       }
-    }, [customers]);
-    
-    const handleCustomersSearch = async (e) => {
-        const customers = await search(e.target.value);
-        setCustomers(customers);
-      };
-    
-      const debouncedResults = useMemo(() => {
-        return debounce(handleCustomersSearch, 400);
-      }, []);
-    
-      useEffect(() => {
-        return () => {
-          debouncedResults.cancel();
-        };
-      }, [debouncedResults]);
+    }, [searchedResults]);
 
     return (
         <>
-        {isLoading && customers.length === 0 ? (
+        {isLoading && searchedResults.length === 0 ? (
             <Loading height={'10vh'} />
         ) : (
-        customers && customers.length > 0 ? (
+            searchedResults && searchedResults.length > 0 ? (
             <div
             style={{
                 padding: '20px',
@@ -80,7 +64,7 @@ const CustomerInfo = React.memo(({customerInfo, handleCustomerInputChange}) => {
                 <Typography variant="h6" gutterBottom sx={{ marginBottom: 2, color: '#333' }}>
                 Nájdení zákazníci:
                 </Typography>
-                {customers.map((customer, index) => (
+                {searchedResults.map((customer, index) => (
                 <CustomerRow
                     key={index}
                 >
@@ -110,7 +94,7 @@ const CustomerInfo = React.memo(({customerInfo, handleCustomerInputChange}) => {
             value={customerInfo?.name || ''}
             onChange={(e) => {
                 handleCustomerInputChange(e);
-                debouncedResults(e);
+                debouncedSearch(e);
               }}
             sx={{ marginBottom: 2 }}
         />

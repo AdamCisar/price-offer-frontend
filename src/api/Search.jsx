@@ -1,9 +1,13 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import ApiRoutes from '../configuration/api_routes/ApiRoutes';
+import { debounce } from 'lodash';
+import { useEffect } from 'react';
 
 export const useSearch = (endpoint) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const [searchedResults, setSearchedResults] = useState([]);
 
   const search = async (searchTerm, signal) => {
     let data = [];
@@ -33,8 +37,23 @@ export const useSearch = (endpoint) => {
     setIsLoading(false);
     return data;
   };
+
+  const handleSearch = async (e) => {
+    const searchedResults = await search(e.target.value);
+    setSearchedResults(searchedResults);
+  };
+
+  const debouncedSearch = useMemo(() => {
+    return debounce(handleSearch, 400);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      debouncedSearch.cancel();
+    };
+  }, [debouncedSearch]);
   
-  return [search, isLoading, error];
+  return [searchedResults, setSearchedResults, debouncedSearch, isLoading, error];
 }
 
   

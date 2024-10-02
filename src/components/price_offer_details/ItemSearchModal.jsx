@@ -25,29 +25,13 @@ const ItemRow = styled('div')(({ theme }) => ({
 }));
 
 const ItemSearchModal = React.memo(({ open, onClose, focusInputRef, styles }) => {
-  const [search, isLoading, error] = useSearch("ITEM_SEARCH");
+  const [searchedResults, setSearchedResults, debouncedSearch, isLoading, error] = useSearch("ITEM_SEARCH");
   const { handleSnackbarOpen } = useContext(SnackBarContext);
   const { addPriceOfferItemToContext } = useSubmitPriceOfferItem(onClose);
-  const [items, setItems] = useState([]);
   const selectedItems = useRef({
     items: [],
     elems: []
   });
-
-  const handleChange = async (e) => {
-    const items = await search(e.target.value);
-    setItems(items);
-  };
-
-  const debouncedResults = useMemo(() => {
-    return debounce(handleChange, 400);
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      debouncedResults.cancel();
-    };
-  }, [debouncedResults]);
 
   const handleItemClick = (item) => {
     for (let i = 0; i < selectedItems.current.items.length; i++) {
@@ -57,7 +41,6 @@ const ItemSearchModal = React.memo(({ open, onClose, focusInputRef, styles }) =>
         selectedItems.current.elems[item.id].style.color = 'black';
         return;
       }
-
     }
 
     selectedItems.current.elems[item.id].style.backgroundColor = 'black';
@@ -68,7 +51,7 @@ const ItemSearchModal = React.memo(({ open, onClose, focusInputRef, styles }) =>
   const onCloseModal = () => {
     onClose();
     setTimeout(() => {
-      setItems([]);
+      setSearchedResults([]);
       selectedItems.current = {
         items: [],
         elems: []
@@ -123,13 +106,13 @@ const ItemSearchModal = React.memo(({ open, onClose, focusInputRef, styles }) =>
             placeholder="Začnite písať..."
             variant="outlined"
             inputRef={focusInputRef}
-            onChange={debouncedResults}
+            onChange={debouncedSearch}
         />
         </DialogContent>
         {isLoading ? 
           <Loading height={'10vh'} /> :
-          items && 
-            items.map((item) => (
+          searchedResults && 
+          searchedResults.map((item) => (
               <ItemRow
                 key={item.id}
                 ref={el => selectedItems.current.elems[item.id] = el}
