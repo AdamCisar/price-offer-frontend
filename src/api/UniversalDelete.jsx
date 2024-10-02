@@ -9,28 +9,29 @@ export const useUniversalDelete = (endpoint) => {
     setIsLoading(true);
   
     try {
-        let data = {};
-        for (let key in payload) {
-            const response = await fetch(ApiRoutes[endpoint]+ "/" + payload[key] , {
-                method: "DELETE",
-                headers: {
-                "Content-Type": "application/json",
-                },
-            });
+        const response = await fetch(ApiRoutes[endpoint] , {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
 
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || "Something went wrong!");
-            }
-
-            data = await response.json();
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || "Something went wrong!");
         }
-    setIsLoading(false);
-    return data;
+
+      setIsLoading(false);
+
+      return await response.json();
+
     } catch (err) {
-    setIsLoading(false);
-    setError(err.message);
-    throw err;
+
+      setIsLoading(false);
+      setError(err.message);
+      throw err;
+
     }
   };
 

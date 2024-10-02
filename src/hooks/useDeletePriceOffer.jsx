@@ -12,7 +12,7 @@ const useDeletePriceOffer = () => {
         }
         
         try {
-            const priceOfferIdList = await deleteData(idList);
+            const priceOfferIdList = await deleteData({"id": idList});
             handleSnackbarOpen('Označené cenové ponuky boli vymazané!', 'success');
           } catch (err) {
             handleSnackbarOpen('Označené cenové ponuky sa nepodarilo vymazať!', 'error');
