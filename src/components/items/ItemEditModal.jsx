@@ -9,7 +9,7 @@ const textFieldStyle = {
     width: '50%',
 }
 
-const ItemEditModal = ({ open, onClose, focusInputRef, item }) => {
+const ItemEditModal = ({ open, onClose, focusInputRef, item, setItems }) => {
     const [itemEdit, setItemEdit] = useState(item);
     const [sendData, isLoading, error] = useUniversalPost("ITEM");
     const { handleSnackbarOpen } = useContext(SnackBarContext);
@@ -18,6 +18,11 @@ const ItemEditModal = ({ open, onClose, focusInputRef, item }) => {
     const onSubmit = async () => {
         try {
             await sendData(itemEdit);
+            setItems((prevData) => 
+                prevData.map((prevItem) =>
+                    prevItem.id === itemEdit.id ? itemEdit : prevItem
+                )
+            );
             handleSnackbarOpen('Produkt bol uložený!', 'success');
         } catch (err) {
             console.log(err);

@@ -17,7 +17,7 @@ const localeText = {
   columnMenuSortDesc: 'Triediť zostupne',
 };
 
-const itemRounding = 3;
+const itemRounding = 2;
 const columns = [
   { field: 'id', headerName: 'ID', width: 70 },
   { field: 'title', headerName: 'Názov', width: 320 },

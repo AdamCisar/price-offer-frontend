@@ -12,7 +12,7 @@ const boxStyles = {
 };
 
 const Items = () => {
-    const { items, isLoading, error } = useContext(ItemsContext);
+    const { items, setItems, isLoading, error } = useContext(ItemsContext);
     const [searchTerm, setSearchTerm] = useState('');
   
     const handleSearchChange = (event) => {
@@ -50,7 +50,7 @@ const Items = () => {
                     {filteredItems && filteredItems.length > 0 ? (
                         <Grid2 container spacing={1}>
                             {filteredItems.map((item) => (
-                                <ItemCard key={item.id} item={item} />
+                                <ItemCard key={item.id} item={item} setItems={setItems}/>
                             ))}
                         </Grid2>
                     ) : (

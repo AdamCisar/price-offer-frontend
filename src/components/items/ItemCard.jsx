@@ -3,7 +3,7 @@ import AppButtonModal from "../utilities/AppButtonModal";
 import ItemEditModal from "./ItemEditModal";
 
 const ItemCard = (props) => {
-    const { item } = props;
+    const { item, setItems } = props;
     return (
         <Grid2 item xs={12} sm={6} md={4} lg={3} key={item.id}>
             <Card sx={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', position: 'relative' }}>
@@ -22,6 +22,7 @@ const ItemCard = (props) => {
                         Button={Button}
                         ModalComponent={ItemEditModal}
                         item={item}
+                        setItems={setItems}
                     />
                 </Box>
             </Card>
