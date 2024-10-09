@@ -3,6 +3,7 @@ import { Card, CardActionArea, CardContent, CardMedia, Typography, Box } from '@
 import { styled } from '@mui/system';
 import { PencilEditContext } from '../../providers/PencilEditProvider';
 import { useLocation, useNavigate } from 'react-router-dom';
+import Shimmer from '../styled_components/Shimmer';
 
 const PriceOfferSnapshot = ({ ...props }) => {
   const navigate = useNavigate();
@@ -25,23 +26,41 @@ const PriceOfferSnapshot = ({ ...props }) => {
     }
     navigate(location.pathname + '/' + props.id);
   };
+  const [isLoading, setIsLoading] = useState(true);
 
+  // Handler for when the image is fully loaded
+  const handleImageLoad = () => {
+    setIsLoading(false);
+  };
   return (
-    <BounceCard   onClick={() => {
-                          handleSelectClick(); 
-                          handlePriceOfferDetails();
-                        }} 
-                  isEditing={isEditing}
-        sx={{ maxHeight: 320, minHeight: 320,}}
+    <BounceCard   
+      onClick={() => {
+              handleSelectClick(); 
+              handlePriceOfferDetails();
+            }} 
+      isEditing={isEditing}
+      sx={{ maxHeight: 320, minHeight: 320,}}
     >
 
       {isEditing && <CircleIndicator selected={selected} />}
       <CardActionArea sx={{ maxWidth: 200, minWidth: 200, textAlign: 'center', padding: 2 }}>
-        <CardMedia
-          component="img"
-          image="/invoice_thumb.png"
-          alt={props.title}
+      <div style={{ position: 'relative' }}>
+      {isLoading && (
+        <Shimmer
+          width="100%"
+          height="200px"  // Adjust height to match your image dimensions
+          borderRadius="8px"  // Same border radius as your image if applicable
         />
+      )}
+
+      <CardMedia
+        component="img"
+        image="/invoice_thumb.png"
+        alt={props.title}
+        style={{ display: isLoading ? 'none' : 'block' }}
+        onLoad={handleImageLoad}  // Calls handler when image is fully loaded
+      />
+    </div>
         <CardContent>
           <Typography gutterBottom variant="h6" component="div">
             {props.title}

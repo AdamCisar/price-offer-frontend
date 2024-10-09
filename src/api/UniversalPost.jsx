@@ -4,6 +4,7 @@ import ApiRoutes from '../configuration/api_routes/ApiRoutes';
 export const useUniversalPost = (endpoint) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const token = localStorage.getItem("token");
 
   const sendData = async (payload) => {
     setIsLoading(true);
@@ -13,7 +14,9 @@ export const useUniversalPost = (endpoint) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
         },
+
         body: JSON.stringify(payload),
       });
 

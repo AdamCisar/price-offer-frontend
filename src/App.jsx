@@ -9,25 +9,31 @@ import GeneralAppProviders from './providers/GeneralAppProviders';
 import './components/utilities/Functions';
 import { ItemsProvider } from './providers/ItemsProvider';
 import Items from './pages/Items';
+import PrivateRoutes from './components/auth/PrivateRoutes';
+import Login from './components/auth/Login';
+import { SnackBarProvider } from './providers/SnackBarProvider';
 
 function App() {
   return (
-    <GeneralAppProviders>
     <BrowserRouter>
+      <Routes>
+        <Route path="/prihlasenie" element={<SnackBarProvider><Login /></SnackBarProvider>} />
+      </Routes>
+
+      <PrivateRoutes>
+      <GeneralAppProviders>
         <Routes>
-          {/* <Route path="/" redirect element={<Layout children={<Home />} />} /> */}
-          <Route path="/" element={<Navigate to="/cenove-ponuky" replace />} />
-          <Route path="/cenove-ponuky" >
-            <Route index element={
+            <Route path="/cenove-ponuky" element={
                                   <PriceOfferListProviders><Layout children={<PriceOfferList />} isPencilWrapper={true} />
                                   </PriceOfferListProviders>
                                 } />
-            <Route path=':id' element={<PriceOfferProviders><Layout children={<PriceOfferDetails />}/></PriceOfferProviders>} />
-          </Route>
-          <Route path="/produkty" element={<ItemsProvider><Layout children={<Items />} /></ItemsProvider>} />
+            <Route path="/cenove-ponuky/:id" element={<PriceOfferProviders><Layout children={<PriceOfferDetails />}/></PriceOfferProviders>} />
+
+            <Route path="/produkty" element={<ItemsProvider><Layout children={<Items />} /></ItemsProvider>} />
         </Routes>
+      </GeneralAppProviders>
+      </PrivateRoutes>
     </BrowserRouter>
-    </GeneralAppProviders>
   );
 }
 

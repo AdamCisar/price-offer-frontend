@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -11,8 +11,12 @@ import ResizeWindow from './ResizeWindow';
 import AppButtonModal from '../utilities/AppButtonModal';
 import ProfileEditModal from '../profile/ProfileEditModal';
 import PersonIcon from '@mui/icons-material/Person';
+import { UserInfoContext } from '../../providers/UserInfoProvider';
+import Logout from '../auth/Logout';
 
 const Navbar = ({isPencilWrapper}) => {
+    const {userInfo, isLoading} = useContext(UserInfoContext);
+
     return (
         <AppBar position="static" sx={{ height: '70px' }}>
             <Container maxWidth="xl">
@@ -23,7 +27,7 @@ const Navbar = ({isPencilWrapper}) => {
                         component="div"
                         sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
                     >
-                       Adam Čisár
+                    {userInfo?.name}
                     </Typography>
 
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
@@ -53,6 +57,8 @@ const Navbar = ({isPencilWrapper}) => {
                     <div style={{gap: '10px', display: 'flex'}}>
                         
                         {isPencilWrapper ? <PencilWrapper /> : null}
+
+                        <Logout />
 
                         <AppButtonModal
                             sx={{ fontSize: 30, cursor: 'pointer' }}

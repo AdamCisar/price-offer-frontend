@@ -4,6 +4,7 @@ import { debounce } from 'lodash';
 import { useEffect } from 'react';
 
 export const useSearch = (endpoint) => {
+  const token = localStorage.getItem("token");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -23,7 +24,7 @@ export const useSearch = (endpoint) => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
+          "Authorization": `Bearer ${token}`,
         },
         signal,
       });

@@ -10,8 +10,8 @@ const ApiRoutes = {
     ITEM_SEARCH: `${API_BASE_URL}/items/search`,
     ITEM: `${API_BASE_URL}/items`,
     
-    LOGIN: `${API_BASE_URL}/auth/login`,
-    REGISTER: `${API_BASE_URL}/auth/register`,
+    LOGIN: `${API_BASE_URL}/login`,
+    LOGOUT: `${API_BASE_URL}/logout`,
 };
 
 export default ApiRoutes;

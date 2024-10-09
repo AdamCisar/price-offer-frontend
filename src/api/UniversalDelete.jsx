@@ -2,6 +2,7 @@ import { useState } from "react";
 import ApiRoutes from '../configuration/api_routes/ApiRoutes';
 
 export const useUniversalDelete = (endpoint) => {
+  const token = localStorage.getItem("token");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -13,6 +14,7 @@ export const useUniversalDelete = (endpoint) => {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
           },
           body: JSON.stringify(payload),
         });

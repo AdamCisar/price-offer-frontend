@@ -4,7 +4,7 @@ import { useUniversalGet } from "../api/UniversalGet";
 export const UserInfoContext = createContext(null);
 
 export function UserInfoProvider ({ children }) {
-    const [user, isLoading, error] = useUniversalGet("USER", 1);
+    const [user, isLoading, error] = useUniversalGet("USER", localStorage.getItem("userId"));
     const [userInfo, setUserInfo] = useState({});
 
     useEffect(() => {

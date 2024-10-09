@@ -4,12 +4,13 @@ import {
   import ApiRoutes from '../configuration/api_routes/ApiRoutes';
   
   const fetchData = async (endpoint, id, signal) => {
+    const token = localStorage.getItem("token");
     let urlId = id ? `/${id}` : '';
     const response = await fetch(ApiRoutes[endpoint] + urlId, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
+        "Authorization": `Bearer ${token}`,
       },
       signal,
     });
