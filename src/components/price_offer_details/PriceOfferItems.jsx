@@ -39,7 +39,6 @@ const PriceOfferItems = React.memo(({
   setSelectedItems, 
   setPriceOfferDetails, 
   calculateTotalPriceForItem,  
-  calculateTotal 
 }) => {
   const rows = useMemo(() => priceOfferItems, [priceOfferItems]);
 
@@ -53,16 +52,14 @@ const PriceOfferItems = React.memo(({
     const items = rows.map(item => 
       item.id === newRow.id ? calculatedItem : item
     );
-    const totalPrice = calculateTotal(items);
 
     setPriceOfferDetails(prevData => ({
       ...prevData,
       items,
-      total: totalPrice,
     }));
 
     return newRow;
-  }, [calculateTotal, calculateTotalPriceForItem, rows, setPriceOfferDetails]);
+  }, [calculateTotalPriceForItem, rows, setPriceOfferDetails]);
 
   const handleProcessRowUpdateError = (error) => {
     console.error('processRowUpdateError', error);

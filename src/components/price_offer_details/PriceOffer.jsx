@@ -38,7 +38,7 @@ const PriceOffer = () => {
         handleDeleteSelectedPriceOfferItems
       } = useUpdatePriceOfferDetails();
 
-  const { calculateTotal, handleEditSelectedPriceOfferItemsPrices, calculateTotalPriceForItem } = usePriceOfferCalculation();
+  const { handleEditSelectedPriceOfferItemsPrices, calculateTotalPriceForItem } = usePriceOfferCalculation();
 
   const { priceOfferDetails, isLoading, error, setPriceOfferDetails } = useContext(PriceOfferContext);
   const { userInfo } = useContext(UserInfoContext);
@@ -52,11 +52,11 @@ const PriceOffer = () => {
   }, []);
 
   if (isLoading) {
-    return <Loading />;
+    return <Loading />
   }
 
   if (error) {
-    return <Typography color="error">Error loading price offer details.</Typography>;
+    return <Typography color="error">Error loading price offer details.</Typography>
   }
 
   return (
@@ -114,7 +114,6 @@ const PriceOffer = () => {
               setSelectedItems={setSelectedItems}
               setPriceOfferDetails={setPriceOfferDetails}
               calculateTotalPriceForItem={calculateTotalPriceForItem}
-              calculateTotal={calculateTotal}
             />
             <Divider sx={{ margin: '20px 0' }} />
             <Typography variant="h5">Spolu: {Number(priceOfferDetails.total).toFixed(2)} €</Typography>

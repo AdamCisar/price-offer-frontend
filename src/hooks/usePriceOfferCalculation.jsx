@@ -4,15 +4,6 @@ import { PriceOfferContext } from "../providers/price_offer_providers/PriceOffer
 const usePriceOfferCalculation = () => {
     const{ priceOfferDetails, setPriceOfferDetails } = useContext(PriceOfferContext); 
 
-    const calculateTotal = useCallback((items) => {
-        let total = items.reduce(
-          (total, item) => total + item.quantity * item.price,
-          0
-        );
-
-        return total.round();
-    }, []);
-
     const handleEditSelectedPriceOfferItemsPrices = useCallback((ids, percentage) => {
         if (!percentage) {
           return;
@@ -31,13 +22,11 @@ const usePriceOfferCalculation = () => {
             return item;
         })
 
-        const total = calculateTotal(updatedItems);
         setPriceOfferDetails((prevData) => ({
             ...prevData,
             items: updatedItems,
-            "total": total
         }));
-    }, [calculateTotal, priceOfferDetails, setPriceOfferDetails]);
+    }, [priceOfferDetails, setPriceOfferDetails]);
 
     const calculateTotalPriceForItem = useCallback((item) => {
         if (!item) {
@@ -51,7 +40,6 @@ const usePriceOfferCalculation = () => {
 
     return {
         handleEditSelectedPriceOfferItemsPrices,
-        calculateTotal,
         calculateTotalPriceForItem,
     };
 };

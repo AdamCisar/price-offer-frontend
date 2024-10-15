@@ -6,7 +6,6 @@ import usePriceOfferCalculation from "./usePriceOfferCalculation";
 const useUpdatePriceOfferDetails = () => {
     const [sendData, isLoading, error] = useUniversalPost("PRICE_OFFER");
     const { priceOfferDetails, setPriceOfferDetails } = useContext(PriceOfferContext);
-    const { calculateTotal } = usePriceOfferCalculation();
 
     const handleSavePriceOfferDetails = useCallback(async (handleSnackbarOpen) => {
         try {
@@ -23,9 +22,8 @@ const useUpdatePriceOfferDetails = () => {
         setPriceOfferDetails((prevData) => ({
             ...prevData,
             'items': items,
-            'total': calculateTotal(items)
         }));
-    }, [calculateTotal, priceOfferDetails, setPriceOfferDetails]);
+    }, [priceOfferDetails, setPriceOfferDetails]);
 
     const handleCustomerInputChange = useCallback((event) => {
         const { name, value } = event.target;

@@ -34,7 +34,7 @@ const Login = () => {
             navigate("/cenove-ponuky");
         } catch (error) {
             console.log(error);
-            handleSnackbarOpen('Nepodarilo sa prihlásiť!', 'error');
+            handleSnackbarOpen('Nesprávny email alebo heslo!', 'error');
         }
     };
 
