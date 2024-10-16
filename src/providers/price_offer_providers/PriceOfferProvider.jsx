@@ -29,11 +29,13 @@ export function PriceOfferProvider({ children }) {
 
     const totalPrice = calculateTotal(priceOfferDetails.items);
 
-    setPriceOfferDetails(prevData => ({
-      ...prevData,
-      total: totalPrice,
-    }));
-  }, [priceOfferDetails]);
+    if (priceOfferDetails.total !== totalPrice) {
+      setPriceOfferDetails(prevData => ({
+        ...prevData,
+        total: totalPrice,
+      }));
+    }
+  }, [priceOfferDetails, calculateTotal]); 
 
   return (
     <PriceOfferContext.Provider value={{ priceOfferDetails, isLoading, error, setPriceOfferDetails }}>

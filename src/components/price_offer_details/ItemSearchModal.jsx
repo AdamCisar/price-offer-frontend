@@ -5,6 +5,7 @@ import Loading from '../utilities/Loading';
 import useSubmitPriceOfferItem from '../../hooks/useSubmitPriceOfferItem';
 import { SnackBarContext } from '../../providers/SnackBarProvider';
 import SearchedResultRow from '../styled_components/SearchedResultRow';
+import { IMAGES_FOLDER } from '../../configuration/api_routes/ApiRoutes';
 
 const ItemSearchModal = React.memo(({ open, onClose, focusInputRef, styles }) => {
   const { searchedResults, setSearchedResults, debouncedSearch, isLoading, error } = useSearch("ITEM_SEARCH");
@@ -100,7 +101,10 @@ const ItemSearchModal = React.memo(({ open, onClose, focusInputRef, styles }) =>
                 ref={el => selectedItems.current.elems[item.id] = el}
                 onClick={() => handleItemClick(item)}
                 >
-                <span>{item.title}</span>
+                <span style={{ display: 'flex', alignItems: 'center', marginRight: 10 }}>
+                  <img style={{ width: 30, height: 25 }} src={IMAGES_FOLDER + item.img_url} alt={' '} />
+                </span>
+                <span style={{ flexGrow: 1 }}>{item.title}</span>
                 <span>{item.price} €</span>
               </SearchedResultRow>
             ))

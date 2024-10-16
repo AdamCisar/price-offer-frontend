@@ -1,4 +1,5 @@
-const API_BASE_URL = process.env.REACT_APP_API_URL + '/api';
+const API_BASE_URL = process.env.REACT_APP_BASE_URL + '/api';
+export const IMAGES_FOLDER = process.env.REACT_APP_BASE_URL + '/images';
 
 const ApiRoutes = {
     PRICE_OFFER: `${API_BASE_URL}/price-offers`,
