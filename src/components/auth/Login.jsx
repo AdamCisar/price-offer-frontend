@@ -28,10 +28,13 @@ const Login = () => {
                 password: passwordValue
             })
 
-            localStorage.setItem("token", response.auth.token);
-            localStorage.setItem("userId", response.userId);
+            if (response.auth) {
+                localStorage.setItem("token", response.auth.token);
+                localStorage.setItem("userId", response.userId);
+    
+                navigate("/cenove-ponuky");
+            }
 
-            navigate("/cenove-ponuky");
         } catch (error) {
             console.log(error);
             handleSnackbarOpen('Nesprávny email alebo heslo!', 'error');
