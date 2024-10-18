@@ -2,11 +2,9 @@ import React, { useContext, useRef } from 'react';
 import { TextField, Button, Typography, Container, Box } from '@mui/material';
 import { useUniversalPost } from '../../api/UniversalPost';
 import Loading from '../utilities/Loading';
-import { useNavigate } from "react-router-dom";
 import { SnackBarContext } from '../../providers/SnackBarProvider';
 
 const Login = () => {
-    const navigate = useNavigate();
     const email = useRef('');
     const password = useRef('');
     const [sendData, isLoading, error] = useUniversalPost("LOGIN");
@@ -32,7 +30,7 @@ const Login = () => {
                 localStorage.setItem("token", response.auth.token);
                 localStorage.setItem("userId", response.userId);
     
-                navigate("/cenove-ponuky");
+                window.location.href = "/cenove-ponuky";
             }
 
         } catch (error) {
