@@ -1,6 +1,5 @@
 import { Document, Page, Text, View, StyleSheet, Font, Image } from '@react-pdf/renderer';
 import logo from '../../assets/cisar_logo.png';
-import NotoSans from '../../../node_modules/notosans-fontface/fonts/NotoSans-Regular.ttf';
 
 Font.register({
     family: 'NotoSans',
