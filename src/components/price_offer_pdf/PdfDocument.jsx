@@ -6,7 +6,7 @@ Font.register({
     family: 'NotoSans',
     fonts: [
         {
-            src: NotoSans,
+            src: '/fonts/NotoSans-Regular.ttf',
         }
     ]
 });
