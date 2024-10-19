@@ -1,12 +1,12 @@
 import { Document, Page, Text, View, StyleSheet, Font, Image } from '@react-pdf/renderer';
 import logo from '../../assets/cisar_logo.png';
-import NotoSansRegular from 'notosans-fontface/fonts/NotoSans-Regular.ttf';
+import NotoSans from '../../../node_modules/notosans-fontface/fonts/NotoSans-Regular.ttf';
 
 Font.register({
     family: 'NotoSans',
     fonts: [
         {
-            src: "https://raw.githubusercontent.com/quoteunquoteapps/CourierPrime/master/fonts/ttf/CourierPrime-Regular.ttf",
+            src: NotoSans,
         }
     ]
 });
