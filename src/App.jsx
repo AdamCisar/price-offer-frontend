@@ -23,7 +23,7 @@ function App() {
       <PrivateRoutes>
       <GeneralAppProviders>
         <Routes>
-            <Route path="/" />
+            <Route path="/" element={<Navigate to="/cenove-ponuky" replace />} />
             <Route path="/cenove-ponuky" element={
                                   <PriceOfferListProviders><Layout children={<PriceOfferList />} isPencilWrapper={true} />
                                   </PriceOfferListProviders>
