@@ -1,5 +1,7 @@
 import { Navigate } from 'react-router-dom';
 import { isTokenExpired } from '../utilities/Token';
+import { useEffect, useState } from 'react';
+import Loading from '../utilities/Loading';
 
 const PrivateRoutes = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
