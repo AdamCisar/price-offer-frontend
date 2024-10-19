@@ -6,7 +6,7 @@ Font.register({
     family: 'NotoSans',
     fonts: [
         {
-            src: NotoSansRegular,
+            src: "https://raw.githubusercontent.com/quoteunquoteapps/CourierPrime/master/fonts/ttf/CourierPrime-Regular.ttf",
         }
     ]
 });
