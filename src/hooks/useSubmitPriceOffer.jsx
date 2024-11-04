@@ -44,7 +44,7 @@ const useSubmitPriceOffer = (onClose, addToPriceOfferList) => {
     return {
         handleSubmit,
         handleInputChange,
-        errors,
+        errors: formData.errors,
         isLoading
     };
 };

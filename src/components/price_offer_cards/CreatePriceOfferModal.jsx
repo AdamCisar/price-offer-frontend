@@ -43,17 +43,18 @@ const CreatePriceOfferModal = ({ open, onClose, focusInputRef }) => {
                         margin="normal"
                         variant="outlined"
                         name='title'
-                        error={errors.titleError}
+                        error={errors.title}
                         onChange={handleInputChange}
                         inputRef={focusInputRef}
                     />
+               
                     <TextField
                         label="Popis"
                         fullWidth
                         margin="normal"
                         variant="outlined"
                         name='description'
-                        error={errors.descriptionError}
+                        error={errors.description}
                         onChange={handleInputChange}
                     />
                 </div>
