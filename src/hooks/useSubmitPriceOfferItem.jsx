@@ -4,7 +4,6 @@ import { SnackBarContext } from "../providers/SnackBarProvider";
 import { PriceOfferContext } from "../providers/price_offer_providers/PriceOfferProvider";
 import useValidate from "./useValidate";
 
-
 const initialState = {
     title: "",
     price: "",
@@ -21,7 +20,7 @@ const useSubmitPriceOfferItem = (onClose) => {
     const { handleSnackbarOpen } = useContext(SnackBarContext);
     const { priceOfferDetails, setPriceOfferDetails } = useContext(PriceOfferContext);
     const [sendData, isLoading, error] = useUniversalPost("ITEM");
-    const { validate, handleInputChange, errors } = useValidate(onClose, setPriceOfferDetails, initialState, setFormData, formData);
+    const { validate, handleInputChange, errors } = useValidate(setFormData, formData);
 
     const handleSubmit = async () => {
         
