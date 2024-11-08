@@ -7,7 +7,8 @@ import { SnackBarContext } from '../../providers/SnackBarProvider';
 const Login = () => {
     const email = useRef('');
     const password = useRef('');
-    const [sendData, isLoading, error] = useUniversalPost("LOGIN");
+    const [logining, setLogining] = React.useState(false);
+    const [sendData] = useUniversalPost("LOGIN");
     const { handleSnackbarOpen } = useContext(SnackBarContext);
 
     const handleSubmit = async (e) => {
@@ -20,6 +21,8 @@ const Login = () => {
             if (!emailValue || !passwordValue) {
                 throw new Error;
             }
+
+            setLogining(true);
 
             const response = await sendData({
                 email: emailValue,
@@ -35,11 +38,12 @@ const Login = () => {
 
         } catch (error) {
             console.log(error);
+            setLogining(false);
             handleSnackbarOpen('Nesprávny email alebo heslo!', 'error');
         }
     };
 
-    if (isLoading) {
+    if (logining) {
         return <Loading />;
     }
 
