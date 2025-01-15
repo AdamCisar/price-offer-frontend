@@ -6,7 +6,7 @@ const AppButtonModal = React.memo(({...props}) => {
     const [modalOpen, setModalOpen] = useState(false);
     const focusInputRef = useRef();
 
-    const handleButtonClick = useCallback(() => {
+    const handleButtonClick = useCallback((event) => {
         setModalOpen(true);
         const timer = setTimeout(() => {
           focusInputRef.current?.focus(); 
@@ -22,8 +22,8 @@ const AppButtonModal = React.memo(({...props}) => {
     return (
         <div style={{...props.divStyles}}>
             <props.Button {...props.styles} sx={props.sx} onClick={handleButtonClick}>
-                {props.title}
                 {props.InnerComponent && <props.InnerComponent />}
+                {props.title}
             </props.Button>
             
             <props.ModalComponent 

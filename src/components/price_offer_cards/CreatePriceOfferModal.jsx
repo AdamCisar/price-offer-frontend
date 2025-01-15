@@ -13,14 +13,14 @@ const Title = styled(Typography)(({ theme }) => ({
     marginTop: 25,
 }));
 
-const CreatePriceOfferModal = ({ open, onClose, focusInputRef }) => {
+const CreatePriceOfferModal = ({ open, onClose, focusInputRef, modalTitle, submitButtonText, duplicateFromId }) => {
     const { addToPriceOfferList } = useContext(PriceOfferListContext);
     const {
         handleSubmit,
         handleInputChange,
         errors,
         isLoading,
-    } = useSubmitPriceOffer(onClose, addToPriceOfferList);
+    } = useSubmitPriceOffer(onClose, addToPriceOfferList, duplicateFromId);
 
     return (
         <Dialog aria-labelledby="dialog-title" aria-describedby="dialog-description"
@@ -33,7 +33,7 @@ const CreatePriceOfferModal = ({ open, onClose, focusInputRef }) => {
             }}
         >
             <DialogTitle id="dialog-title">
-                Vytvorenie novej cenovej ponuky
+                {modalTitle || 'Vytvorenie novej cenovej ponuky'}
             </DialogTitle>
             <DialogContent>
                 <div style={{ width: '80%', justifyContent: 'center', margin: 'auto' }}>
@@ -64,7 +64,7 @@ const CreatePriceOfferModal = ({ open, onClose, focusInputRef }) => {
                     Zatvoriť
                 </Button>
                 <Button onClick={handleSubmit} color="primary">
-                    Vytvoriť
+                    {submitButtonText || 'Vytvoriť'}
                 </Button>
             </DialogActions>
         </Dialog>

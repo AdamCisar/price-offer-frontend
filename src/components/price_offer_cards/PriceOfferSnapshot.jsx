@@ -1,15 +1,24 @@
 import React, { useContext, useState } from 'react';
-import { Card, CardActionArea, CardContent, CardMedia, Typography, Box } from '@mui/material';
+import { Card, CardActionArea, CardContent, CardMedia, Typography, Box, MenuItem } from '@mui/material';
 import { styled } from '@mui/system';
 import { PencilEditContext } from '../../providers/PencilEditProvider';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Shimmer from '../styled_components/Shimmer';
+import DottedMenu from '../utilities/DottedMenu';
+import AppButtonModal from '../utilities/AppButtonModal';
+import CreatePriceOfferModal from './CreatePriceOfferModal';
+import EditIcon from '@mui/icons-material/Edit';
+import ArchiveIcon from '@mui/icons-material/Archive';
+import FileCopyIcon from '@mui/icons-material/FileCopy';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import { SnackBarContext } from '../../providers/SnackBarProvider';
 
 const PriceOfferSnapshot = ({ ...props }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [selected, setSelected] = useState(false);
   const { isEditing, handleSelectedPriceOfferCard } = useContext(PencilEditContext);
+  const {handleSnackbarOpen} = React.useContext(SnackBarContext);
 
   const handleSelectClick = () => {
     if (!isEditing) {
@@ -28,12 +37,48 @@ const PriceOfferSnapshot = ({ ...props }) => {
   };
   const [isLoading, setIsLoading] = useState(true);
 
-  // Handler for when the image is fully loaded
   const handleImageLoad = () => {
     setIsLoading(false);
   };
+  
+  const handleNothing = (event) => {
+    event.stopPropagation();
+    handleSnackbarOpen('Pracuje sa na tom 🛠️', 'info');
+  };
+
   return (
-    <BounceCard   
+    <div style={{ position: 'relative' }}>
+      {!isEditing && 
+      
+      <DottedMenu 
+        props={props}
+        list={[
+              <MenuItem onClick={handleNothing} disableRipple>
+                <EditIcon />
+                Upraviť
+              </MenuItem>,
+              <AppButtonModal
+                Button={MenuItem}
+                InnerComponent={FileCopyIcon}
+                title="Duplikovať"
+                modalTitle="Duplikovanie cenovej ponuky"
+                submitButtonText="Duplikovať"
+                duplicateFromId={props.id}
+                ModalComponent={CreatePriceOfferModal}
+              />,
+            <MenuItem onClick={handleNothing} disableRipple>
+              <ArchiveIcon />
+              Archive
+            </MenuItem>,
+            <MenuItem onClick={handleNothing} disableRipple>
+              <MoreHorizIcon />
+              More
+            </MenuItem>,
+        ]}        
+
+      />}
+
+    <BounceCard
       onClick={() => {
               handleSelectClick(); 
               handlePriceOfferDetails();
@@ -43,13 +88,14 @@ const PriceOfferSnapshot = ({ ...props }) => {
     >
 
       {isEditing && <CircleIndicator selected={selected} />}
+
       <CardActionArea sx={{ maxWidth: 200, minWidth: 200, textAlign: 'center', padding: 2 }}>
       <div style={{ position: 'relative' }}>
       {isLoading && (
         <Shimmer
           width="100%"
-          height="200px"  // Adjust height to match your image dimensions
-          borderRadius="8px"  // Same border radius as your image if applicable
+          height="200px" 
+          borderRadius="8px" 
         />
       )}
 
@@ -58,11 +104,11 @@ const PriceOfferSnapshot = ({ ...props }) => {
         image="/invoice_thumb.png"
         alt={props.title}
         style={{ display: isLoading ? 'none' : 'block' }}
-        onLoad={handleImageLoad}  // Calls handler when image is fully loaded
+        onLoad={handleImageLoad} 
       />
     </div>
         <CardContent>
-          <Typography gutterBottom variant="h6" component="div">
+          <Typography gutterBottom variant="h6" component="div" style={{ fontSize: 16 }}>
             {props.title}
           </Typography>
           <Typography variant="body2" color="text.secondary">
@@ -71,6 +117,7 @@ const PriceOfferSnapshot = ({ ...props }) => {
         </CardContent>
       </CardActionArea>
     </BounceCard>
+    </div>
   );
 };
 
