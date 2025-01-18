@@ -189,7 +189,7 @@ const PdfDocument = ({ priceOfferDetails, userInfo }) => {
                 </View>
 
                 <View style={styles.footer}>
-                    <Text style={styles.totalPriceCell}>Spolu s DPH: </Text>
+                    <Text style={styles.totalPriceCell}>Spolu: </Text>
                     <Text style={[{width: 'auto'}, styles.totalPriceCell]}>{String(priceOfferDetails.total).replace('.', ',')} €</Text>
                 </View>
             </Page>
