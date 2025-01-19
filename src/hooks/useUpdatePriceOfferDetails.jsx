@@ -1,7 +1,6 @@
 import { useCallback, useContext } from "react";
 import { useUniversalPost } from "../api/UniversalPost";
 import { PriceOfferContext } from "../providers/price_offer_providers/PriceOfferProvider";
-import usePriceOfferCalculation from "./usePriceOfferCalculation";
 
 const useUpdatePriceOfferDetails = () => {
     const [sendData, isLoading, error] = useUniversalPost("PRICE_OFFER");

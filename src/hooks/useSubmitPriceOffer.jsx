@@ -8,6 +8,7 @@ const initialState = {
     description: "",
     errors: {
         title: false,
+        description: false
     }
 };
 

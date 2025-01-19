@@ -20,14 +20,14 @@ const ItemSearchModal = React.memo(({ open, onClose, focusInputRef, styles }) =>
     for (let i = 0; i < selectedItems.current.items.length; i++) {
       if (selectedItems.current.items[i] === item) {
         selectedItems.current.items.splice(i, 1);
-        selectedItems.current.elems[item.id].style.backgroundColor = 'white';
-        selectedItems.current.elems[item.id].style.color = 'black';
+        selectedItems.current.elems[item.item_id].style.backgroundColor = 'white';
+        selectedItems.current.elems[item.item_id].style.color = 'black';
         return;
       }
     }
 
-    selectedItems.current.elems[item.id].style.backgroundColor = 'black';
-    selectedItems.current.elems[item.id].style.color = 'white';
+    selectedItems.current.elems[item.item_id].style.backgroundColor = 'black';
+    selectedItems.current.elems[item.item_id].style.color = 'white';
     selectedItems.current.items.push(item);
   };
 
@@ -97,8 +97,8 @@ const ItemSearchModal = React.memo(({ open, onClose, focusInputRef, styles }) =>
           searchedResults && 
           searchedResults.map((item) => (
               <SearchedResultRow
-                key={item.id}
-                ref={el => selectedItems.current.elems[item.id] = el}
+                key={item.item_id}
+                ref={el => selectedItems.current.elems[item.item_id] = el}
                 onClick={() => handleItemClick(item)}
                 >
                 <span style={{ display: 'flex', alignItems: 'center', marginRight: 10 }}>

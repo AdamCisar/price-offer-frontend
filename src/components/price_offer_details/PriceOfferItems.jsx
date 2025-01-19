@@ -19,7 +19,6 @@ const localeText = {
 
 const itemRounding = 2;
 const columns = [
-  { field: 'id', headerName: 'ID', width: 70 },
   { field: 'title', headerName: 'Názov', width: 320 },
   { field: 'unit', headerName: 'Jednotka', width: 130 },
   { field: 'quantity', headerName: 'Množstvo', width: 130, editable: true,
@@ -50,7 +49,7 @@ const PriceOfferItems = React.memo(({
   const processRowUpdate = useCallback((newRow) => {
     const calculatedItem = calculateTotalPriceForItem(newRow);
     const items = rows.map(item => 
-      item.id === newRow.id ? calculatedItem : item
+      item.item_id === newRow.item_id ? calculatedItem : item
     );
 
     setPriceOfferDetails(prevData => ({
@@ -74,6 +73,7 @@ const PriceOfferItems = React.memo(({
         autoHeight
         rows={rows}
         columns={columns}
+        getRowId={(row) => row.item_id}
         pageSizeOptions={[5, 10, 25, 50, 100]}
         onRowSelectionModelChange={handleItemSelection}
         processRowUpdate={processRowUpdate}

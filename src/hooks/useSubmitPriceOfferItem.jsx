@@ -51,7 +51,7 @@ const useSubmitPriceOfferItem = (onClose) => {
             return false;
         }
 
-        if (priceOfferDetails.items?.find((item) => item.id === priceOfferItem.id)) {
+        if (priceOfferDetails.items?.find((item) => item.item_id === priceOfferItem.item_id)) {
             return false;
         }
 
