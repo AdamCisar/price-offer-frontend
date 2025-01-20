@@ -56,6 +56,10 @@ export default function DottedMenu(props) {
   };
 
   const handleClose = (event) => {
+    if (event.code === 'Tab') {
+      return;
+    }
+    
     setAnchorEl(null);
   };
 

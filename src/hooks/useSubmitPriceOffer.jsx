@@ -12,7 +12,7 @@ const initialState = {
     }
 };
 
-const useSubmitPriceOffer = (onClose, addToPriceOfferList, duplicateFromId = undefined) => {
+const useSubmitPriceOffer = (onClose, addToPriceOfferList, duplicateFromId = undefined, priceOfferId = undefined) => {
     
     const [formData, setFormData] = useState(initialState);
     const { handleSnackbarOpen } = useContext(SnackBarContext);
@@ -27,9 +27,10 @@ const useSubmitPriceOffer = (onClose, addToPriceOfferList, duplicateFromId = und
 
         try {
             const priceOffer = await sendData({
-              title: formData.title,
-              description: formData.description,
-              duplicateFromId: duplicateFromId
+                id: priceOfferId,
+                title: formData.title,
+                description: formData.description,
+                duplicateFromId: duplicateFromId
             });
 
             handleSnackbarOpen('Cenová ponuka bola vytvorená!', 'success');

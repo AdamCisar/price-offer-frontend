@@ -1,26 +1,16 @@
 import React, { useContext } from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, Typography } from '@mui/material';
-import { styled } from '@mui/system';
+import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button } from '@mui/material';
 import useSubmitPriceOffer from '../../hooks/useSubmitPriceOffer';
 import { PriceOfferListContext } from '../../providers/PriceOfferListProvider';
 
-const Title = styled(Typography)(({ theme }) => ({
-    textAlign: 'center',
-    color: 'lightblack',
-    fontWeight: '600',
-    fontSize: 18,
-    marginBottom: 10,
-    marginTop: 25,
-}));
-
-const CreatePriceOfferModal = ({ open, onClose, focusInputRef, modalTitle, submitButtonText, duplicateFromId }) => {
+const PriceOfferModal = ({ open, onClose, focusInputRef, modalTitle, submitButtonText, duplicateFromId, priceOfferValues }) => {
     const { addToPriceOfferList } = useContext(PriceOfferListContext);
     const {
         handleSubmit,
         handleInputChange,
         errors,
         isLoading,
-    } = useSubmitPriceOffer(onClose, addToPriceOfferList, duplicateFromId);
+    } = useSubmitPriceOffer(onClose, addToPriceOfferList, duplicateFromId, priceOfferValues?.id);
 
     return (
         <Dialog aria-labelledby="dialog-title" aria-describedby="dialog-description"
@@ -46,6 +36,7 @@ const CreatePriceOfferModal = ({ open, onClose, focusInputRef, modalTitle, submi
                         error={errors.title}
                         onChange={handleInputChange}
                         inputRef={focusInputRef}
+                        placeholder={priceOfferValues?.title || ''}
                     />
                
                     <TextField
@@ -56,6 +47,7 @@ const CreatePriceOfferModal = ({ open, onClose, focusInputRef, modalTitle, submi
                         name='description'
                         error={errors.description}
                         onChange={handleInputChange}
+                        placeholder={priceOfferValues?.description || ''}
                     />
                 </div>
             </DialogContent>
@@ -71,4 +63,4 @@ const CreatePriceOfferModal = ({ open, onClose, focusInputRef, modalTitle, submi
     );
 };
 
-export default CreatePriceOfferModal;
+export default PriceOfferModal;

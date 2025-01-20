@@ -6,7 +6,7 @@ import Loading from '../utilities/Loading';
 import AppButtonModal from '../utilities/AppButtonModal';
 import { IconButton } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import CreatePriceOfferModal from './CreatePriceOfferModal';
+import PriceOfferModal from './PriceOfferModal';
 
 const PriceOfferCards = () => {
     const { priceOffer, isLoading, error } = useContext(PriceOfferListContext);
@@ -28,7 +28,7 @@ const PriceOfferCards = () => {
                     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: 200, minHeight: 350 }}>
                         <AppButtonModal
                             Button={IconButton}
-                            ModalComponent={CreatePriceOfferModal}
+                            ModalComponent={PriceOfferModal}
                             InnerComponent={AddIcon}
                             sx={{
                                 width: 106,

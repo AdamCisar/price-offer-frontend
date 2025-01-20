@@ -6,12 +6,12 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Shimmer from '../styled_components/Shimmer';
 import DottedMenu from '../utilities/DottedMenu';
 import AppButtonModal from '../utilities/AppButtonModal';
-import CreatePriceOfferModal from './CreatePriceOfferModal';
-import EditIcon from '@mui/icons-material/Edit';
+import PriceOfferModal from './PriceOfferModal';
 import ArchiveIcon from '@mui/icons-material/Archive';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { SnackBarContext } from '../../providers/SnackBarProvider';
+import { Edit } from '@mui/icons-material';
 
 const PriceOfferSnapshot = ({ ...props }) => {
   const navigate = useNavigate();
@@ -53,10 +53,15 @@ const PriceOfferSnapshot = ({ ...props }) => {
       <DottedMenu 
         props={props}
         list={[
-              <MenuItem onClick={handleNothing} disableRipple>
-                <EditIcon />
-                Upraviť
-              </MenuItem>,
+              <AppButtonModal
+                Button={MenuItem}
+                InnerComponent={Edit}
+                title="Upraviť"
+                modalTitle="Úprava cenovej ponuky"
+                submitButtonText="Upraviť"
+                priceOfferValues={props}
+                ModalComponent={PriceOfferModal}
+              />,
               <AppButtonModal
                 Button={MenuItem}
                 InnerComponent={FileCopyIcon}
@@ -64,15 +69,11 @@ const PriceOfferSnapshot = ({ ...props }) => {
                 modalTitle="Duplikovanie cenovej ponuky"
                 submitButtonText="Duplikovať"
                 duplicateFromId={props.id}
-                ModalComponent={CreatePriceOfferModal}
+                ModalComponent={PriceOfferModal}
               />,
             <MenuItem onClick={handleNothing} disableRipple>
-              <ArchiveIcon />
-              Archive
-            </MenuItem>,
-            <MenuItem onClick={handleNothing} disableRipple>
               <MoreHorizIcon />
-              More
+              Viac
             </MenuItem>,
         ]}        
 
