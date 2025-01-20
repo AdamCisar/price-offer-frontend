@@ -17,7 +17,7 @@ const useUpdatePriceOfferDetails = () => {
     }, [priceOfferDetails, sendData]);
 
     const handleDeleteSelectedPriceOfferItems = useCallback(async (ids) => {
-        const items = priceOfferDetails.items.filter((item) => !ids.includes(item.id));
+        const items = priceOfferDetails.items.filter((item) => !ids.includes(item.item_id));
         setPriceOfferDetails((prevData) => ({
             ...prevData,
             'items': items,
