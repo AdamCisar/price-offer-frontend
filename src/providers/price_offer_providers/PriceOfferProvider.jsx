@@ -9,8 +9,6 @@ export function PriceOfferProvider({ children }) {
   const [priceOffer, isLoading, error] = useUniversalGet('PRICE_OFFER', id);
   const [priceOfferDetails, setPriceOfferDetails] = useState({});
 
-  console.log(priceOffer)
-    
   const calculateTotal = useCallback((items) => {
       let total = items.reduce(
         (total, item) => total + item.quantity * item.price,

@@ -19,8 +19,8 @@ const localeText = {
 
 const itemRounding = 2;
 const columns = [
-  { field: 'title', headerName: 'Názov', width: 320 },
-  { field: 'unit', headerName: 'Jednotka', width: 130 },
+  { field: 'title', headerName: 'Názov', width: 320, editable: true },
+  { field: 'unit', headerName: 'Jednotka', width: 130, editable: true },
   { field: 'quantity', headerName: 'Množstvo', width: 130, editable: true,
     renderCell: (params) => (Number(params.value).round(itemRounding))
   },
