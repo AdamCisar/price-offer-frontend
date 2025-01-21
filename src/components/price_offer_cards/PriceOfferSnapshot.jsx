@@ -7,17 +7,17 @@ import Shimmer from '../styled_components/Shimmer';
 import DottedMenu from '../utilities/DottedMenu';
 import AppButtonModal from '../utilities/AppButtonModal';
 import PriceOfferModal from './PriceOfferModal';
-import ArchiveIcon from '@mui/icons-material/Archive';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { SnackBarContext } from '../../providers/SnackBarProvider';
 import { Edit } from '@mui/icons-material';
+import CheckIcon from '../utilities/CheckIcon';
 
 const PriceOfferSnapshot = ({ ...props }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [selected, setSelected] = useState(false);
-  const { isEditing, handleSelectedPriceOfferCard } = useContext(PencilEditContext);
+  const { isEditing, handleSelected } = useContext(PencilEditContext);
   const {handleSnackbarOpen} = React.useContext(SnackBarContext);
 
   const handleSelectClick = () => {
@@ -25,7 +25,7 @@ const PriceOfferSnapshot = ({ ...props }) => {
       return;
     }
 
-    handleSelectedPriceOfferCard(props.id);
+    handleSelected(props.id);
     setSelected((prev) => !prev);
   };
 
@@ -88,10 +88,10 @@ const PriceOfferSnapshot = ({ ...props }) => {
       sx={{ maxHeight: 320, minHeight: 320,}}
     >
 
-      {isEditing && <CircleIndicator selected={selected} />}
-
-      <CardActionArea sx={{ maxWidth: 200, minWidth: 200, textAlign: 'center', padding: 2 }}>
-      <div style={{ position: 'relative' }}>
+    {isEditing && <div style={{ position: 'absolute', top: 5, right: 5 }}><CheckIcon selected={selected} /></div>}
+    
+    <CardActionArea sx={{ maxWidth: 200, minWidth: 200, textAlign: 'center', padding: 2 }}>
+    <div style={{ position: 'relative' }}>
       {isLoading && (
         <Shimmer
           width="100%"
@@ -134,20 +134,6 @@ const BounceCard = styled(Card, {
           boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)',
         },
       }),
-}));
-
-
-const CircleIndicator = styled(Box)(({ selected }) => ({
-  width: 20,
-  height: 20,
-  borderRadius: '50%',
-  backgroundColor: selected ? '#1976d2' : "#bbb",
-  position: 'absolute',
-  top: 10,
-  right: 10,
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
 }));
 
 export default PriceOfferSnapshot;

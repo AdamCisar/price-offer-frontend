@@ -7,7 +7,7 @@ import PriceOfferDetails from './pages/PriceOfferDetails';
 import PriceOfferProviders from './providers/price_offer_providers/PriceOfferProviders';
 import GeneralAppProviders from './providers/GeneralAppProviders';
 import './components/utilities/Functions';
-import { ItemsProvider } from './providers/ItemsProvider';
+import ItemsProviders from './providers/ItemsProviders';
 import Items from './pages/Items';
 import PrivateRoutes from './components/auth/PrivateRoutes';
 import Login from './components/auth/Login';
@@ -30,7 +30,7 @@ function App() {
                                 } />
             <Route path="/cenove-ponuky/:id" element={<PriceOfferProviders><Layout children={<PriceOfferDetails />}/></PriceOfferProviders>} />
 
-            <Route path="/produkty" element={<ItemsProvider><Layout children={<Items />} /></ItemsProvider>} />
+            <Route path="/produkty" element={<ItemsProviders><Layout children={<Items />} isPencilWrapper={true} /></ItemsProviders>} />
         </Routes>
       </GeneralAppProviders>
       </PrivateRoutes>

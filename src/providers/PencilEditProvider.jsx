@@ -6,7 +6,7 @@ export const PencilEditProvider = ({ children }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [selectedCards, setSelectedCards] = useState([]);
 
-  const handleSelectedPriceOfferCard = (id) => {
+  const handleSelected = (id) => {
       if (selectedCards.includes(id)) {
         setSelectedCards(selectedCards.filter((card) => card !== id));
       } else {
@@ -15,7 +15,7 @@ export const PencilEditProvider = ({ children }) => {
   };
   
   return (
-    <PencilEditContext.Provider value={{ isEditing, setIsEditing, handleSelectedPriceOfferCard, selectedCards, setSelectedCards }}>
+    <PencilEditContext.Provider value={{ isEditing, setIsEditing, handleSelected, selectedCards, setSelectedCards }}>
       {children}
     </PencilEditContext.Provider>
   );
