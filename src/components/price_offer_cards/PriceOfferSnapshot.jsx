@@ -11,7 +11,7 @@ import FileCopyIcon from '@mui/icons-material/FileCopy';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { SnackBarContext } from '../../providers/SnackBarProvider';
 import { Edit } from '@mui/icons-material';
-import CheckIcon from '@mui/icons-material/Check';
+import CheckIcon from '../utilities/CheckIcon';
 
 const PriceOfferSnapshot = ({ ...props }) => {
   const navigate = useNavigate();
@@ -88,10 +88,10 @@ const PriceOfferSnapshot = ({ ...props }) => {
       sx={{ maxHeight: 320, minHeight: 320,}}
     >
 
-      {isEditing && <CircleIndicator selected={selected} />}
-
-      <CardActionArea sx={{ maxWidth: 200, minWidth: 200, textAlign: 'center', padding: 2 }}>
-      <div style={{ position: 'relative' }}>
+    {isEditing && <div style={{ position: 'absolute', top: 5, right: 5 }}><CheckIcon selected={selected} /></div>}
+    
+    <CardActionArea sx={{ maxWidth: 200, minWidth: 200, textAlign: 'center', padding: 2 }}>
+    <div style={{ position: 'relative' }}>
       {isLoading && (
         <Shimmer
           width="100%"
@@ -135,40 +135,5 @@ const BounceCard = styled(Card, {
         },
       }),
 }));
-
-const Circle = styled(Box)(({ selected }) => ({
-  width: 12,
-  height: 12,
-  borderRadius: '50%',
-  position: 'absolute',
-  top: 10,
-  right: 10,
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  backgroundColor: selected ? '#1976d2' : "#bbb",
-  background: '#bbb',
-  animation: selected ? 'fillCircle 0.2s ease-out forwards' : 'none',
-}));
-
-const styles = `
-  @keyframes fillCircle {
-    0% {
-      transform: scale(0);
-      background-color: #1976d2;
-    }
-    100% {
-      transform: scale(1);
-      background-color: #1976d2;
-    }
-  }
-`;
-
-export const CircleIndicator = ({selected}) => (
-  <>
-    <style>{styles}</style>
-    {selected ? <CheckIcon /> : <Circle selected={selected} />}
-  </>
-);
 
 export default PriceOfferSnapshot;

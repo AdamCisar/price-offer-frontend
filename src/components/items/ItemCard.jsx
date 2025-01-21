@@ -3,7 +3,7 @@ import AppButtonModal from "../utilities/AppButtonModal";
 import ItemEditModal from "./ItemEditModal";
 import { useContext, useState } from "react";
 import { PencilEditContext } from "../../providers/PencilEditProvider";
-import { CircleIndicator } from "../price_offer_cards/PriceOfferSnapshot";
+import CheckIcon from "../utilities/CheckIcon";
 
 const ItemCard = (props) => {
     const { item, setItems } = props;
@@ -30,7 +30,7 @@ const ItemCard = (props) => {
                 <Box sx={{ position: 'absolute', bottom: 12, left: 12 }}>
                     <Typography variant="p3">{item.price} €</Typography>
                 </Box>
-                {isEditing && <CircleIndicator selected={selected} />}
+                {isEditing && <CheckIcon selected={selected} />}
                 <Box sx={{ position: 'absolute', bottom: 10, right: 10 }}>
                     <AppButtonModal
                         styles={{ variant: 'outlined', color: 'primary' }}
