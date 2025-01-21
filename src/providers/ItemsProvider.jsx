@@ -1,21 +1,23 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useUniversalGet } from '../api/UniversalGet';
 import { PencilEditContext } from "./PencilEditProvider";
+import useDeleteItem from "../hooks/useDeleteItem";
 
 export const ItemsContext = React.createContext(null);
 
 export function ItemsProvider({ children }) {
   const [data, isLoading, error] = useUniversalGet('ITEM');
+  const { deleteItem } = useDeleteItem('ITEM');
   const [items, setItems] = useState([]);
-    const { setIsEditing } = useContext(PencilEditContext);
+  const { setIsEditing } = useContext(PencilEditContext);
 
   useEffect(() => {
     setItems(data);
   }, [data]);
 
   const deleteFromContext = async (idList) => {
-    // const deletedIds = await deleteItems(idList); // TODO implement deleteItems
-var deletedIds = [];
+    const deletedIds = await deleteItem(idList);
+
     if (!deletedIds || deletedIds.length === 0) {
       return;
     }
