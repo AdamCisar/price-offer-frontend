@@ -21,7 +21,7 @@ const AppButtonModal = React.memo(({...props}) => {
 
     return (
         <div style={{...props.divStyles}}>
-            <props.Button {...props.styles} sx={props.sx} onClick={handleButtonClick}>
+            <props.Button {...props.styles} sx={props.sx} onClick={handleButtonClick} disabled={props.disabled} >
                 {props.InnerComponent && <props.InnerComponent />}
                 {props.title}
             </props.Button>

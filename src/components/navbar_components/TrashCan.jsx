@@ -1,19 +1,43 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Box } from '@mui/material';
 import { styled } from '@mui/system';
-import { PencilEditContext } from '../../providers/PencilEditProvider';
 import { PriceOfferListContext } from '../../providers/PriceOfferListProvider';
+import { ItemsContext } from '../../providers/ItemsProvider';
+import { PencilEditContext } from '../../providers/PencilEditProvider';
+import ConfirmDialog from '../utilities/ConfirmDialog';
+
+const GetProviderWrapper = () => {
+  let activeProvider = null;
+  const itemsContext = useContext(ItemsContext);
+  const priceOfferContext = useContext(PriceOfferListContext);
+
+  if (itemsContext) {
+    activeProvider = itemsContext;
+  } else if (priceOfferContext) {
+    activeProvider = priceOfferContext;
+  }
+
+  return activeProvider;
+};
 
 const TrashCan = () => {
-    const { selectedCards, setSelectedCards } = useContext(PencilEditContext);
-    const { deleteFromPriceOfferList } = useContext(PriceOfferListContext);
+  const { selectedCards, setSelectedCards } = useContext(PencilEditContext);
+  const { deleteFromContext } = GetProviderWrapper();
+  const [open, setOpen] = useState(false);
 
   return (
+    <>
+    <ConfirmDialog 
+      open={open} 
+      onClose={() => setOpen(false)} 
+      onConfirm={() => {
+                deleteFromContext(selectedCards);
+                setSelectedCards([]);
+              }}/>
     <TrashBox className="trash-box" 
-              onClick={() => {
-                        deleteFromPriceOfferList(selectedCards);
-                        setSelectedCards([]);
-                      }}
+              onClick={() => 
+                (selectedCards.length > 0) ?
+                setOpen(true) : null}
     >
       <Trash className="trash" />
       <TrashTop className="trash-top" />
@@ -24,6 +48,7 @@ const TrashCan = () => {
         </TrashLines>
       </TrashBtm>
     </TrashBox>
+    </>
   );
 };
 

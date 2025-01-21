@@ -7,17 +7,17 @@ import Shimmer from '../styled_components/Shimmer';
 import DottedMenu from '../utilities/DottedMenu';
 import AppButtonModal from '../utilities/AppButtonModal';
 import PriceOfferModal from './PriceOfferModal';
-import ArchiveIcon from '@mui/icons-material/Archive';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { SnackBarContext } from '../../providers/SnackBarProvider';
 import { Edit } from '@mui/icons-material';
+import CheckIcon from '@mui/icons-material/Check';
 
 const PriceOfferSnapshot = ({ ...props }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [selected, setSelected] = useState(false);
-  const { isEditing, handleSelectedPriceOfferCard } = useContext(PencilEditContext);
+  const { isEditing, handleSelected } = useContext(PencilEditContext);
   const {handleSnackbarOpen} = React.useContext(SnackBarContext);
 
   const handleSelectClick = () => {
@@ -25,7 +25,7 @@ const PriceOfferSnapshot = ({ ...props }) => {
       return;
     }
 
-    handleSelectedPriceOfferCard(props.id);
+    handleSelected(props.id);
     setSelected((prev) => !prev);
   };
 
@@ -136,18 +136,39 @@ const BounceCard = styled(Card, {
       }),
 }));
 
-
-const CircleIndicator = styled(Box)(({ selected }) => ({
-  width: 20,
-  height: 20,
+const Circle = styled(Box)(({ selected }) => ({
+  width: 12,
+  height: 12,
   borderRadius: '50%',
-  backgroundColor: selected ? '#1976d2' : "#bbb",
   position: 'absolute',
   top: 10,
   right: 10,
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
+  backgroundColor: selected ? '#1976d2' : "#bbb",
+  background: '#bbb',
+  animation: selected ? 'fillCircle 0.2s ease-out forwards' : 'none',
 }));
+
+const styles = `
+  @keyframes fillCircle {
+    0% {
+      transform: scale(0);
+      background-color: #1976d2;
+    }
+    100% {
+      transform: scale(1);
+      background-color: #1976d2;
+    }
+  }
+`;
+
+export const CircleIndicator = ({selected}) => (
+  <>
+    <style>{styles}</style>
+    {selected ? <CheckIcon /> : <Circle selected={selected} />}
+  </>
+);
 
 export default PriceOfferSnapshot;
