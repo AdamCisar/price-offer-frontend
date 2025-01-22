@@ -31,7 +31,6 @@ const Login = () => {
 
             if (response.auth) {
                 localStorage.setItem("token", response.auth.token);
-                localStorage.setItem("userId", response.userId);
     
                 window.location.href = "/cenove-ponuky";
             }
