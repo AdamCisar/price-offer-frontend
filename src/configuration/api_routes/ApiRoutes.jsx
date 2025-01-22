@@ -6,13 +6,14 @@ const ApiRoutes = {
     PRICE_OFFER_ITEM: `${API_BASE_URL}/price-offers/:priceOfferId/items`,
     PRICE_OFFER_CUSTOMER_SEARCH: `${API_BASE_URL}/price-offers/customers/search`,
 
-    USER: `${API_BASE_URL}/users`,
+    USER: `${API_BASE_URL}/user`,
 
     ITEM_SEARCH: `${API_BASE_URL}/items/search`,
     ITEM: `${API_BASE_URL}/items`,
     
     LOGIN: `${API_BASE_URL}/login`,
     LOGOUT: `${API_BASE_URL}/logout`,
+    REFRESH: `${API_BASE_URL}/refresh`,
 };
 
 export default ApiRoutes;

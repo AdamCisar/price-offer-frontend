@@ -36,7 +36,6 @@ const Logout = () => {
             await sendData({})
  
             localStorage.removeItem("token");
-            localStorage.removeItem("userId");
 
             navigate("/prihlasenie");
         } catch (error) {

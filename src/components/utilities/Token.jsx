@@ -1,8 +1,10 @@
 export const isTokenExpired = () => {
     const token = localStorage.getItem('token');
-    
-    if (!token) return true; 
-  
+ 
+    if (typeof token === 'udefined' || !token || token.split(".").length !== 3) {
+        return true; 
+    }
+
     const [, payload] = token.split('.'); 
     const decodedPayload = JSON.parse(atob(payload));
   
