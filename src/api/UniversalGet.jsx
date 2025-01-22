@@ -3,9 +3,10 @@ import {
   } from '@tanstack/react-query'
   import ApiRoutes from '../configuration/api_routes/ApiRoutes';
   
-  const fetchData = async (endpoint, signal) => {
+  const fetchData = async (endpoint, id, signal) => {
     const token = localStorage.getItem("token");
-    const response = await fetch(ApiRoutes[endpoint], {
+    let urlId = id ? `/${id}` : '';
+    const response = await fetch(ApiRoutes[endpoint] + urlId, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -27,10 +28,10 @@ import {
    *  endpoint constant suffix
    * @returns [data, isLoading, error] 
    */
-  export const useUniversalGet = (endpoint) => {
+  export const useUniversalGet = (endpoint, id) => {
     const { data, isLoading, error } = useQuery({
-      queryKey: [endpoint],    
-      queryFn: ({ signal }) => fetchData(endpoint, signal),
+      queryKey: [endpoint+id],    
+      queryFn: ({ signal }) => fetchData(endpoint, id, signal),
     });
   
     return [data, isLoading, error];
