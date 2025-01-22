@@ -36,6 +36,12 @@ const ResizeWindow = () => {
         }
     };
 
+    if (window.self !== window.top) {
+        setTimeout(() => {
+            toggleFullscreen();
+        }, 1500);
+    }
+
     return (
         <AspectRatioIcon sx={{ fontSize: 30, cursor: 'pointer' }} onClick={() => toggleFullscreen()}/>
     )
