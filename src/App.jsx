@@ -15,10 +15,11 @@ import { SnackBarProvider } from './providers/SnackBarProvider';
 import { useEffect, useState } from 'react';
 
 function App() {
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState(localStorage.getItem('token'));
 
   useEffect(() => {
     if (!token) {
+      console.log('poziadali sme o token')
       window.parent.postMessage({ type: 'requestToken' }, 'https://cisarvkp.sk');
     }
   }, []);
@@ -29,18 +30,16 @@ function App() {
         console.warn('Received message from untrusted origin:', event.origin);
         return;
       }
-
+console.log('dostali sme o token')
       const { token } = event.data;
 
-      if (!token) {
-        setToken(null);
-        localStorage.removeItem('token');
-        return;
+      if (token) {
+        setToken(token);
+        localStorage.setItem('token', token);
+      } else {
+        console.error('No token found in message');
       }
-
-      setToken(token);
-      localStorage.setItem('token', token);
-    };
+  };
 
   window.addEventListener('message', handleTokenFromExternalSource);
 
