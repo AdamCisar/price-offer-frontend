@@ -18,16 +18,18 @@ function App() {
   const [token, setToken] = useState(localStorage.getItem('token'));
 
   const handleTokenFromExternalSource = (event) => {
-      // if (event.origin !== 'https://cisarvkp.sk') {
-      //   console.warn('Received message from untrusted origin:', event.origin);
-      //   return;
-      // }
-console.log(event.data);
+      if (event.origin !== 'https://cisarvkp.sk') {
+        console.warn('Received message from untrusted origin:', event.origin);
+        return;
+      }
+
       const { token } = event.data;
 
       if (token) {
+        console.log('Token received from external source:', token);
         setToken(token);
         localStorage.setItem('token', token);
+        console.log('setnuty')
       } else {
         console.error('No token found in message');
       }
