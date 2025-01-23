@@ -37,6 +37,7 @@ console.log('dostali sme o token')
         localStorage.setItem('token', token);
       } else {
         console.error('No token found in message');
+        setToken(null);
         localStorage.removeItem('token');
       }
   };
