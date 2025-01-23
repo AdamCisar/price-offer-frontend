@@ -15,12 +15,10 @@ import { SnackBarProvider } from './providers/SnackBarProvider';
 import { useEffect, useState } from 'react';
 
 function App() {
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState(localStorage.getItem('token'));
 
   useEffect(() => {
-    if (!token) {
-      window.parent.postMessage({ type: 'requestToken' }, 'https://cisarvkp.sk');
-    }
+    window.parent.postMessage({ type: 'requestToken' }, 'https://cisarvkp.sk');
   }, []);
 
   const handleTokenFromExternalSource = (event) => {
@@ -33,14 +31,14 @@ function App() {
       const { token } = event.data;
 
       if (!token) {
-        setToken(null);
         localStorage.removeItem('token');
+        setToken(null);
         return;
       }
 
-      setToken(token);
       localStorage.setItem('token', token);
-    };
+      setToken(token);
+  };
 
   window.addEventListener('message', handleTokenFromExternalSource);
 
