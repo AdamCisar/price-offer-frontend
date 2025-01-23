@@ -15,7 +15,7 @@ import { SnackBarProvider } from './providers/SnackBarProvider';
 import { useEffect, useState } from 'react';
 
 function App() {
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState(localStorage.getItem('token'));
 
   useEffect(() => {
     if (!token) {
