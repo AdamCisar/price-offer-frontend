@@ -24,7 +24,7 @@ function App() {
   }, []);
 
   const handleTokenFromExternalSource = (event) => {
-    console.log(event)
+   
       if (event.origin !== 'https://cisarvkp.sk') {
         console.warn('Received message from untrusted origin:', event.origin);
         return;
