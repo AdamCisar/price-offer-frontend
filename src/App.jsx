@@ -12,24 +12,29 @@ import Items from './pages/Items';
 import PrivateRoutes from './components/auth/PrivateRoutes';
 import Login from './components/auth/Login';
 import { SnackBarProvider } from './providers/SnackBarProvider';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem('token'));
 
+  useEffect(() => {
+    if (!token) {
+      console.log('poziadali sme o token')
+      window.parent.postMessage({ type: 'requestToken' }, 'https://cisarvkp.sk');
+    }
+  }, []);
+
   const handleTokenFromExternalSource = (event) => {
-      if (event.origin !== 'https://cisarvkp.sk') {
+      if (event.origin !== 'https://cisarvkp.sk' || event.data.type !== 'sendToken') {
         console.warn('Received message from untrusted origin:', event.origin);
         return;
       }
-
+console.log('dostali sme o token')
       const { token } = event.data;
 
       if (token) {
-        console.log('Token received from external source:', token);
         setToken(token);
         localStorage.setItem('token', token);
-        console.log('setnuty')
       } else {
         console.error('No token found in message');
       }
