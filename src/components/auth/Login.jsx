@@ -15,9 +15,7 @@ const Login = () => {
 
     useEffect(() => {
         if (buttonRef.current) {
-            setTimeout(() => {
-                buttonRef.current.click();
-            }, 50);
+            buttonRef.current.click();
         }
     }, []);
 
