@@ -21,6 +21,20 @@ function App() {
       console.log('Token requested...');
       window.parent.postMessage({ type: 'requestToken' }, 'https://cisarvkp.sk');
     }, 500);
+
+    const deleteTokenBeforeUnload = (event) => {
+      if (window.self === window.top) {
+        return;
+      }
+
+      localStorage.removeItem('token');
+    };
+
+    window.addEventListener("beforeunload", deleteTokenBeforeUnload);
+    
+    return () => {
+        window.removeEventListener("beforeunload", deleteTokenBeforeUnload);
+    };
   }, []);
 
   const handleTokenFromExternalSource = (event) => {
