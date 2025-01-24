@@ -15,16 +15,13 @@ import { SnackBarProvider } from './providers/SnackBarProvider';
 import { useEffect, useState } from 'react';
 
 function App() {
-  const [token, setToken] = useState(localStorage.getItem('token'));
+  const [token, setToken] = useState();
 
   useEffect(() => {
-    if (!token) {
-      console.log('poziadali sme o token')
-
-      setTimeout(() => {
-        window.parent.postMessage({ type: 'requestToken' }, 'https://cisarvkp.sk');
-      }, 500);
-    }
+    setTimeout(() => {
+      console.log('Token requested...');
+      window.parent.postMessage({ type: 'requestToken' }, 'https://cisarvkp.sk');
+    }, 500);
   }, []);
 
   const handleTokenFromExternalSource = (event) => {
@@ -32,12 +29,16 @@ function App() {
         console.warn('Received message from untrusted origin:', event.origin);
         return;
       }
-console.log('dostali sme o token')
+      
+      console.log('Token received...');
+
       const { token } = event.data;
 
       if (token) {
-        setToken(token);
-        localStorage.setItem('token', token);
+        setTimeout(() => {
+          setToken(token);
+          localStorage.setItem('token', token);
+        })
       } else {
         console.error('No token found in message');
       }
