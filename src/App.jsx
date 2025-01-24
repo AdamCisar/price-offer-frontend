@@ -34,14 +34,10 @@ function App() {
 
       const { token } = event.data;
 
-      if (token) {
-        setTimeout(() => {
-          setToken(token);
-          localStorage.setItem('token', token);
-        })
-      } else {
-        console.error('No token found in message');
-      }
+      setTimeout(() => {
+        setToken(token);
+        localStorage.setItem('token', token);
+      })
   };
 
   window.addEventListener('message', handleTokenFromExternalSource);
