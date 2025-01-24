@@ -31,7 +31,7 @@ function App() {
     };
 
     window.addEventListener("beforeunload", deleteTokenBeforeUnload);
-    
+
     return () => {
         window.removeEventListener("beforeunload", deleteTokenBeforeUnload);
     };
@@ -47,7 +47,9 @@ function App() {
 
       const { token } = event.data;
       localStorage.setItem('token', token);
-      window.location.href = "/cenove-ponuky";
+      if (token) {
+        window.location.href = "/cenove-ponuky";
+      }
   };
 
   window.addEventListener('message', handleTokenFromExternalSource);
