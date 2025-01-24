@@ -37,7 +37,7 @@ function App() {
       setTimeout(() => {
         setToken(token);
         localStorage.setItem('token', token);
-      }, 500);
+      }, 800);
   };
 
   window.addEventListener('message', handleTokenFromExternalSource);

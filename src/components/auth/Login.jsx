@@ -10,6 +10,7 @@ const Login = () => {
     const [logining, setLogining] = React.useState(false);
     const [sendData] = useUniversalPost("LOGIN");
     const { handleSnackbarOpen } = useContext(SnackBarContext);
+    const isIframe = window.self !== window.top;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -92,7 +93,20 @@ const Login = () => {
                 sx={{ mt: 3, mb: 2 }}
             >
                 Prihlásiť sa
-            </Button>
+            </Button>\
+            {
+                isIframe &&
+                <Button
+                    type="button"
+                    fullWidth
+                    variant="contained"
+                    color="secondary"
+                    sx={{ mt: 3, mb: 2 }}
+                    onClick={() => window.location.href = "/auth/google"}
+                >
+                    Prihlásiť sa automaticky
+                </Button>
+            }
             </Box>
         </Box>
         </Container>
