@@ -35,9 +35,9 @@ function App() {
       const { token } = event.data;
 
       setTimeout(() => {
-        setToken(token);
         localStorage.setItem('token', token);
-      }, 800);
+        window.location.reload();
+      }, 500);
   };
 
   window.addEventListener('message', handleTokenFromExternalSource);
