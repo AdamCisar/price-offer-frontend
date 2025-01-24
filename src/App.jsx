@@ -16,28 +16,47 @@ import { useEffect, useState } from 'react';
 
 function App() {
 
-  if (window.self !== window.top) {
-    localStorage.removeItem('token');
-  }
-
-  const handleTokenFromExternalSource = (event) => {
-      if (event.origin !== 'https://cisarvkp.sk') {
-        console.warn('Received message from untrusted origin:', event.origin);
+  useEffect(() => {
+    const deleteTokenBeforeUnload = (event) => {
+      if (window.self === window.top) {
         return;
       }
-      const { token } = event.data;
 
-      if (!token) {
-        return;
-      }
-      
-      console.log('Token received...');
+      localStorage.removeItem('token');
+    };
 
-      localStorage.setItem('token', token);
-      window.location.href = '/cenove-ponuky';
-  };
+    window.addEventListener("beforeunload", deleteTokenBeforeUnload);
 
-  window.addEventListener('message', handleTokenFromExternalSource);
+    return () => {
+        window.removeEventListener("beforeunload", deleteTokenBeforeUnload);
+    };
+  }, []);
+
+  useEffect(() => {
+
+    const handleTokenFromExternalSource = (event) => {
+        if (event.origin !== 'https://cisarvkp.sk') {
+          console.warn('Received message from untrusted origin:', event.origin);
+          return;
+        }
+        const { token } = event.data;
+
+        if (!token) {
+          return;
+        }
+        
+        console.log('Token received...');
+
+        localStorage.setItem('token', token);
+        window.location.href = '/cenove-ponuky';
+    };
+
+    window.addEventListener('message', handleTokenFromExternalSource);
+
+    return () => {
+        window.removeEventListener('message', handleTokenFromExternalSource);
+    };
+  }, []);
 
   return (
     <BrowserRouter>
