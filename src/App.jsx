@@ -26,7 +26,7 @@ function App() {
     setTimeout(() => {
       console.log('Token requested...');
       window.parent.postMessage({ type: 'requestToken' }, 'https://cisarvkp.sk');
-    }, 300);
+    }, 500);
   }, []);
 
   const handleTokenFromExternalSource = (event) => {
@@ -38,11 +38,11 @@ function App() {
       console.log('Token received...');
 
       const { token } = event.data;
-
+      localStorage.setItem('token', token);
+      
       setTimeout(() => {
-        localStorage.setItem('token', token);
         forceRerender();
-      }, 500);
+      })
   };
 
   window.addEventListener('message', handleTokenFromExternalSource);
