@@ -15,15 +15,15 @@ import { SnackBarProvider } from './providers/SnackBarProvider';
 import { useEffect, useState } from 'react';
 
 function App() {
-  const [token, setToken] = useState(localStorage.getItem('token'));
+  const [localToken, setToken] = useState(localStorage.getItem('token'));
 
   useEffect(() => {
-    setTimeout(() => {
-      if (!token) {
-        console.log('Token requested...');
-        window.parent.postMessage({ type: 'requestToken' }, 'https://cisarvkp.sk');
-      }
-    }, 500);
+    // setTimeout(() => {
+    //   if (!token) {
+    //     console.log('Token requested...');
+    //     // window.parent.postMessage({ type: 'requestToken' }, 'https://cisarvkp.sk');
+    //   }
+    // }, 500);
 
     const deleteTokenBeforeUnload = (event) => {
       if (window.self === window.top) {
@@ -56,7 +56,7 @@ function App() {
       }
 
       localStorage.setItem('token', token);
-      setToken(token);
+      // setToken(token);
       window.location.href = "/cenove-ponuky";
   };
 

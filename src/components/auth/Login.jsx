@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { TextField, Button, Typography, Container, Box } from '@mui/material';
 import { useUniversalPost } from '../../api/UniversalPost';
 import Loading from '../utilities/Loading';
@@ -11,6 +11,13 @@ const Login = () => {
     const [sendData] = useUniversalPost("LOGIN");
     const { handleSnackbarOpen } = useContext(SnackBarContext);
     const isIframe = window.self !== window.top;
+    const buttonRef = useRef(null);
+
+    useEffect(() => {
+        if (buttonRef.current) {
+            buttonRef.current.click();
+        }
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -98,6 +105,7 @@ const Login = () => {
                 isIframe &&
                 <Button
                     type="button"
+                    ref={buttonRef}
                     fullWidth
                     variant="contained"
                     color="secondary"
