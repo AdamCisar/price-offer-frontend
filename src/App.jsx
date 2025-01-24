@@ -15,7 +15,7 @@ import { SnackBarProvider } from './providers/SnackBarProvider';
 import { useEffect, useState } from 'react';
 
 function App() {
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState(localStorage.getItem('token'));
 
   useEffect(() => {
     setTimeout(() => {
@@ -49,7 +49,7 @@ function App() {
       console.log('Token received...');
 
       const { token } = event.data;
-      
+
       if (!token) {
         localStorage.removeItem('token');
         return;
