@@ -16,23 +16,28 @@ import { useEffect, useState } from 'react';
 
 function App() {
 
-  useEffect(() => {
-    setTimeout(() => {
-      console.log('Token requested...');
-      window.parent.postMessage({ type: 'requestToken' }, 'https://cisarvkp.sk');
-    }, 500);
-  }, []);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     console.log('Token requested...');
+  //     window.parent.postMessage({ type: 'requestToken' }, 'https://cisarvkp.sk');
+  //   }, 500);
+  // }, []);
 
   const handleTokenFromExternalSource = (event) => {
       if (event.origin !== 'https://cisarvkp.sk') {
         console.warn('Received message from untrusted origin:', event.origin);
         return;
       }
+      const { token } = event.data;
+
+      if (!token) {
+        return;
+      }
       
       console.log('Token received...');
 
-      const { token } = event.data;
       localStorage.setItem('token', token);
+      window.location.href = '/cenove-ponuky';
   };
 
   window.addEventListener('message', handleTokenFromExternalSource);
