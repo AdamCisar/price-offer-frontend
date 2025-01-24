@@ -31,6 +31,7 @@ function App() {
       const { token } = event.data;
 
       if (!token) {
+        localStorage.removeItem('token');
         return;
       }
       
