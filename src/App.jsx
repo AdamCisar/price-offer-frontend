@@ -20,12 +20,14 @@ function App() {
   useEffect(() => {
     if (!token) {
       console.log('poziadali sme o token')
-      window.parent.postMessage({ type: 'requestToken' }, 'https://cisarvkp.sk');
+
+      setTimeout(() => {
+        window.parent.postMessage({ type: 'requestToken' }, 'https://cisarvkp.sk');
+      }, 500);
     }
   }, []);
 
   const handleTokenFromExternalSource = (event) => {
-   
       if (event.origin !== 'https://cisarvkp.sk') {
         console.warn('Received message from untrusted origin:', event.origin);
         return;
