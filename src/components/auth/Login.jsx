@@ -93,16 +93,15 @@ const Login = () => {
                 sx={{ mt: 3, mb: 2 }}
             >
                 Prihlásiť sa
-            </Button>\
+            </Button>
             {
-                isIframe &&
+                true &&
                 <Button
                     type="button"
                     fullWidth
                     variant="contained"
                     color="secondary"
-                    sx={{ mt: 3, mb: 2 }}
-                    onClick={() => window.location.href = "/auth/google"}
+                    onClick={() => window.parent.postMessage({ type: 'requestToken' }, 'https://cisarvkp.sk')}
                 >
                     Prihlásiť sa automaticky
                 </Button>
