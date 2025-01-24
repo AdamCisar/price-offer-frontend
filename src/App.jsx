@@ -17,19 +17,19 @@ import { useEffect, useState } from 'react';
 function App() {
 
   useEffect(() => {
-    const deleteTokenBeforeUnload = (event) => {
-      if (window.self === window.top) {
-        return;
-      }
+    // const deleteTokenBeforeUnload = (event) => {
+    //   if (window.self === window.top) {
+    //     return;
+    //   }
 
-      localStorage.removeItem('token');
-    };
+    //   localStorage.removeItem('token');
+    // };
 
-    window.addEventListener("beforeunload", deleteTokenBeforeUnload);
+    // window.addEventListener("beforeunload", deleteTokenBeforeUnload);
 
-    return () => {
-        window.removeEventListener("beforeunload", deleteTokenBeforeUnload);
-    };
+    // return () => {
+    //     window.removeEventListener("beforeunload", deleteTokenBeforeUnload);
+    // };
   }, []);
 
   useEffect(() => {
