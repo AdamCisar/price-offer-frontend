@@ -16,6 +16,11 @@ import { useEffect, useState } from 'react';
 
 function App() {
   const [token, setToken] = useState();
+  const [forceRender, setForceRender] = useState(0);
+
+  const forceRerender = () => {
+    setForceRender(prev => prev + 1);
+  };
 
   useEffect(() => {
     setTimeout(() => {
@@ -36,7 +41,7 @@ function App() {
 
       setTimeout(() => {
         localStorage.setItem('token', token);
-        setToken(token);
+        forceRerender();
       }, 500);
   };
 
