@@ -16,12 +16,9 @@ import { useEffect, useState } from 'react';
 
 function App() {
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     console.log('Token requested...');
-  //     window.parent.postMessage({ type: 'requestToken' }, 'https://cisarvkp.sk');
-  //   }, 500);
-  // }, []);
+  if (window.self !== window.top) {
+    localStorage.removeItem('token');
+  }
 
   const handleTokenFromExternalSource = (event) => {
       if (event.origin !== 'https://cisarvkp.sk') {
@@ -31,7 +28,6 @@ function App() {
       const { token } = event.data;
 
       if (!token) {
-        localStorage.removeItem('token');
         return;
       }
       
