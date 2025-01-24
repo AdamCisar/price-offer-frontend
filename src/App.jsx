@@ -36,7 +36,7 @@ function App() {
 
       setTimeout(() => {
         localStorage.setItem('token', token);
-        window.location.reload();
+        setToken(token);
       }, 500);
   };
 

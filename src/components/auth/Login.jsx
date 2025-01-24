@@ -95,7 +95,7 @@ const Login = () => {
                 Prihlásiť sa
             </Button>
             {
-                true &&
+                isIframe &&
                 <Button
                     type="button"
                     fullWidth
