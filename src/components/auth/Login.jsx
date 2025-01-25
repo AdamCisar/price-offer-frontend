@@ -111,7 +111,11 @@ const Login = () => {
                     fullWidth
                     variant="contained"
                     color="secondary"
-                    onClick={() => window.parent.postMessage({ type: 'requestToken' }, 'https://cisarvkp.sk')}
+                    onClick={
+                        () => {
+                        console.log('parent', window.parent);
+                        window.parent.postMessage({ type: 'requestToken' }, 'https://cisarvkp.sk');
+                    }}
                 >
                     Prihlásiť sa automaticky
                 </Button>

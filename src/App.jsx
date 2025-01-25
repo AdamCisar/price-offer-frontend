@@ -39,9 +39,11 @@ function App() {
           console.warn('Received message from untrusted origin:', event.origin);
           return;
         }
+
         const { token } = event.data;
 
         if (!token) {
+          console.log('No token received...');
           return;
         }
         
