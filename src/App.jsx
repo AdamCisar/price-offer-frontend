@@ -19,7 +19,7 @@ function App() {
   useEffect(() => {
       setTimeout(() => {
         console.log('Token requested...');
-        window.parent.postMessage({ type: 'requestToken' }, 'https://cisarvkp.sk');
+        window.parent.postMessage({ type: 'requestToken' }, 'https://www.cisarvkp.sk');
     }, 500);
     // const deleteTokenBeforeUnload = (event) => {
     //   if (window.self === window.top) {
@@ -39,7 +39,7 @@ function App() {
   useEffect(() => {
 
     const handleTokenFromExternalSource = (event) => {
-        if (event.origin !== 'https://cisarvkp.sk') {
+        if (event.origin !== 'https://www.cisarvkp.sk') {
           console.warn('Received message from untrusted origin:', event.origin);
           return;
         }
