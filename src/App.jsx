@@ -21,9 +21,9 @@ function App() {
       setTimeout(() => {
         if (!token) {
           console.log('Token requested...');
-          window.parent.postMessage({ type: 'requestToken' }, 'https://www.cisarvkp.sk');
+          window.parent.postMessage({ type: 'requestToken' }, 'https://cisarvkp.sk');
         }
-    });
+    }, 300);
     // const deleteTokenBeforeUnload = (event) => {
     //   if (window.self === window.top) {
     //     return;
@@ -42,7 +42,7 @@ function App() {
   useEffect(() => {
 
     const handleTokenFromExternalSource = (event) => {
-        if (event.origin !== 'https://www.cisarvkp.sk') {
+        if (event.origin !== 'https://cisarvkp.sk') {
           console.warn('Received message from untrusted origin:', event.origin);
           return;
         }
