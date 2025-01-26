@@ -17,6 +17,12 @@ import { useEffect, useState } from 'react';
 function App() {
 
   useEffect(() => {
+      setTimeout(() => {
+      if (!token) {
+        console.log('Token requested...');
+        window.parent.postMessage({ type: 'requestToken' }, 'https://cisarvkp.sk');
+      }
+    }, 500);
     // const deleteTokenBeforeUnload = (event) => {
     //   if (window.self === window.top) {
     //     return;

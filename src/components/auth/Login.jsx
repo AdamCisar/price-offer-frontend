@@ -13,14 +13,6 @@ const Login = () => {
     const isIframe = window.self !== window.top;
     const buttonRef = useRef(null);
 
-    useEffect(() => {
-        if (buttonRef.current) {
-            setTimeout(() => {
-                buttonRef.current.click();
-            }, 50);
-        }
-    }, []);
-
     const handleSubmit = async (e) => {
         e.preventDefault();
 
