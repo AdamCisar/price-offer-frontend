@@ -25,7 +25,7 @@ function App() {
           console.log('Token requested...');
           window.parent.postMessage({ type: 'requestToken' }, origin);
         }
-    });
+    }, 50);
     // const deleteTokenBeforeUnload = (event) => {
     //   if (window.self === window.top) {
     //     return;
