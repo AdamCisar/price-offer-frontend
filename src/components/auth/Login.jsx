@@ -4,6 +4,8 @@ import { useUniversalPost } from '../../api/UniversalPost';
 import Loading from '../utilities/Loading';
 import { SnackBarContext } from '../../providers/SnackBarProvider';
 
+const origin = window.parent.location.origin === 'https://www.cisarvkp.sk' ? window.parent.location.origin : 'https://cisarvkp.sk';
+
 const Login = () => {
     const email = useRef('');
     const password = useRef('');
@@ -106,7 +108,7 @@ const Login = () => {
                     onClick={
                         () => {
                         console.log('parent', window.parent);
-                        window.parent.postMessage({ type: 'requestToken' }, 'https://www.cisarvkp.sk');
+                        window.parent.postMessage({ type: 'requestToken' }, origin);
                     }}
                 >
                     Prihlásiť sa automaticky
