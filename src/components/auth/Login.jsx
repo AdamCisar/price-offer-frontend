@@ -4,7 +4,7 @@ import { useUniversalPost } from '../../api/UniversalPost';
 import Loading from '../utilities/Loading';
 import { SnackBarContext } from '../../providers/SnackBarProvider';
 
-const origin = window.parent.location.origin === 'https://www.cisarvkp.sk' ? window.parent.location.origin : 'https://cisarvkp.sk';
+const origin = document.referrer.includes('https://www.cisarvkp.sk') ? 'https://www.cisarvkp.sk' : 'https://cisarvkp.sk';
 
 const Login = () => {
     const email = useRef('');
