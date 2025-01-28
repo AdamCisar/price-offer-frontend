@@ -14,6 +14,8 @@ import Login from './components/auth/Login';
 import { SnackBarProvider } from './providers/SnackBarProvider';
 import { useEffect, useState } from 'react';
 
+const origin = document.referrer.includes('https://www.cisarvkp.sk') ? 'https://www.cisarvkp.sk' : 'https://cisarvkp.sk';
+
 function App() {
   const [token, setToken] = useState(localStorage.getItem('token'));
 
@@ -21,9 +23,9 @@ function App() {
       setTimeout(() => {
         if (!token) {
           console.log('Token requested...');
-          window.parent.postMessage({ type: 'requestToken' }, 'https://www.cisarvkp.sk');
+          window.parent.postMessage({ type: 'requestToken' }, origin);
         }
-    }, 300);
+    });
     // const deleteTokenBeforeUnload = (event) => {
     //   if (window.self === window.top) {
     //     return;
@@ -42,7 +44,7 @@ function App() {
   useEffect(() => {
 
     const handleTokenFromExternalSource = (event) => {
-        if (event.origin !== 'https://www.cisarvkp.sk') {
+        if (event.origin !== origin) {
           console.warn('Received message from untrusted origin:', event.origin);
           return;
         }
