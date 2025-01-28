@@ -106,7 +106,7 @@ const Login = () => {
                     onClick={
                         () => {
                         console.log('parent', window.parent);
-                        window.parent.postMessage({ type: 'requestToken' }, 'https://cisarvkp.sk');
+                        window.parent.postMessage({ type: 'requestToken' }, 'https://www.cisarvkp.sk');
                     }}
                 >
                     Prihlásiť sa automaticky
