@@ -26,19 +26,6 @@ function App() {
           window.parent.postMessage({ type: 'requestToken' }, origin);
         }
     }, 50);
-    // const deleteTokenBeforeUnload = (event) => {
-    //   if (window.self === window.top) {
-    //     return;
-    //   }
-
-    //   localStorage.removeItem('token');
-    // };
-
-    // window.addEventListener("beforeunload", deleteTokenBeforeUnload);
-
-    // return () => {
-    //     window.removeEventListener("beforeunload", deleteTokenBeforeUnload);
-    // };
   }, []);
 
   useEffect(() => {
