@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     },
 });
 
-const PdfDocument = ({ priceOfferDetails, userInfo }) => {
+const PdfDocument = ({ priceOfferDetails, userInfo, isVat }) => {
   return (
     <>
     {priceOfferDetails.items && priceOfferDetails.customer && userInfo &&
@@ -171,10 +171,10 @@ const PdfDocument = ({ priceOfferDetails, userInfo }) => {
                 <View style={styles.table}>
                     <View style={[styles.tableRow, styles.tableHeader]}>
                         <Text style={[styles.tableColTitle, { flex: 2, textAlign: 'start' }]}>Názov položky</Text>
-                        <Text style={[styles.tableCol, { flex: 1 }]}>Jednotka</Text>
+                        <Text style={[styles.tableCol, { flex: 1 }]}>Merná jednotka</Text>
                         <Text style={[styles.tableCol, { flex: 1 }]}>Množstvo</Text>
                         <Text style={[styles.tableCol, { flex: 1 }]}>Cena</Text>
-                        <Text style={[styles.tableCol, { flex: 1 }]}>Celkom</Text>
+                        <Text style={[styles.tableCol, { flex: 1 }]}>Spolu</Text>
                     </View>
                     
                     {priceOfferDetails.items.map((item, index) => (
@@ -189,7 +189,7 @@ const PdfDocument = ({ priceOfferDetails, userInfo }) => {
                 </View>
 
                 <View style={styles.footer}>
-                    <Text style={styles.totalPriceCell}>Spolu: </Text>
+                    <Text style={styles.totalPriceCell}>Celkom</Text>
                     <Text style={[{width: 'auto'}, styles.totalPriceCell]}>{String(priceOfferDetails.total).replace('.', ',')} €</Text>
                 </View>
             </Page>

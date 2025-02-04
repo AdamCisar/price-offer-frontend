@@ -6,6 +6,8 @@ import {
   Typography,
   Button,
   Divider,
+  Switch,
+  FormControlLabel,
 } from '@mui/material';
 import PriceOfferItems from './PriceOfferItems';
 import useUpdatePriceOfferDetails from '../../hooks/useUpdatePriceOfferDetails';
@@ -51,6 +53,8 @@ const PriceOffer = () => {
     setRowSelected(ids.length > 0);
   }, []);
 
+  const [isVat, setIsVat] = useState(false);
+
   if (isLoading) {
     return <Loading />
   }
@@ -93,6 +97,14 @@ const PriceOffer = () => {
                   Button={Button}
                   ModalComponent={ItemCreateModal}
                 />
+                <FormControlLabel
+                  control={<Switch
+                    checked={isVat}
+                    onChange={() => setIsVat(!isVat)}
+                    color="primary"
+                    />}
+                    label={'Použiť DPH'}
+                />
               </Box>
               {isRowSelected && 
               <Box display="flex" gap={1}>
@@ -116,7 +128,7 @@ const PriceOffer = () => {
               calculateTotalPriceForItem={calculateTotalPriceForItem}
             />
             <Divider sx={{ margin: '20px 0' }} />
-            <Typography variant="h5">Spolu: {Number(priceOfferDetails.total).toFixed(2)} €</Typography>
+            <Typography variant="h5">Celkom: {Number(priceOfferDetails.total).toFixed(2)} €</Typography>
           </CardContent>
           <CardContent>
             <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -129,6 +141,7 @@ const PriceOffer = () => {
                   ModalComponent={PdfPreviewer}
                   priceOfferDetails={priceOfferDetails}
                   userInfo={userInfo}
+                  isVat={isVat}
                 />
               <PdfDownloadLink priceOfferDetails={priceOfferDetails} userInfo={userInfo}/>
               </Box>

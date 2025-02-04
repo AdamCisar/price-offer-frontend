@@ -33,7 +33,7 @@ const handleCellEditChange = (value) => {
 const itemRounding = 2;
 const columns = [
   { field: 'title', headerName: 'Názov', width: 320, editable: true },
-  { field: 'unit', headerName: 'Jednotka', width: 130, editable: true },
+  { field: 'unit', headerName: 'Merná jednotka', width: 130, editable: true },
   { field: 'quantity', headerName: 'Množstvo', width: 130, editable: true,
     renderCell: (params) => (Number(params.value).round(itemRounding)),
     valueParser: (value, row, column, apiRef) => {
@@ -46,7 +46,7 @@ const columns = [
       return handleCellEditChange(value);
     },
   },
-  { field: 'total', headerName: 'Celkom', width: 130,
+  { field: 'total', headerName: 'Spolu', width: 130,
     renderCell: (params) => (Number(params.value).round(itemRounding)),
     valueParser: (value, row, column, apiRef) => {
       return handleCellEditChange(value);
