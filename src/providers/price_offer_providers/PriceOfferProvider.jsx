@@ -37,6 +37,10 @@ export function PriceOfferProvider({ children }) {
 
     const totalPrice = calculateTotal(priceOfferDetails.items);
 
+    if (priceOfferDetails.total == totalPrice.total) {
+      return;
+    }
+
     setPriceOfferDetails(prevData => ({
       ...prevData,
       total: totalPrice.total,
