@@ -10,12 +10,20 @@ export function PriceOfferProvider({ children }) {
   const [priceOfferDetails, setPriceOfferDetails] = useState({});
 
   const calculateTotal = useCallback((items) => {
-      let total = items.reduce(
-        (total, item) => total + item.quantity * item.price,
-        0
-      );
+      let total = 0;
+      let vatBase = 0;
+      let vat = 0;
 
-      return total.round();
+      for (let item of items) {
+        const itemVat = item.vat ? item.vat : 23; 
+
+        vatBase += item.price * item.quantity;
+        vat += (item.price * item.quantity) * (itemVat / 100);
+
+        total += (item.price * item.quantity) * (itemVat / 100 + 1);
+      }
+
+      return {total: total.round(), vatBase: vatBase.round(), vat: vat.round()};
   }, []);
 
   useEffect(() => {
@@ -29,12 +37,12 @@ export function PriceOfferProvider({ children }) {
 
     const totalPrice = calculateTotal(priceOfferDetails.items);
 
-    if (priceOfferDetails.total !== totalPrice) {
-      setPriceOfferDetails(prevData => ({
-        ...prevData,
-        total: totalPrice,
-      }));
-    }
+    setPriceOfferDetails(prevData => ({
+      ...prevData,
+      total: totalPrice.total,
+      vatBase: totalPrice.vatBase,
+      vat: totalPrice.vat
+    }));
   }, [priceOfferDetails, calculateTotal]); 
 
   return (

@@ -31,37 +31,46 @@ const handleCellEditChange = (value) => {
 };
 
 const itemRounding = 2;
-const columns = [
-  { field: 'title', headerName: 'Názov', width: 320, editable: true },
-  { field: 'unit', headerName: 'Merná jednotka', width: 130, editable: true },
-  { field: 'quantity', headerName: 'Množstvo', width: 130, editable: true,
-    renderCell: (params) => (Number(params.value).round(itemRounding)),
-    valueParser: (value, row, column, apiRef) => {
-      return handleCellEditChange(value);
-    },
-  },
-  { field: 'price', headerName: 'Cena', width: 130, 
-    renderCell: (params) => (Number(params.value).round(itemRounding)), editable: true,
-    valueParser: (value, row, column, apiRef) => {
-      return handleCellEditChange(value);
-    },
-  },
-  { field: 'total', headerName: 'Spolu', width: 130,
-    renderCell: (params) => (Number(params.value).round(itemRounding)),
-    valueParser: (value, row, column, apiRef) => {
-      return handleCellEditChange(value);
-    },
-  },
-];
 
 const PriceOfferItems = React.memo(({ 
   priceOfferItems, 
   toggleSelectedRowButton, 
   setSelectedItems, 
   setPriceOfferDetails, 
-  calculateTotalPriceForItem,  
+  calculateTotalPriceForItem,
+  isVat
 }) => {
   const rows = useMemo(() => priceOfferItems, [priceOfferItems]);
+
+  const columns = [
+    { field: 'title', headerName: 'Názov', width: 320, editable: true },
+    { field: 'unit', headerName: 'Merná jednotka', width: 130, editable: true },
+    { field: 'quantity', headerName: 'Množstvo', width: 130, editable: true,
+      renderCell: (params) => (Number(params.value).round(itemRounding)),
+      valueParser: (value, row, column, apiRef) => {
+        return handleCellEditChange(value);
+      },
+    },
+    { field: 'price', headerName: (isVat ? 'Cena bez DPH' : 'Cena'), width: 130, 
+      renderCell: (params) => (Number(params.value).round(itemRounding)), editable: true,
+      valueParser: (value, row, column, apiRef) => {
+        return handleCellEditChange(value);
+      },
+    },
+    ...(isVat ? [{ field: "vat", headerName: "DPH %", width: 80, editable: false,
+        renderCell: (params) => (Number(params.value).round(itemRounding)),
+        valueParser: (value, row, column, apiRef) => {
+          return handleCellEditChange(value);
+        },
+        valueGetter: (params) => params ?? 23,
+    }] : []),
+    { field: 'total', headerName: (isVat ? 'Spolu bez DPH' : 'Spolu'), width: 130,
+      renderCell: (params) => (Number(params.value).round(itemRounding)),
+      valueParser: (value, row, column, apiRef) => {
+        return handleCellEditChange(value);
+      },
+    },
+  ];
 
   const handleItemSelection = useCallback((ids) => {
     setSelectedItems(ids);
@@ -108,7 +117,8 @@ const PriceOfferItems = React.memo(({
 }, (prevProps, nextProps) => {
   return (
     _.isEqual(prevProps.priceOfferItems, nextProps.priceOfferItems) &&
-    _.isEqual(prevProps.selectedItems, nextProps.selectedItems) 
+    _.isEqual(prevProps.selectedItems, nextProps.selectedItems) &&
+    _.isEqual(prevProps.isVat, nextProps.isVat)
   );
 });
 

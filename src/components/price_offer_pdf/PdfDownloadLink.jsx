@@ -3,13 +3,15 @@ import { PDFDownloadLink } from '@react-pdf/renderer';
 import PdfDocument from './PdfDocument';
 import { Button } from '@mui/material';
 
-const PdfDownloadLink = ({priceOfferDetails, userInfo}) => {
+const PdfDownloadLink = ({priceOfferDetails, userInfo, isVat}) => {
     return (
         <PDFDownloadLink
             document={
                 <PdfDocument 
-                priceOfferDetails={priceOfferDetails} 
-                userInfo={userInfo} />} 
+                    priceOfferDetails={priceOfferDetails} 
+                    userInfo={userInfo} 
+                    isVat={isVat}
+                />} 
                 fileName={"cenova_ponuka_"+ (priceOfferDetails.customer?.name || 'bez_nazvu') + ".pdf"}> 
                 {({ blob, url, loading, error }) => (
                 <Button

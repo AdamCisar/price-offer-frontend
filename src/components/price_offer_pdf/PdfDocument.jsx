@@ -27,12 +27,16 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     footer: {
-        flexDirection: 'row', 
         marginTop: 10,
-        justifyContent: 'space-between', 
         border: '1px 1px 1px 1px solid #000', 
         padding: 5,
         backgroundColor: '#f0f0f0', 
+    },
+    footerRow: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%',
     },
     totalLabel: {
         fontSize: 12,
@@ -97,6 +101,10 @@ const styles = StyleSheet.create({
     totalPriceCell: {
         fontWeight: 'bold',
         padding: 5,
+    },
+    priceCell: {
+        fontSize: 12,
+        padding: '0 5 0',
     },
     image: {
         width: 100,
@@ -170,27 +178,52 @@ const PdfDocument = ({ priceOfferDetails, userInfo, isVat }) => {
                 
                 <View style={styles.table}>
                     <View style={[styles.tableRow, styles.tableHeader]}>
-                        <Text style={[styles.tableColTitle, { flex: 2, textAlign: 'start' }]}>Názov položky</Text>
+                        <Text style={[styles.tableCol, { flex: 1 }]}>Názov položky</Text>
                         <Text style={[styles.tableCol, { flex: 1 }]}>Merná jednotka</Text>
                         <Text style={[styles.tableCol, { flex: 1 }]}>Množstvo</Text>
-                        <Text style={[styles.tableCol, { flex: 1 }]}>Cena</Text>
-                        <Text style={[styles.tableCol, { flex: 1 }]}>Spolu</Text>
+                        <Text style={[styles.tableCol, { flex: 1 }]}>Cena {isVat ? 'bez DPH' : ''}</Text>
+                        {
+                            isVat &&
+                                <Text style={[styles.tableCol, { flex: 1 }]}>DPH %</Text>
+                        }
+                        <Text style={[styles.tableCol, { flex: 1 }]}>Spolu {isVat ? 'bez DPH' : ''}</Text>
                     </View>
                     
                     {priceOfferDetails.items.map((item, index) => (
                         <View key={index} style={styles.tableRow}>
-                            <Text style={[styles.tableColTitle, { flex: 2 }]}>{item.title}</Text>
+                            <Text style={[styles.tableCol, { flex: 1, textAlign: 'left' }]}>{item.title}</Text>
                             <Text style={[styles.tableCol, { flex: 1 }]}>{item.unit}</Text>
                             <Text style={[styles.tableCol, { flex: 1 }]}>{item.quantity}</Text>
                             <Text style={[styles.tableCol, { flex: 1 }]}>{String(item.price).replace('.', ',')}</Text>
+                            {
+                                isVat && 
+                                    <Text style={[styles.tableCol, { flex: 1 }]}>{23}</Text>
+                            }
                             <Text style={[styles.tableCol, { flex: 1 }]}>{String(item.total).replace('.', ',')}</Text>
                         </View>
                     ))}
                 </View>
 
                 <View style={styles.footer}>
-                    <Text style={styles.totalPriceCell}>Celkom</Text>
-                    <Text style={[{width: 'auto'}, styles.totalPriceCell]}>{String(priceOfferDetails.total).replace('.', ',')} €</Text>
+                    {isVat && 
+                    <>
+                        <View style={styles.footerRow}>
+                            <Text style={styles.priceCell}>Základ DPH:</Text>
+                            <Text style={[{width: 'auto'}, styles.priceCell]}>{String(priceOfferDetails.vatBase).replace('.', ',')} €</Text>
+                        </View>
+                        <div style={{borderBottom: '1px solid #000'}}>
+                        <View style={styles.footerRow}>
+                            <Text style={styles.priceCell}>DPH:</Text>
+                            <Text style={[{width: 'auto'}, styles.priceCell]}>{String(priceOfferDetails.vat).replace('.', ',')} €</Text>
+                        </View>
+                        </div>
+                        </>
+                    }
+
+                    <View style={styles.footerRow}>
+                        <Text style={styles.totalPriceCell}>Celkom:</Text>
+                        <Text style={[{width: 'auto'}, styles.totalPriceCell]}>{String(isVat ? priceOfferDetails.total : priceOfferDetails.vatBase).replace('.', ',')} €</Text>
+                    </View>
                 </View>
             </Page>
         </Document>

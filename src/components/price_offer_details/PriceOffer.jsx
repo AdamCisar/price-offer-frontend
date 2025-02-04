@@ -8,6 +8,7 @@ import {
   Divider,
   Switch,
   FormControlLabel,
+  Stack,
 } from '@mui/material';
 import PriceOfferItems from './PriceOfferItems';
 import useUpdatePriceOfferDetails from '../../hooks/useUpdatePriceOfferDetails';
@@ -126,9 +127,26 @@ const PriceOffer = () => {
               setSelectedItems={setSelectedItems}
               setPriceOfferDetails={setPriceOfferDetails}
               calculateTotalPriceForItem={calculateTotalPriceForItem}
+              isVat={isVat}
             />
             <Divider sx={{ margin: '20px 0' }} />
-            <Typography variant="h5">Celkom: {Number(priceOfferDetails.total).toFixed(2)} €</Typography>
+            {
+              isVat &&
+              <div>
+                <Box display="flex" justifyContent="space-between">
+                  <Typography variant="body1">Základ DPH:</Typography>
+                  <Typography variant="body1">{Number(priceOfferDetails.vatBase).round(2)} €</Typography>
+                </Box>
+                <Box display="flex" justifyContent="space-between">
+                  <Typography variant="body1">DPH:</Typography>
+                  <Typography variant="body1">{Number(priceOfferDetails.vat).round(2)} €</Typography>
+                </Box>
+              </div>
+            }
+            <Box display="flex" justifyContent="space-between">
+            <Typography variant="h5">Celkom:</Typography>
+              <Typography variant="h5">{Number(isVat ? priceOfferDetails.total : priceOfferDetails.vatBase).round(2)} €</Typography>
+            </Box>
           </CardContent>
           <CardContent>
             <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -143,7 +161,7 @@ const PriceOffer = () => {
                   userInfo={userInfo}
                   isVat={isVat}
                 />
-              <PdfDownloadLink priceOfferDetails={priceOfferDetails} userInfo={userInfo}/>
+              <PdfDownloadLink priceOfferDetails={priceOfferDetails} userInfo={userInfo} isVat={isVat}/>
               </Box>
               <Button variant="contained" color="primary" onClick={() => handleSavePriceOfferDetails(handleSnackbarOpen)}>
                 Uložiť
