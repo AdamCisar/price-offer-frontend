@@ -24,19 +24,21 @@ const Navbar = ({isPencilWrapper}) => {
     const [nextPath, setNextPath] = useState('');
   
     const handleClick = (event, path) => {
-      if (!location.pathname.includes('cenove-ponuky') || !id) {
         navigate(path);
-        return;
-      }
 
-      event.preventDefault();
-      setNextPath(path);
-      setOpen(true);
+    //   if (!location.pathname.includes('cenove-ponuky') || !id) {
+    //     navigate(path);
+    //     return;
+    //   }
+
+    //   event.preventDefault();
+    //   setNextPath(path);
+    //   setOpen(true);
     };
   
     return (
         <AppBar position="static" sx={{ height: '70px' }}>
-            <ConfirmDialog 
+            {/* <ConfirmDialog 
                 open={open} 
                 onClose={() => {
                     setOpen(false);
@@ -49,7 +51,7 @@ const Navbar = ({isPencilWrapper}) => {
                 confirmButtonText={"Pokračovať"}
                 title={"Upozornenie"} 
                 message={"Uložili ste vykonané zmeny?"} 
-            />
+            /> */}
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     <Typography

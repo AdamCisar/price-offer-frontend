@@ -36,7 +36,7 @@ export const SnackBarProvider = ({ children }) => {
                 handleSnackbarClose={handleSnackbarClose} 
                 snackbarMessage={snackbarMessage.current} 
                 severity={snackbarSeverity.current} 
-                duration={3000} 
+                duration={1500} 
             />
         </SnackBarContext.Provider>
     );

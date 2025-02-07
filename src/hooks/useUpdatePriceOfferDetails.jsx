@@ -1,12 +1,18 @@
 import { useCallback, useContext } from "react";
 import { useUniversalPost } from "../api/UniversalPost";
 import { PriceOfferContext } from "../providers/price_offer_providers/PriceOfferProvider";
+import { SnackBarContext } from "../providers/SnackBarProvider";
 
 const useUpdatePriceOfferDetails = () => {
     const [sendData, isLoading, error] = useUniversalPost("PRICE_OFFER");
     const { priceOfferDetails, setPriceOfferDetails } = useContext(PriceOfferContext);
+    const { handleSnackbarOpen } = useContext(SnackBarContext);
 
-    const handleSavePriceOfferDetails = useCallback(async (handleSnackbarOpen) => {
+    const handleSavePriceOfferDetails = useCallback(async (priceOfferDetails) => {
+        if (!Object.keys(priceOfferDetails).length) {
+            return;
+        }
+
         try {
             await sendData(priceOfferDetails);
             handleSnackbarOpen('Cenová ponuka bola uložená!', 'success');

@@ -8,7 +8,6 @@ import {
   Divider,
   Switch,
   FormControlLabel,
-  Stack,
 } from '@mui/material';
 import PriceOfferItems from './PriceOfferItems';
 import useUpdatePriceOfferDetails from '../../hooks/useUpdatePriceOfferDetails';
@@ -17,7 +16,6 @@ import { UserInfoContext } from '../../providers/UserInfoProvider';
 import Loading from '../utilities/Loading';
 import usePriceOfferCalculation from '../../hooks/usePriceOfferCalculation';
 import BulkPriceEditModal from './BulkPriceEditModal';
-import { SnackBarContext } from '../../providers/SnackBarProvider';
 import AppButtonModal from '../utilities/AppButtonModal';
 import ItemSearchModal from './ItemSearchModal';
 import ItemCreateModal from './ItemCreateModal';
@@ -36,7 +34,6 @@ const boxStyles = {
 
 const PriceOffer = () => {
   const {
-        handleSavePriceOfferDetails, 
         handleCustomerInputChange, 
         handleDeleteSelectedPriceOfferItems
       } = useUpdatePriceOfferDetails();
@@ -45,7 +42,6 @@ const PriceOffer = () => {
 
   const { priceOfferDetails, isLoading, error, setPriceOfferDetails } = useContext(PriceOfferContext);
   const { userInfo } = useContext(UserInfoContext);
-  const { handleSnackbarOpen } = useContext(SnackBarContext);
 
   const [isRowSelected, setRowSelected] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
@@ -76,7 +72,7 @@ const PriceOffer = () => {
             </Typography>
             <Box display="flex" flexDirection="row" justifyContent="space-between">
               <div style={{ display: 'flex', flexDirection: 'column', width: '40%' }}>
-                <CustomerInfo customerInfo={priceOfferDetails.customer} setPriceOfferDetails={setPriceOfferDetails} handleCustomerInputChange={handleCustomerInputChange} handleSnackbarOpen={handleSnackbarOpen} />
+                <CustomerInfo customerInfo={priceOfferDetails.customer} setPriceOfferDetails={setPriceOfferDetails} handleCustomerInputChange={handleCustomerInputChange} />
               </div>
               <Divider orientation="vertical" flexItem sx={{ margin: '0 20px' }} />
                 <div style={{ width: '40%' }}>
@@ -163,9 +159,6 @@ const PriceOffer = () => {
                 />
               <PdfDownloadLink priceOfferDetails={priceOfferDetails} userInfo={userInfo} isVat={isVat}/>
               </Box>
-              <Button variant="contained" color="primary" onClick={() => handleSavePriceOfferDetails(handleSnackbarOpen)}>
-                Uložiť
-              </Button>
             </Box>
           </CardContent>
         </Card>
