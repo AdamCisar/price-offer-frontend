@@ -104,7 +104,7 @@ const PriceOfferItems = React.memo(({
         autoHeight
         rows={rows}
         columns={columns}
-        getRowId={(row) => row.item_id}
+        getRowId={(row) => row.item_id ?? row.id}
         pageSizeOptions={[5, 10, 25, 50, 100]}
         onRowSelectionModelChange={handleItemSelection}
         processRowUpdate={processRowUpdate}
