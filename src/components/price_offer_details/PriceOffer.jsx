@@ -135,17 +135,17 @@ const PriceOffer = () => {
               <div>
                 <Box display="flex" justifyContent="space-between">
                   <Typography variant="body1">Základ DPH:</Typography>
-                  <Typography variant="body1">{Number(priceOfferDetails.vatBase).round(2)} €</Typography>
+                  <Typography variant="body1">{priceOfferDetails.vatBase} €</Typography>
                 </Box>
                 <Box display="flex" justifyContent="space-between">
                   <Typography variant="body1">DPH:</Typography>
-                  <Typography variant="body1">{Number(priceOfferDetails.vat).round(2)} €</Typography>
+                  <Typography variant="body1">{priceOfferDetails.vat} €</Typography>
                 </Box>
               </div>
             }
             <Box display="flex" justifyContent="space-between">
             <Typography variant="h5">Celkom:</Typography>
-              <Typography variant="h5">{Number(isVat ? priceOfferDetails.total : priceOfferDetails.vatBase).round(2)} €</Typography>
+              <Typography variant="h5">{isVat ? priceOfferDetails.total : priceOfferDetails.vatBase} €</Typography>
             </Box>
           </CardContent>
           <CardContent>

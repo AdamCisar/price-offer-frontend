@@ -30,8 +30,6 @@ const handleCellEditChange = (value) => {
     return validInput;
 };
 
-const itemRounding = 2;
-
 const PriceOfferItems = React.memo(({ 
   priceOfferItems, 
   toggleSelectedRowButton, 
@@ -44,28 +42,28 @@ const PriceOfferItems = React.memo(({
 
   const columns = [
     { field: 'title', headerName: 'Názov', width: 320, editable: true },
-    { field: 'unit', headerName: 'Merná jednotka', width: 130, editable: true },
+    { field: 'unit', headerName: 'Merná jednotka', width: 120, editable: true },
     { field: 'quantity', headerName: 'Množstvo', width: 130, editable: true,
-      renderCell: (params) => (Number(params.value).round(itemRounding)),
+      renderCell: (params) => (Number(params.value).round()),
       valueParser: (value, row, column, apiRef) => {
         return handleCellEditChange(value);
       },
     },
     { field: 'price', headerName: (isVat ? 'Cena bez DPH' : 'Cena'), width: 130, 
-      renderCell: (params) => (Number(params.value).round(itemRounding)), editable: true,
+      renderCell: (params) => (Number(params.value).round()), editable: true,
       valueParser: (value, row, column, apiRef) => {
         return handleCellEditChange(value);
       },
     },
     ...(isVat ? [{ field: "vat", headerName: "DPH %", width: 80, editable: false,
-        renderCell: (params) => (Number(params.value).round(itemRounding)),
+        renderCell: (params) => (Number(params.value).round()),
         valueParser: (value, row, column, apiRef) => {
           return handleCellEditChange(value);
         },
         valueGetter: (params) => params ?? 23,
     }] : []),
     { field: 'total', headerName: (isVat ? 'Spolu bez DPH' : 'Spolu'), width: 130,
-      renderCell: (params) => (Number(params.value).round(itemRounding)),
+      renderCell: (params) => (Number(params.value).round()),
       valueParser: (value, row, column, apiRef) => {
         return handleCellEditChange(value);
       },

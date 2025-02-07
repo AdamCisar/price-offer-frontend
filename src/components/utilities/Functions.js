@@ -5,6 +5,11 @@ Number.prototype.round = function (decimals = 2) {
         return 0;
     }
 
-    let formattedValue = parseFloat(value).toFixed(decimals);
-    return formattedValue.toLocaleString('sk-SK');
+    const factor = Math.pow(10, decimals);
+    const rounded = Math.round(value * factor) / factor;
+
+    return rounded.toLocaleString('sk-SK', {
+        minimumFractionDigits: decimals,
+        maximumFractionDigits: decimals
+    });
 };
