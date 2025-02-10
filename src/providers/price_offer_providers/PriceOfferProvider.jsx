@@ -27,7 +27,6 @@ export function PriceOfferProvider({ children }) {
 
         vatBase += item.price * item.quantity;
         vat += (item.price * item.quantity) * (itemVat / 100);
-
         total += (item.price * item.quantity) * (itemVat / 100 + 1);
       }
 

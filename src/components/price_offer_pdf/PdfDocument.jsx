@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     },
 });
 
-const PdfDocument = ({ priceOfferDetails, userInfo, isVat }) => {
+const PdfDocument = ({ priceOfferDetails, userInfo }) => {
   return (
     <>
     {priceOfferDetails.items && priceOfferDetails.customer && userInfo &&
@@ -181,12 +181,12 @@ const PdfDocument = ({ priceOfferDetails, userInfo, isVat }) => {
                         <Text style={[styles.tableCol, { flex: 1 }]}>Názov položky</Text>
                         <Text style={[styles.tableCol, { flex: 1 }]}>Merná jednotka</Text>
                         <Text style={[styles.tableCol, { flex: 1 }]}>Množstvo</Text>
-                        <Text style={[styles.tableCol, { flex: 1 }]}>Cena {isVat ? 'bez DPH' : ''}</Text>
+                        <Text style={[styles.tableCol, { flex: 1 }]}>Cena {priceOfferDetails.is_vat ? 'bez DPH' : ''}</Text>
                         {
-                            isVat &&
+                            priceOfferDetails.is_vat &&
                                 <Text style={[styles.tableCol, { flex: 1 }]}>DPH %</Text>
                         }
-                        <Text style={[styles.tableCol, { flex: 1 }]}>Spolu {isVat ? 'bez DPH' : ''}</Text>
+                        <Text style={[styles.tableCol, { flex: 1 }]}>Spolu {priceOfferDetails.is_vat ? 'bez DPH' : ''}</Text>
                     </View>
                     
                     {priceOfferDetails.items.map((item, index) => (
@@ -196,7 +196,7 @@ const PdfDocument = ({ priceOfferDetails, userInfo, isVat }) => {
                             <Text style={[styles.tableCol, { flex: 1 }]}>{item.quantity}</Text>
                             <Text style={[styles.tableCol, { flex: 1 }]}>{String(item.price).replace('.', ',')}</Text>
                             {
-                                isVat && 
+                                priceOfferDetails.is_vat && 
                                     <Text style={[styles.tableCol, { flex: 1 }]}>{23}</Text>
                             }
                             <Text style={[styles.tableCol, { flex: 1 }]}>{String(item.total).replace('.', ',')}</Text>
@@ -205,7 +205,7 @@ const PdfDocument = ({ priceOfferDetails, userInfo, isVat }) => {
                 </View>
 
                 <View style={styles.footer}>
-                    {isVat && 
+                    {priceOfferDetails.is_vat && 
                     <>
                         <View style={styles.footerRow}>
                             <Text style={styles.priceCell}>Základ DPH:</Text>
@@ -222,7 +222,7 @@ const PdfDocument = ({ priceOfferDetails, userInfo, isVat }) => {
 
                     <View style={styles.footerRow}>
                         <Text style={styles.totalPriceCell}>Celkom:</Text>
-                        <Text style={[{width: 'auto'}, styles.totalPriceCell]}>{String(isVat ? priceOfferDetails.total : priceOfferDetails.vatBase).replace('.', ',')} €</Text>
+                        <Text style={[{width: 'auto'}, styles.totalPriceCell]}>{String(priceOfferDetails.is_vat ? priceOfferDetails.total : priceOfferDetails.vatBase).replace('.', ',')} €</Text>
                     </View>
                 </View>
             </Page>

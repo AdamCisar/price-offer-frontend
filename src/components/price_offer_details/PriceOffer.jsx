@@ -50,8 +50,6 @@ const PriceOffer = () => {
     setRowSelected(ids.length > 0);
   }, []);
 
-  const [isVat, setIsVat] = useState(false);
-
   if (isLoading) {
     return <Loading />
   }
@@ -96,8 +94,8 @@ const PriceOffer = () => {
                 />
                 <FormControlLabel
                   control={<Switch
-                    checked={isVat}
-                    onChange={() => setIsVat(!isVat)}
+                    checked={priceOfferDetails.is_vat}
+                    onChange={() => setPriceOfferDetails({ ...priceOfferDetails, is_vat: !priceOfferDetails.is_vat })}
                     color="primary"
                     />}
                     label={'Použiť DPH'}
@@ -123,11 +121,11 @@ const PriceOffer = () => {
               setSelectedItems={setSelectedItems}
               setPriceOfferDetails={setPriceOfferDetails}
               calculateTotalPriceForItem={calculateTotalPriceForItem}
-              isVat={isVat}
+              isVat={priceOfferDetails.is_vat}
             />
             <Divider sx={{ margin: '20px 0' }} />
             {
-              isVat &&
+              priceOfferDetails.is_vat &&
               <div>
                 <Box display="flex" justifyContent="space-between">
                   <Typography variant="body1">Základ DPH:</Typography>
@@ -141,7 +139,7 @@ const PriceOffer = () => {
             }
             <Box display="flex" justifyContent="space-between">
             <Typography variant="h5">Celkom:</Typography>
-              <Typography variant="h5">{isVat ? priceOfferDetails.total : priceOfferDetails.vatBase} €</Typography>
+              <Typography variant="h5">{priceOfferDetails.is_vat ? priceOfferDetails.total : priceOfferDetails.vatBase} €</Typography>
             </Box>
           </CardContent>
           <CardContent>
@@ -155,9 +153,8 @@ const PriceOffer = () => {
                   ModalComponent={PdfPreviewer}
                   priceOfferDetails={priceOfferDetails}
                   userInfo={userInfo}
-                  isVat={isVat}
                 />
-              <PdfDownloadLink priceOfferDetails={priceOfferDetails} userInfo={userInfo} isVat={isVat}/>
+              <PdfDownloadLink priceOfferDetails={priceOfferDetails} userInfo={userInfo} />
               </Box>
             </Box>
           </CardContent>

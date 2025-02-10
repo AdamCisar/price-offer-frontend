@@ -20,7 +20,7 @@ const localeText = {
 const handleCellEditChange = (value) => {
     let cleanedInput = value.replace(/,/g, '.');
 
-    const validInput = cleanedInput.replace(/[^0-9.]/g, ''); 
+    const validInput = cleanedInput.replace(/(?!^-)[^0-9.]/g, '');
     const dotCount = validInput.split('.').length - 1;
 
     if (dotCount > 1) {
