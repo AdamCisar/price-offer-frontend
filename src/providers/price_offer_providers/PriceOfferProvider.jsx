@@ -67,7 +67,7 @@ export function PriceOfferProvider({ children }) {
     if (!isInitialized && priceOfferDetails?.vat) {
       setIsInitialized(true);
     }
-console.log(priceOfferDetails)
+
   }, [priceOfferDetails]);
 
   return (

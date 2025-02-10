@@ -238,7 +238,7 @@ const PdfDocument = ({ priceOfferDetails, userInfo }) => {
                                 );
                             })}
 
-                            <View style={{ borderBottomWidth: 1, borderBottomColor: '#000' }} />
+                            <View style={{ borderBottomWidth: 1, borderBottomColor: '#000', marginTop: 5, marginBottom: 5 }} />
                         </>
                     )}
 
@@ -259,7 +259,7 @@ const PdfDocument = ({ priceOfferDetails, userInfo }) => {
                             </Text>
                             </View>
                             
-                            <View style={{ borderBottomWidth: 1, borderBottomColor: '#000' }} />
+                            <View style={{ borderBottomWidth: 1, borderBottomColor: '#000', marginTop: 5 }} />
                         </View>
                         )}
 
