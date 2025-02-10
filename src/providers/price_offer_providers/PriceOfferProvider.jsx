@@ -21,6 +21,7 @@ export function PriceOfferProvider({ children }) {
       let total = 0;
       let vatBase = 0;
       let vat = 0;
+      let discount = 0;
 
       for (let item of items) {
         const itemVat = item.vat ? item.vat : 23; 
@@ -28,9 +29,10 @@ export function PriceOfferProvider({ children }) {
         vatBase += item.price * item.quantity;
         vat += (item.price * item.quantity) * (itemVat / 100);
         total += (item.price * item.quantity) * (itemVat / 100 + 1);
+        discount += item.price < 0 ? Number(item.price) : 0;
       }
 
-      return {total: total.round(), vatBase: vatBase.round(), vat: vat.round()};
+      return {total: total, vatBase: vatBase, vat: vat, discount: discount};
   }, []);
 
   useEffect(() => {
@@ -52,7 +54,8 @@ export function PriceOfferProvider({ children }) {
       ...prevData,
       total: totalPrice.total,
       vatBase: totalPrice.vatBase,
-      vat: totalPrice.vat
+      vat: totalPrice.vat,
+      discount: totalPrice.discount,
     }));
   }, [priceOfferDetails, calculateTotal]); 
 
@@ -64,7 +67,7 @@ export function PriceOfferProvider({ children }) {
     if (!isInitialized && priceOfferDetails?.vat) {
       setIsInitialized(true);
     }
-
+console.log(priceOfferDetails)
   }, [priceOfferDetails]);
 
   return (

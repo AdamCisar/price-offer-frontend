@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
 const PdfDocument = ({ priceOfferDetails, userInfo }) => {
   return (
     <>
-    {priceOfferDetails.items && priceOfferDetails.customer && userInfo &&
+    {priceOfferDetails.items && priceOfferDetails.customer && userInfo && priceOfferDetails.total && priceOfferDetails.vatBase &&
         <Document title={`cenova_ponuka_${priceOfferDetails.customer?.name}`}>
             <Page size="A4" style={styles.page}>
                 <View style={styles.header}>
@@ -189,40 +189,83 @@ const PdfDocument = ({ priceOfferDetails, userInfo }) => {
                         <Text style={[styles.tableCol, { flex: 1 }]}>Spolu {priceOfferDetails.is_vat ? 'bez DPH' : ''}</Text>
                     </View>
                     
-                    {priceOfferDetails.items.map((item, index) => (
-                        <View key={index} style={styles.tableRow}>
-                            <Text style={[styles.tableCol, { flex: 1, textAlign: 'left' }]}>{item.title}</Text>
-                            <Text style={[styles.tableCol, { flex: 1 }]}>{item.unit}</Text>
-                            <Text style={[styles.tableCol, { flex: 1 }]}>{item.quantity}</Text>
-                            <Text style={[styles.tableCol, { flex: 1 }]}>{String(item.price).replace('.', ',')}</Text>
-                            {
-                                priceOfferDetails.is_vat && 
-                                    <Text style={[styles.tableCol, { flex: 1 }]}>{23}</Text>
-                            }
-                            <Text style={[styles.tableCol, { flex: 1 }]}>{String(item.total).replace('.', ',')}</Text>
-                        </View>
-                    ))}
+                    {priceOfferDetails.items.map((item, index) => {
+                        if (item.price < 0) {
+                            return;
+                        }
+
+                        return (
+                            <View key={index} style={styles.tableRow}>
+                                <Text style={[styles.tableCol, { flex: 1, textAlign: 'left' }]}>{item.title}</Text>
+                                <Text style={[styles.tableCol, { flex: 1 }]}>{item.unit}</Text>
+                                <Text style={[styles.tableCol, { flex: 1 }]}>{item.quantity}</Text>
+                                <Text style={[styles.tableCol, { flex: 1 }]}>{item.price.round()}</Text>
+                                {
+                                    priceOfferDetails.is_vat && 
+                                        <Text style={[styles.tableCol, { flex: 1 }]}>{23}</Text>
+                                }
+                                <Text style={[styles.tableCol, { flex: 1 }]}>{item.total.round()}</Text>
+                            </View>
+                        );
+                    })}
+
                 </View>
 
                 <View style={styles.footer}>
-                    {priceOfferDetails.is_vat && 
-                    <>
-                        <View style={styles.footerRow}>
-                            <Text style={styles.priceCell}>Základ DPH:</Text>
-                            <Text style={[{width: 'auto'}, styles.priceCell]}>{String(priceOfferDetails.vatBase).replace('.', ',')} €</Text>
-                        </View>
-                        <div style={{borderBottom: '1px solid #000'}}>
-                        <View style={styles.footerRow}>
-                            <Text style={styles.priceCell}>DPH:</Text>
-                            <Text style={[{width: 'auto'}, styles.priceCell]}>{String(priceOfferDetails.vat).replace('.', ',')} €</Text>
-                        </View>
-                        </div>
+                    {priceOfferDetails.discount < 0 && (
+                        <>
+                            <View style={styles.footerRow}>
+                                <Text style={[styles.priceCell]}>
+                                    Spolu bez zľavy:
+                                </Text>
+                                <Text style={[{ width: 'auto' }, styles.priceCell]}>
+                                    {((priceOfferDetails.is_vat ? priceOfferDetails.total : priceOfferDetails.vatBase) - priceOfferDetails.discount).round()} €
+                                </Text>
+                            </View>
+
+                            {priceOfferDetails.items.map((item, index) => {
+                                if (item.price >= 0) {
+                                    return null;
+                                }
+
+                                return (
+                                    <View key={index} style={styles.footerRow}>
+                                        <Text style={[styles.priceCell, { color: '#D32F2F' }]}>{item.title}:</Text>
+                                        <Text style={[{ width: 'auto', color: '#D32F2F' }, styles.priceCell]}>
+                                            {item.price.round()} €
+                                        </Text>
+                                    </View>
+                                );
+                            })}
+
+                            <View style={{ borderBottomWidth: 1, borderBottomColor: '#000' }} />
                         </>
-                    }
+                    )}
+
+
+                    {priceOfferDetails.is_vat && (
+                        <View>
+                            <View style={styles.footerRow}>
+                            <Text style={styles.priceCell}>Základ DPH:</Text>
+                            <Text style={[{ width: 'auto' }, styles.priceCell]}>
+                                {priceOfferDetails.vatBase.round()} €
+                            </Text>
+                            </View>
+                            
+                            <View style={styles.footerRow}>
+                            <Text style={styles.priceCell}>DPH:</Text>
+                            <Text style={[{ width: 'auto' }, styles.priceCell]}>
+                                {priceOfferDetails.vat.round()} €
+                            </Text>
+                            </View>
+                            
+                            <View style={{ borderBottomWidth: 1, borderBottomColor: '#000' }} />
+                        </View>
+                        )}
 
                     <View style={styles.footerRow}>
                         <Text style={styles.totalPriceCell}>Celkom:</Text>
-                        <Text style={[{width: 'auto'}, styles.totalPriceCell]}>{String(priceOfferDetails.is_vat ? priceOfferDetails.total : priceOfferDetails.vatBase).replace('.', ',')} €</Text>
+                        <Text style={[{width: 'auto'}, styles.totalPriceCell]}>{(priceOfferDetails.is_vat ? priceOfferDetails.total : priceOfferDetails.vatBase).round()} €</Text>
                     </View>
                 </View>
             </Page>
