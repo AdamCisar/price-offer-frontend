@@ -34,6 +34,8 @@ const useSubmitPriceOfferItem = (onClose) => {
               unit: formData.unit,
               price: formData.price,
             });
+            
+            priceOfferItem.item_id = priceOfferItem.id;
 
             addPriceOfferItemToContext(priceOfferItem);
             setFormData(initialState);

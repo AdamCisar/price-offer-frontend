@@ -199,12 +199,12 @@ const PdfDocument = ({ priceOfferDetails, userInfo }) => {
                                 <Text style={[styles.tableCol, { flex: 1, textAlign: 'left' }]}>{item.title}</Text>
                                 <Text style={[styles.tableCol, { flex: 1 }]}>{item.unit}</Text>
                                 <Text style={[styles.tableCol, { flex: 1 }]}>{item.quantity}</Text>
-                                <Text style={[styles.tableCol, { flex: 1 }]}>{item.price?.round()}</Text>
+                                <Text style={[styles.tableCol, { flex: 1 }]}>{Number(item.price)?.round()}</Text>
                                 {
                                     priceOfferDetails.is_vat && 
                                         <Text style={[styles.tableCol, { flex: 1 }]}>{23}</Text>
                                 }
-                                <Text style={[styles.tableCol, { flex: 1 }]}>{item.total?.round()}</Text>
+                                <Text style={[styles.tableCol, { flex: 1 }]}>{Number(item.total)?.round()}</Text>
                             </View>
                         );
                     })}
@@ -232,7 +232,7 @@ const PdfDocument = ({ priceOfferDetails, userInfo }) => {
                                     <View key={index} style={styles.footerRow}>
                                         <Text style={[styles.priceCell, { color: '#D32F2F' }]}>{item.title}:</Text>
                                         <Text style={[{ width: 'auto', color: '#D32F2F' }, styles.priceCell]}>
-                                            {item.price?.round()} €
+                                            {Number(item.price)?.round()} €
                                         </Text>
                                     </View>
                                 );
@@ -248,14 +248,14 @@ const PdfDocument = ({ priceOfferDetails, userInfo }) => {
                             <View style={styles.footerRow}>
                             <Text style={styles.priceCell}>Základ DPH:</Text>
                             <Text style={[{ width: 'auto' }, styles.priceCell]}>
-                                {priceOfferDetails.vatBase?.round()} €
+                                {Number(priceOfferDetails.vatBase)?.round()} €
                             </Text>
                             </View>
                             
                             <View style={styles.footerRow}>
                             <Text style={styles.priceCell}>DPH:</Text>
                             <Text style={[{ width: 'auto' }, styles.priceCell]}>
-                                {priceOfferDetails.vat?.round()} €
+                                {Number(priceOfferDetails.vat)?.round()} €
                             </Text>
                             </View>
                             
@@ -265,7 +265,7 @@ const PdfDocument = ({ priceOfferDetails, userInfo }) => {
 
                     <View style={styles.footerRow}>
                         <Text style={styles.totalPriceCell}>Celkom:</Text>
-                        <Text style={[{width: 'auto'}, styles.totalPriceCell]}>{(priceOfferDetails.is_vat ? priceOfferDetails.total : priceOfferDetails.vatBase)?.round()} €</Text>
+                        <Text style={[{width: 'auto'}, styles.totalPriceCell]}>{Number(priceOfferDetails.is_vat ? priceOfferDetails.total : priceOfferDetails.vatBase)?.round()} €</Text>
                     </View>
                 </View>
             </Page>

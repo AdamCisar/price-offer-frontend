@@ -51,7 +51,7 @@ const ItemSearchModal = React.memo(({ open, onClose, focusInputRef, styles }) =>
     let existingItems = {};
 
     for (let item of selectedItems.current.items) {
-      existingItems[item.name] = addPriceOfferItemToContext(item);
+      existingItems[item.title] = addPriceOfferItemToContext(item);
     }
     
     let messageText = selectedItems.current.items.length === 1 ? 'Produkt bol pridaný do ponuky.' : 'Produkty boli pridané do ponuky.';

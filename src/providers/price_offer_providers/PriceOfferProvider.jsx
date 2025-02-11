@@ -36,6 +36,7 @@ export function PriceOfferProvider({ children }) {
   }, []);
 
   useEffect(() => {
+    console.log(priceOffer)
     setPriceOfferDetails(priceOffer);
   }, [priceOffer]);
 
@@ -46,7 +47,7 @@ export function PriceOfferProvider({ children }) {
 
     const totalPrice = calculateTotal(priceOfferDetails.items);
 
-    if (priceOfferDetails.total == totalPrice.total) {
+    if (priceOfferDetails.total === totalPrice.total && priceOfferDetails.vatBase === totalPrice.vatBase && priceOfferDetails.vat === totalPrice.vat && priceOfferDetails.discount === totalPrice.discount) {
       return;
     }
 
@@ -64,7 +65,7 @@ export function PriceOfferProvider({ children }) {
       handleSavePriceOfferDetails(priceOfferDetails);
     }
 
-    if (!isInitialized && priceOfferDetails?.vat) {
+    if (!isInitialized && typeof priceOfferDetails?.vat !== 'undefined') {
       setIsInitialized(true);
     }
 
