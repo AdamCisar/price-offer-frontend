@@ -214,14 +214,14 @@ const PdfDocument = ({ priceOfferDetails, userInfo }) => {
                 <View style={styles.footer}>
                     {priceOfferDetails.discount < 0 && (
                         <>
-                            <View style={styles.footerRow}>
+                            {/* <View style={styles.footerRow}>
                                 <Text style={[styles.priceCell]}>
                                     Spolu bez zľavy:
                                 </Text>
                                 <Text style={[{ width: 'auto' }, styles.priceCell]}>
                                     {((priceOfferDetails.is_vat ? priceOfferDetails.total : priceOfferDetails.vatBase) - priceOfferDetails.discount).round()} €
                                 </Text>
-                            </View>
+                            </View> */}
 
                             {priceOfferDetails.items.map((item, index) => {
                                 if (item.price >= 0) {
