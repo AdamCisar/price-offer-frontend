@@ -21,7 +21,12 @@ const useSubmitPriceOffer = (onClose, addToPriceOfferList, duplicateFromId = und
 
     const handleSubmit = async () => {
         
-        if (!validate() || priceOfferId) {
+        if (!validate()) {
+            return;
+        }
+
+        if (priceOfferId) {
+            handleSnackbarOpen('Z dôvodu údržbý momentálne nie je možné upraviť cenovú ponuku 🛠️', 'info');
             return;
         }
 
