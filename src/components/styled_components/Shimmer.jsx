@@ -16,7 +16,7 @@ const ShimmerContainer = styled('div')`
   background: linear-gradient(to right, #e6e6e6 5%, #cccccc 25%, #e6e6e6 35%);
   background-size: 1000px 100%;
   border-radius: ${({ borderRadius }) => borderRadius || '4px'};
-  animation: ${shimmerKeyframes} 3s infinite linear;
+  animation: ${shimmerKeyframes} 1.5s infinite linear;
 `;
 
 const ShimmerWrapper = styled('div')({

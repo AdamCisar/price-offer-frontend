@@ -1,28 +1,13 @@
 import React, { useContext, useState } from 'react';
 import { Box } from '@mui/material';
 import { styled } from '@mui/system';
-import { PriceOfferListContext } from '../../providers/PriceOfferListProvider';
-import { ItemsContext } from '../../providers/ItemsProvider';
 import { PencilEditContext } from '../../providers/PencilEditProvider';
 import ConfirmDialog from '../utilities/ConfirmDialog';
-
-const GetProviderWrapper = () => {
-  let activeProvider = null;
-  const itemsContext = useContext(ItemsContext);
-  const priceOfferContext = useContext(PriceOfferListContext);
-
-  if (itemsContext) {
-    activeProvider = itemsContext;
-  } else if (priceOfferContext) {
-    activeProvider = priceOfferContext;
-  }
-
-  return activeProvider;
-};
+import GetProvider from '../../providers/ProviderFactory';
 
 const TrashCan = () => {
   const { selectedCards, setSelectedCards } = useContext(PencilEditContext);
-  const { deleteFromContext } = GetProviderWrapper();
+  const { deleteFromContext } = GetProvider();
   const [open, setOpen] = useState(false);
 
   return (
