@@ -4,13 +4,13 @@ import useSubmitPriceOffer from '../../hooks/useSubmitPriceOffer';
 import { PriceOfferListContext } from '../../providers/PriceOfferListProvider';
 
 const PriceOfferModal = ({ open, onClose, focusInputRef, modalTitle, submitButtonText, duplicateFromId, priceOfferValues }) => {
-    const { addToPriceOfferList } = useContext(PriceOfferListContext);
+    const { setPriceOfferList } = useContext(PriceOfferListContext);
     const {
         handleSubmit,
         handleInputChange,
         errors,
         isLoading,
-    } = useSubmitPriceOffer(onClose, addToPriceOfferList, duplicateFromId, priceOfferValues?.id);
+    } = useSubmitPriceOffer(onClose, setPriceOfferList, duplicateFromId, priceOfferValues?.id);
 
     return (
         <Dialog aria-labelledby="dialog-title" aria-describedby="dialog-description"

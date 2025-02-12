@@ -15,10 +15,6 @@ export function PriceOfferListProvider({ children }) {
       setPriceOfferList(priceOffer); 
   }, [priceOffer]);
 
-  const addToPriceOfferList = (priceOffer) => {
-    setPriceOfferList([...priceOfferList, priceOffer]);
-  }
-
   const deleteFromContext = async (idList) => {
     const deletedIds = await deletePriceOffer(idList);
 
@@ -36,7 +32,7 @@ export function PriceOfferListProvider({ children }) {
   }
 
   return (
-    <PriceOfferListContext.Provider value={{ priceOffer: priceOfferList, isLoading, error, addToPriceOfferList, deleteFromContext }}>
+    <PriceOfferListContext.Provider value={{ priceOffer: priceOfferList, isLoading, error, setPriceOfferList, deleteFromContext }}>
       {children}
     </PriceOfferListContext.Provider>
   );

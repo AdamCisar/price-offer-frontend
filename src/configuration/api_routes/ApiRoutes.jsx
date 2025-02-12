@@ -3,6 +3,7 @@ export const IMAGES_FOLDER = process.env.REACT_APP_BASE_URL + '/images';
 
 const ApiRoutes = {
     PRICE_OFFER: `${API_BASE_URL}/price-offers`,
+    PRICE_OFFER_DETAILS: `${API_BASE_URL}/price-offers/details`,
     PRICE_OFFER_ITEM: `${API_BASE_URL}/price-offers/:priceOfferId/items`,
     PRICE_OFFER_CUSTOMER_SEARCH: `${API_BASE_URL}/price-offers/customers/search`,
 

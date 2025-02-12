@@ -12,7 +12,7 @@ const initialState = {
     }
 };
 
-const useSubmitPriceOffer = (onClose, addToPriceOfferList, duplicateFromId = undefined, priceOfferId = undefined) => {
+const useSubmitPriceOffer = (onClose, setPriceOfferList, duplicateFromId = undefined, priceOfferId = undefined) => {
     
     const [formData, setFormData] = useState(initialState);
     const { handleSnackbarOpen } = useContext(SnackBarContext);
@@ -25,11 +25,6 @@ const useSubmitPriceOffer = (onClose, addToPriceOfferList, duplicateFromId = und
             return;
         }
 
-        if (priceOfferId) {
-            handleSnackbarOpen('Z dôvodu údržbý momentálne nie je možné upraviť cenovú ponuku 🛠️', 'info');
-            return;
-        }
-
         try {
             const priceOffer = await sendData({
                 id: priceOfferId,
@@ -39,7 +34,13 @@ const useSubmitPriceOffer = (onClose, addToPriceOfferList, duplicateFromId = und
             });
 
             handleSnackbarOpen(`Cenová ponuka bola ${priceOfferId ? 'upravená' : 'vytvorená'}!`, 'success');
-            addToPriceOfferList(priceOffer);
+            setPriceOfferList((prevList) => {
+                if (priceOfferId) {
+                    return prevList.map(item => item.id === priceOfferId ? priceOffer : item)
+                } 
+
+                return [...prevList, priceOffer];
+            });
             setFormData(initialState);
             onClose();
           } catch (err) {

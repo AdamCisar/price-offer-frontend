@@ -4,7 +4,7 @@ import { PriceOfferContext } from "../providers/price_offer_providers/PriceOffer
 import { SnackBarContext } from "../providers/SnackBarProvider";
 
 const useUpdatePriceOfferDetails = () => {
-    const [sendData, isLoading, error] = useUniversalPost("PRICE_OFFER");
+    const [sendData, isLoading, error] = useUniversalPost("PRICE_OFFER_DETAILS");
     const { priceOfferDetails, setPriceOfferDetails } = useContext(PriceOfferContext);
     const { handleSnackbarOpen } = useContext(SnackBarContext);
 

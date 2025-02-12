@@ -30,13 +30,13 @@ export const checkExpiringToken = () => {
         return;
     }
 
-    const token = localStorage.getItem("token");
-
-    if (!token) {
-        return;
-    }
-
     tokenCheckInterval = setInterval(() => {
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+            return;
+        }
+        
         const expireTime = JSON.parse(atob(token.split(".")[1])).exp * 1000;
         const currentTime = Date.now();
         const timeLeft = expireTime - currentTime;
