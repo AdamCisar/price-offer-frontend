@@ -36,7 +36,6 @@ export function PriceOfferProvider({ children }) {
   }, []);
 
   useEffect(() => {
-    console.log(priceOffer)
     setPriceOfferDetails(priceOffer);
   }, [priceOffer]);
 

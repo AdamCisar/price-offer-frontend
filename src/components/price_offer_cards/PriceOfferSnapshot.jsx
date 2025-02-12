@@ -85,7 +85,7 @@ const PriceOfferSnapshot = ({ ...props }) => {
               handlePriceOfferDetails();
             }} 
       isEditing={isEditing}
-      sx={{ maxHeight: 320, minHeight: 320,}}
+      sx={{ maxHeight: 320, minHeight: 320 }}
     >
 
     {isEditing && <div style={{ position: 'absolute', top: 5, right: 5 }}><CheckIcon selected={selected} /></div>}
@@ -108,7 +108,7 @@ const PriceOfferSnapshot = ({ ...props }) => {
         onLoad={handleImageLoad} 
       />
     </div>
-        <CardContent>
+        <CardContent  style={{ padding: 0 }}>
           <Typography gutterBottom variant="h6" component="div" style={{ fontSize: 16 }}>
             {props.title}
           </Typography>

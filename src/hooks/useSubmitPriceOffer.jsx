@@ -21,7 +21,7 @@ const useSubmitPriceOffer = (onClose, addToPriceOfferList, duplicateFromId = und
 
     const handleSubmit = async () => {
         
-        if (!validate()) {
+        if (!validate() || priceOfferId) {
             return;
         }
 
@@ -33,12 +33,12 @@ const useSubmitPriceOffer = (onClose, addToPriceOfferList, duplicateFromId = und
                 duplicateFromId: duplicateFromId
             });
 
-            handleSnackbarOpen('Cenová ponuka bola vytvorená!', 'success');
+            handleSnackbarOpen(`Cenová ponuka bola ${priceOfferId ? 'upravená' : 'vytvorená'}!`, 'success');
             addToPriceOfferList(priceOffer);
             setFormData(initialState);
             onClose();
           } catch (err) {
-            handleSnackbarOpen('Cenovú ponuku sa nepodarilo vytvoriť!', 'error');
+            handleSnackbarOpen(`Cenovú ponuku sa nepodarilo ${priceOfferId ? 'upraviť' : 'vytvoriť'}!`, 'error');
             console.log(err);
         }
     };
