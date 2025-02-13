@@ -24,7 +24,7 @@ const Items = () => {
     );
   
     if (isLoading) {
-        return <Loading />;
+        return <Loading />
     }
   
     if (error) {

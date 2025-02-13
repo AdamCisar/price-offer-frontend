@@ -1,5 +1,6 @@
 import {
     useQuery,
+    useQueryClient,
   } from '@tanstack/react-query'
   import ApiRoutes from '../configuration/api_routes/ApiRoutes';
   
@@ -29,11 +30,15 @@ import {
    * @returns [data, isLoading, error] 
    */
   export const useUniversalGet = (endpoint, id) => {
+    const queryClient = useQueryClient();
     const { data, isLoading, error } = useQuery({
       queryKey: [endpoint+id],    
       queryFn: ({ signal }) => fetchData(endpoint, id, signal),
     });
+    console.log(isLoading)
+
+    const invalidateQuery = () => queryClient.setQueryData([endpoint + id], null);
   
-    return [data, isLoading, error];
+    return [data, isLoading, error, invalidateQuery];
   };
   

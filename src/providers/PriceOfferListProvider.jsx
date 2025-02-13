@@ -6,13 +6,17 @@ import { PencilEditContext } from "./PencilEditProvider";
 export const PriceOfferListContext = React.createContext(null);
 
 export function PriceOfferListProvider({ children }) {
-  const [priceOffer, isLoading, error] = useUniversalGet('PRICE_OFFER');
+  const [priceOffer, isLoading, error, invalidateQuery] = useUniversalGet('PRICE_OFFER');
   const [priceOfferList, setPriceOfferList] = useState({});
   const { deletePriceOffer } = useDeletePriceOffer();
   const { setIsEditing } = useContext(PencilEditContext);
 
   useEffect(() => {
+    if (!priceOffer) {
+      return;
+    }
       setPriceOfferList(priceOffer); 
+      invalidateQuery();
   }, [priceOffer]);
 
   const deleteFromContext = async (idList) => {

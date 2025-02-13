@@ -13,7 +13,7 @@ export function PriceOfferProvider({ children }) {
     handleSavePriceOfferDetails, 
   } = useUpdatePriceOfferDetails();
   const { id } = useParams();
-  const [priceOffer, isLoading, error] = useUniversalGet('PRICE_OFFER', id);
+  const [priceOffer, isLoading, error, invalidateQuery] = useUniversalGet('PRICE_OFFER', id);
   const [priceOfferDetails, setPriceOfferDetails] = useState({});
   const [isInitialized, setIsInitialized] = useState(false);
 
@@ -36,7 +36,11 @@ export function PriceOfferProvider({ children }) {
   }, []);
 
   useEffect(() => {
+    if (!priceOffer) {
+      return;
+    }
     setPriceOfferDetails(priceOffer);
+    invalidateQuery();
   }, [priceOffer]);
 
   useEffect(() => {
