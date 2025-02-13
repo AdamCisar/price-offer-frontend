@@ -42,10 +42,6 @@ const PriceOfferSnapshot = ({ ...props }) => {
     handleSnackbarOpen('Pracuje sa na tom 🛠️', 'info');
   };
 
-  useEffect(() => {
-    setIsLoading(true);
-  }, [isEditing]);
- 
   if (isEditing) {
     return (
       <>

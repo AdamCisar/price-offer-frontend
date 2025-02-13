@@ -62,7 +62,7 @@ const PriceOffer = () => {
     <Box
       {...boxStyles}
     >
-    {priceOfferDetails && userInfo &&
+    {priceOfferDetails && userInfo && typeof priceOfferDetails.is_vat !== 'undefined' &&
         <Card sx={{ width: '100%', maxWidth: 1000 }}>
           <CardContent>
             <Typography variant="h4" gutterBottom sx={{ marginBottom: 5 }}>
