@@ -40,7 +40,7 @@ const PriceOffer = () => {
 
   const { handleEditSelectedPriceOfferItemsPrices, calculateTotalPriceForItem } = usePriceOfferCalculation();
 
-  const { priceOfferDetails, isLoading, error, setPriceOfferDetails } = useContext(PriceOfferContext);
+  const { priceOfferDetails, isLoading, isFetching, error, setPriceOfferDetails } = useContext(PriceOfferContext);
   const { userInfo } = useContext(UserInfoContext);
 
   const [isRowSelected, setRowSelected] = useState(false);
@@ -50,7 +50,7 @@ const PriceOffer = () => {
     setRowSelected(ids.length > 0);
   }, []);
 
-  if (isLoading) {
+  if (isLoading || isFetching) {
     return <Loading />
   }
 

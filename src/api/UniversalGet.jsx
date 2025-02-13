@@ -29,16 +29,16 @@ import {
    *  endpoint constant suffix
    * @returns [data, isLoading, error] 
    */
-  export const useUniversalGet = (endpoint, id) => {
+  export const useUniversalGet = (endpoint, id=undefined) => {
+    const Id = id ? id : '';
     const queryClient = useQueryClient();
-    const { data, isLoading, error } = useQuery({
-      queryKey: [endpoint+id],    
-      queryFn: ({ signal }) => fetchData(endpoint, id, signal),
+    const { data, isLoading, isFetching, error } = useQuery({
+      queryKey: [endpoint+Id],    
+      queryFn: ({ signal }) => fetchData(endpoint, Id, signal),
     });
-    console.log(isLoading)
 
-    const invalidateQuery = () => queryClient.setQueryData([endpoint + id], null);
+    const setCachedData = (data) => queryClient.setQueryData([endpoint + Id], data);
   
-    return [data, isLoading, error, invalidateQuery];
+    return [data, isLoading, isFetching, error, setCachedData];
   };
   

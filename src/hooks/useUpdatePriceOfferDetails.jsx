@@ -15,7 +15,7 @@ const useUpdatePriceOfferDetails = () => {
 
         try {
             await sendData(priceOfferDetails);
-            handleSnackbarOpen('Cenová ponuka bola uložená!', 'success');
+            handleSnackbarOpen('Automatické ukladanie cenovej ponuky bolo úspešné!', 'success');
           } catch (err) {
             handleSnackbarOpen('Cenová ponuka sa neuložila!', 'error');
             console.log(err);

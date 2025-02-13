@@ -12,7 +12,7 @@ const boxStyles = {
 };
 
 const Items = () => {
-    const { items, setItems, isLoading, error } = useContext(ItemsContext);
+    const { items, setItems, isLoading, isFetching, error } = useContext(ItemsContext);
     const [searchTerm, setSearchTerm] = useState('');
   
     const handleSearchChange = (event) => {
@@ -23,7 +23,7 @@ const Items = () => {
         item.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
   
-    if (isLoading) {
+    if (isLoading || isFetching) {
         return <Loading />
     }
   
@@ -47,16 +47,12 @@ const Items = () => {
                 </Grid2>
   
                 <Grid2 item xs={12}>
-                    {filteredItems && filteredItems.length > 0 ? (
+                    {filteredItems && filteredItems.length > 0 && (
                         <Grid2 container spacing={1}>
                             {filteredItems.map((item) => (
                                 <ItemCard key={item.id} item={item} setItems={setItems}/>
                             ))}
                         </Grid2>
-                    ) : (
-                        <Typography variant="body1" align="center" mt={2} xs={12}>
-                            No items found.
-                        </Typography>
                     )}
                 </Grid2>
             </Grid2>

@@ -13,8 +13,8 @@ export function PriceOfferProvider({ children }) {
     handleSavePriceOfferDetails, 
   } = useUpdatePriceOfferDetails();
   const { id } = useParams();
-  const [priceOffer, isLoading, error, invalidateQuery] = useUniversalGet('PRICE_OFFER', id);
-  const [priceOfferDetails, setPriceOfferDetails] = useState({});
+  const [priceOffer, isLoading, isFetching, error, setCachedData] = useUniversalGet('PRICE_OFFER', id);
+  const [priceOfferDetails, setPriceOfferDetailsState] = useState({});
   const [isInitialized, setIsInitialized] = useState(false);
 
   const calculateTotal = useCallback((items) => {
@@ -35,12 +35,21 @@ export function PriceOfferProvider({ children }) {
       return {total: total, vatBase: vatBase, vat: vat, discount: discount};
   }, []);
 
+  const setPriceOfferDetails = useCallback((updater) => {
+    setPriceOfferDetailsState((prevData) => {
+      const newData = typeof updater === 'function' ? updater(prevData) : updater;
+  
+      setCachedData(newData);
+      return newData;
+    });
+
+  }, [setCachedData]);
+  
   useEffect(() => {
     if (!priceOffer) {
       return;
     }
     setPriceOfferDetails(priceOffer);
-    invalidateQuery();
   }, [priceOffer]);
 
   useEffect(() => {
@@ -64,18 +73,16 @@ export function PriceOfferProvider({ children }) {
   }, [priceOfferDetails, calculateTotal]); 
 
   useEffect(() => {
-    if (isInitialized) {
-      handleSavePriceOfferDetails(priceOfferDetails);
-    }
-
-    if (!isInitialized && typeof priceOfferDetails?.vat !== 'undefined') {
+    if (!isLoading && !isFetching && !isInitialized && priceOfferDetails?.vat !== undefined) {
       setIsInitialized(true);
+      return;
     }
-
+    
+    handleSavePriceOfferDetails(priceOfferDetails);
   }, [priceOfferDetails]);
 
   return (
-    <PriceOfferContext.Provider value={{ priceOfferDetails, isLoading, error, setPriceOfferDetails }}>
+    <PriceOfferContext.Provider value={{ priceOfferDetails, isLoading, isFetching, error, setPriceOfferDetails }}>
         {children}
     </PriceOfferContext.Provider>
   );

@@ -9,11 +9,11 @@ import AddIcon from '@mui/icons-material/Add';
 import PriceOfferModal from './PriceOfferModal';
 
 const PriceOfferCards = () => {
-    const { priceOffer, isLoading, error } = useContext(PriceOfferListContext);
+    const { priceOffer, isLoading, isFetching, error } = useContext(PriceOfferListContext);
 
     return (
         <div style={{ padding: '10px', width: '100%' }}>
-            {isLoading ? (
+            {isLoading || isFetching ? (
                 <Loading />
             ) : (
                 <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>

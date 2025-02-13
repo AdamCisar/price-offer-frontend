@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useCallback } from "react";
 import { useUniversalGet } from '../api/UniversalGet';
 import { PencilEditContext } from "./PencilEditProvider";
 import useDeleteItem from "../hooks/useDeleteItem";
@@ -6,10 +6,20 @@ import useDeleteItem from "../hooks/useDeleteItem";
 export const ItemsContext = React.createContext(null);
 
 export function ItemsProvider({ children }) {
-  const [data, isLoading, error, invalidateQuery] = useUniversalGet('ITEM');
+  const [data, isLoading, isFetching, error, setCachedData] = useUniversalGet('ITEM');
   const { deleteItem } = useDeleteItem('ITEM');
-  const [items, setItems] = useState([]);
+  const [items, setItemsState] = useState([]);
   const { setIsEditing } = useContext(PencilEditContext);
+
+  const setItems = useCallback((updater) => {
+    setItemsState((prevData) => {
+      const newData = typeof updater === 'function' ? updater(prevData) : updater;
+  
+      setCachedData(newData);
+      return newData;
+    });
+  }, [setCachedData]);
+
 
   useEffect(() => {
     if (!data) {
@@ -17,7 +27,6 @@ export function ItemsProvider({ children }) {
     }
 
     setItems(data);
-    invalidateQuery();
   }, [data]);
 
   const deleteFromContext = async (idList) => {
@@ -37,7 +46,7 @@ export function ItemsProvider({ children }) {
   }
 
   return (
-    <ItemsContext.Provider value={{ items, setItems, isLoading, error, deleteFromContext }}>
+    <ItemsContext.Provider value={{ items, setItems, isLoading, isFetching, error, deleteFromContext }}>
       {children}
     </ItemsContext.Provider>
   );
