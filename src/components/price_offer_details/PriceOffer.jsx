@@ -124,6 +124,22 @@ const PriceOffer = () => {
               isVat={priceOfferDetails.is_vat}
             />
             <Divider sx={{ margin: '20px 0' }} />
+            {priceOfferDetails.discount < 0 && (
+                  <>
+                      {priceOfferDetails.items.map((item, index) => {
+                          if (item.price >= 0) {
+                              return null;
+                          }
+
+                          return (
+                            <Box display="flex" justifyContent="space-between">
+                              <Typography variant="body1" style={{ color: '#cb1819' }}>{item.title}</Typography>
+                              <Typography variant="body1" style={{ color: '#cb1819' }}>{Number(item.price)?.round()} €</Typography>
+                            </Box>
+                          );
+                      })}
+                  </>
+              )}
             {
               priceOfferDetails.is_vat &&
               <div>

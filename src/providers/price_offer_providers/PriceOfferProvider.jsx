@@ -24,7 +24,8 @@ export function PriceOfferProvider({ children }) {
       let discount = 0;
 
       for (let item of items) {
-        const itemVat = item.vat ? item.vat : 23; 
+        item.vat = item.price < 0 ? 0 : item.vat;
+        const itemVat = typeof item.vat !== 'undefined' ? item.vat : 23; 
 
         vatBase += item.price * item.quantity;
         vat += (item.price * item.quantity) * (itemVat / 100);

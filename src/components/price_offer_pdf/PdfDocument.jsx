@@ -230,8 +230,8 @@ const PdfDocument = ({ priceOfferDetails, userInfo }) => {
 
                                 return (
                                     <View key={index} style={styles.footerRow}>
-                                        <Text style={[styles.priceCell, { color: '#D32F2F' }]}>{item.title}:</Text>
-                                        <Text style={[{ width: 'auto', color: '#D32F2F' }, styles.priceCell]}>
+                                        <Text style={[styles.priceCell, { color: '#cb1819' }]}>{item.title}:</Text>
+                                        <Text style={[{ width: 'auto', color: '#cb1819' }, styles.priceCell]}>
                                             {Number(item.price)?.round()} €
                                         </Text>
                                     </View>
