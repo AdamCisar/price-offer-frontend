@@ -16,10 +16,11 @@ const CustomersDivWrapper = styled('div')(
     `
 );
 
-const CustomerInfo = React.memo(({customerInfo, setPriceOfferDetails, handleCustomerInputChange}) => {
+const CustomerInfo = React.memo(({customerInfo, setPriceOfferDetails}) => {
     const { searchedResults, setSearchedResults, debouncedSearch, isLoading, error } = useSearch("PRICE_OFFER_CUSTOMER_SEARCH");
       const { handleSnackbarOpen } = useContext(SnackBarContext);
     const searchTermRef = useRef('');
+    const [customer, setCustomer] = React.useState(customerInfo);
 
     const handleSelectedCustomer = (customer) => {
         setPriceOfferDetails((prevData) => ({
@@ -38,6 +39,37 @@ const CustomerInfo = React.memo(({customerInfo, setPriceOfferDetails, handleCust
         searchTermRef.current.value = '';
         setSearchedResults([]);
     };
+
+    const handleCustomerInputChange = (event) => {
+        const { name, value } = event.target;
+        setCustomer({
+          ...customer,
+          [name]: value
+        })
+      };
+
+    const setCustomerToPriceOfferDetails = () => {
+
+        if (
+            customer.name === customerInfo.name && 
+            customer.address === customerInfo.address && 
+            customer.city === customerInfo.city && 
+            customer.zip === customerInfo.zip
+        ) {
+            return;
+        }
+
+        setPriceOfferDetails((prevData) => ({
+            ...prevData,
+            "customer": 
+                {
+                    name: customer.name,
+                    address: customer.address,
+                    city: customer.city,
+                    zip: customer.zip
+                }
+        }));
+    }
 
     return (
         <>
@@ -99,10 +131,9 @@ const CustomerInfo = React.memo(({customerInfo, setPriceOfferDetails, handleCust
             variant="outlined"
             label="Meno"
             name="name"
-            value={customerInfo?.name || ''}
-            onChange={(e) => {
-                handleCustomerInputChange(e);
-              }}
+            value={customer?.name || ''}
+            onChange={handleCustomerInputChange}
+            onBlur={setCustomerToPriceOfferDetails}
             sx={{ marginBottom: 2 }}
         />
         <TextField
@@ -110,8 +141,9 @@ const CustomerInfo = React.memo(({customerInfo, setPriceOfferDetails, handleCust
             variant="outlined"
             label="Mesto/Obec"
             name="city" 
-            value={customerInfo?.city || ''}
+            value={customer?.city || ''}
             onChange={handleCustomerInputChange}
+            onBlur={setCustomerToPriceOfferDetails}
             sx={{ marginBottom: 2 }}
         />
         <TextField
@@ -119,8 +151,9 @@ const CustomerInfo = React.memo(({customerInfo, setPriceOfferDetails, handleCust
             variant="outlined"
             label="Adresa"
             name="address" 
-            value={customerInfo?.address || ''}
+            value={customer?.address || ''}
             onChange={handleCustomerInputChange}
+            onBlur={setCustomerToPriceOfferDetails}
             sx={{ marginBottom: 2 }}
         />
         <TextField
@@ -128,8 +161,9 @@ const CustomerInfo = React.memo(({customerInfo, setPriceOfferDetails, handleCust
             variant="outlined"
             label="PSČ"
             name="zip" 
-            value={customerInfo?.zip || ''}
+            value={customer?.zip || ''}
             onChange={handleCustomerInputChange}
+            onBlur={setCustomerToPriceOfferDetails}
             sx={{ marginBottom: 2 }}
         />
         </>

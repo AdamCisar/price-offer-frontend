@@ -30,21 +30,9 @@ const useUpdatePriceOfferDetails = () => {
         }));
     }, [priceOfferDetails, setPriceOfferDetails]);
 
-    const handleCustomerInputChange = useCallback((event) => {
-        const { name, value } = event.target;
-        setPriceOfferDetails((prevData) => ({
-            ...prevData,
-            'customer': {
-              ...prevData['customer'],  
-              [name]: value,          
-            },
-          }));
-      }, [setPriceOfferDetails]);
-
     return {
         isLoading,
         handleSavePriceOfferDetails,
-        handleCustomerInputChange,
         handleDeleteSelectedPriceOfferItems,
     };
 };
