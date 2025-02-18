@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { CardMedia, MenuItem } from '@mui/material';
+import { MenuItem } from '@mui/material';
 import { PencilEditContext } from '../../providers/PencilEditProvider';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Shimmer from '../styled_components/Shimmer';
@@ -13,6 +13,7 @@ import { SnackBarContext } from '../../providers/SnackBarProvider';
 import { Edit } from '@mui/icons-material';
 import GetProvider from '../../providers/ProviderFactory';
 import ConfirmDialog from '../utilities/ConfirmDialog';
+import invoiceThumb from "../../assets/invoice_thumb.png";
 
 const PriceOfferSnapshot = ({ ...props }) => {
   const navigate = useNavigate();
@@ -42,6 +43,14 @@ const PriceOfferSnapshot = ({ ...props }) => {
     handleSnackbarOpen('Pracuje sa na tom 🛠️', 'info');
   };
 
+  useEffect(() => {
+    if (!isEditing) {
+      return;
+    }
+    
+    setIsLoading(true);
+  }, [isEditing]); 
+  
   if (isEditing) {
     return (
       <>
@@ -142,12 +151,16 @@ const PriceOfferSnapshot = ({ ...props }) => {
               />
             )}
 
-            <CardMedia
-              component="img"
-              image="/invoice_thumb.png"
+            <img
+              src={invoiceThumb}
               alt={props.title}
               style={{
+                position: 'relative',
                 display: isLoading ? 'none' : 'block',
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                left: 9,
               }}
               onLoad={handleImageLoad} 
             />

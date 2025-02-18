@@ -148,130 +148,126 @@ const styles = StyleSheet.create({
 
 const PdfDocument = ({ priceOfferDetails, userInfo }) => {
   return (
-    <>
-    {priceOfferDetails.items && priceOfferDetails.customer && userInfo && priceOfferDetails.total && priceOfferDetails.vatBase &&
-        <Document title={`cenova_ponuka_${priceOfferDetails.customer?.name}`}>
-            <Page size="A4" style={styles.page}>
-                <View style={styles.header}>
-                    <Text style={styles.title}>Cenová ponuka</Text>
-                    <Image src={logo} style={styles.image} alt="cisar_logo" />
-                </View>
+    <Document title={`cenova_ponuka_${priceOfferDetails?.customer?.name}`}>
+        <Page size="A4" style={styles.page}>
+            <View style={styles.header}>
+                <Text style={styles.title}>Cenová ponuka</Text>
+                <Image src={logo} style={styles.image} alt="cisar_logo" />
+            </View>
 
-                <View style={styles.customerInfo}>
-                    <Text style={styles.subTitle}>Zákazník:</Text>
-                    <Text style={styles.text}>Meno: {priceOfferDetails.customer?.name}</Text>
-                    <Text style={styles.text}>Adresa: {priceOfferDetails.customer?.city} {priceOfferDetails.customer?.address}</Text>
-                    <Text style={styles.text}>PSČ: {priceOfferDetails.customer?.zip}</Text>
-                </View>
-                <View style={styles.userInfo}>
-                    <Text style={styles.subTitle}>Spracoval:</Text>
-                    <Text style={styles.text}>{userInfo.name}</Text>
-                    <Text style={styles.text}>{userInfo.city} {userInfo.address}</Text>
-                    <Text style={styles.text}>{userInfo.zip}</Text>
-                </View>
+            <View style={styles.customerInfo}>
+                <Text style={styles.subTitle}>Zákazník:</Text>
+                <Text style={styles.text}>Meno: {priceOfferDetails?.customer?.name}</Text>
+                <Text style={styles.text}>Adresa: {priceOfferDetails?.customer?.city} {priceOfferDetails?.customer?.address}</Text>
+                <Text style={styles.text}>PSČ: {priceOfferDetails?.customer?.zip}</Text>
+            </View>
+            <View style={styles.userInfo}>
+                <Text style={styles.subTitle}>Spracoval:</Text>
+                <Text style={styles.text}>{userInfo?.name}</Text>
+                <Text style={styles.text}>{userInfo?.city} {userInfo?.address}</Text>
+                <Text style={styles.text}>{userInfo?.zip}</Text>
+            </View>
 
-                <View style={[styles.section, { flexDirection: 'row', justifyContent: 'flex-end'}]}>
-                    <Text style={[styles.text, { textAlign: 'right' }]}>
-                        Vypracované dňa: {new Date().toLocaleDateString()}
-                    </Text>
+            <View style={[styles.section, { flexDirection: 'row', justifyContent: 'flex-end'}]}>
+                <Text style={[styles.text, { textAlign: 'right' }]}>
+                    Vypracované dňa: {new Date().toLocaleDateString()}
+                </Text>
+            </View>
+            
+            <View style={styles.table}>
+                <View style={[styles.tableRow, styles.tableHeader]}>
+                    <Text style={[styles.tableCol, { flex: 1 }]}>Názov položky</Text>
+                    <Text style={[styles.tableCol, { flex: 1 }]}>Merná jednotka</Text>
+                    <Text style={[styles.tableCol, { flex: 1 }]}>Množstvo</Text>
+                    <Text style={[styles.tableCol, { flex: 1 }]}>Cena {priceOfferDetails?.is_vat ? 'bez DPH' : ''}</Text>
+                    {
+                        priceOfferDetails?.is_vat &&
+                            <Text style={[styles.tableCol, { flex: 1 }]}>DPH %</Text>
+                    }
+                    <Text style={[styles.tableCol, { flex: 1 }]}>Spolu {priceOfferDetails?.is_vat ? 'bez DPH' : ''}</Text>
                 </View>
                 
-                <View style={styles.table}>
-                    <View style={[styles.tableRow, styles.tableHeader]}>
-                        <Text style={[styles.tableCol, { flex: 1 }]}>Názov položky</Text>
-                        <Text style={[styles.tableCol, { flex: 1 }]}>Merná jednotka</Text>
-                        <Text style={[styles.tableCol, { flex: 1 }]}>Množstvo</Text>
-                        <Text style={[styles.tableCol, { flex: 1 }]}>Cena {priceOfferDetails.is_vat ? 'bez DPH' : ''}</Text>
-                        {
-                            priceOfferDetails.is_vat &&
-                                <Text style={[styles.tableCol, { flex: 1 }]}>DPH %</Text>
-                        }
-                        <Text style={[styles.tableCol, { flex: 1 }]}>Spolu {priceOfferDetails.is_vat ? 'bez DPH' : ''}</Text>
+                {priceOfferDetails?.items?.map((item, index) => {
+                    if (item.price < 0) {
+                        return;
+                    }
+
+                    return (
+                        <View key={index} style={styles.tableRow}>
+                            <Text style={[styles.tableCol, { flex: 1, textAlign: 'left' }]}>{item.title}</Text>
+                            <Text style={[styles.tableCol, { flex: 1 }]}>{item.unit}</Text>
+                            <Text style={[styles.tableCol, { flex: 1 }]}>{item.quantity}</Text>
+                            <Text style={[styles.tableCol, { flex: 1 }]}>{Number(item.price)?.round()}</Text>
+                            {
+                                priceOfferDetails.is_vat && 
+                                    <Text style={[styles.tableCol, { flex: 1 }]}>{23}</Text>
+                            }
+                            <Text style={[styles.tableCol, { flex: 1 }]}>{Number(item.total)?.round()}</Text>
+                        </View>
+                    );
+                })}
+
+            </View>
+
+            <View style={styles.footer}>
+                {priceOfferDetails?.discount < 0 && (
+                    <>
+                        {/* <View style={styles.footerRow}>
+                            <Text style={[styles.priceCell]}>
+                                Spolu bez zľavy:
+                            </Text>
+                            <Text style={[{ width: 'auto' }, styles.priceCell]}>
+                                {((priceOfferDetails.is_vat ? priceOfferDetails.total : priceOfferDetails.vatBase) - priceOfferDetails.discount).round()} €
+                            </Text>
+                        </View> */}
+
+                        {priceOfferDetails.items.map((item, index) => {
+                            if (item.price >= 0) {
+                                return null;
+                            }
+
+                            return (
+                                <View key={index} style={styles.footerRow}>
+                                    <Text style={[styles.priceCell, { color: '#cb1819' }]}>{item.title}:</Text>
+                                    <Text style={[{ width: 'auto', color: '#cb1819' }, styles.priceCell]}>
+                                        {Number(item.price)?.round()} €
+                                    </Text>
+                                </View>
+                            );
+                        })}
+
+                        <View style={{ borderBottomWidth: 1, borderBottomColor: '#000', marginTop: 5, marginBottom: 5 }} />
+                    </>
+                )}
+
+
+                {priceOfferDetails?.is_vat && (
+                    <View>
+                        <View style={styles.footerRow}>
+                        <Text style={styles.priceCell}>Základ DPH:</Text>
+                        <Text style={[{ width: 'auto' }, styles.priceCell]}>
+                            {Number(priceOfferDetails.vatBase)?.round()} €
+                        </Text>
+                        </View>
+                        
+                        <View style={styles.footerRow}>
+                        <Text style={styles.priceCell}>DPH:</Text>
+                        <Text style={[{ width: 'auto' }, styles.priceCell]}>
+                            {Number(priceOfferDetails.vat)?.round()} €
+                        </Text>
+                        </View>
+                        
+                        <View style={{ borderBottomWidth: 1, borderBottomColor: '#000', marginTop: 5 }} />
                     </View>
-                    
-                    {priceOfferDetails.items.map((item, index) => {
-                        if (item.price < 0) {
-                            return;
-                        }
-
-                        return (
-                            <View key={index} style={styles.tableRow}>
-                                <Text style={[styles.tableCol, { flex: 1, textAlign: 'left' }]}>{item.title}</Text>
-                                <Text style={[styles.tableCol, { flex: 1 }]}>{item.unit}</Text>
-                                <Text style={[styles.tableCol, { flex: 1 }]}>{item.quantity}</Text>
-                                <Text style={[styles.tableCol, { flex: 1 }]}>{Number(item.price)?.round()}</Text>
-                                {
-                                    priceOfferDetails.is_vat && 
-                                        <Text style={[styles.tableCol, { flex: 1 }]}>{23}</Text>
-                                }
-                                <Text style={[styles.tableCol, { flex: 1 }]}>{Number(item.total)?.round()}</Text>
-                            </View>
-                        );
-                    })}
-
-                </View>
-
-                <View style={styles.footer}>
-                    {priceOfferDetails.discount < 0 && (
-                        <>
-                            {/* <View style={styles.footerRow}>
-                                <Text style={[styles.priceCell]}>
-                                    Spolu bez zľavy:
-                                </Text>
-                                <Text style={[{ width: 'auto' }, styles.priceCell]}>
-                                    {((priceOfferDetails.is_vat ? priceOfferDetails.total : priceOfferDetails.vatBase) - priceOfferDetails.discount).round()} €
-                                </Text>
-                            </View> */}
-
-                            {priceOfferDetails.items.map((item, index) => {
-                                if (item.price >= 0) {
-                                    return null;
-                                }
-
-                                return (
-                                    <View key={index} style={styles.footerRow}>
-                                        <Text style={[styles.priceCell, { color: '#cb1819' }]}>{item.title}:</Text>
-                                        <Text style={[{ width: 'auto', color: '#cb1819' }, styles.priceCell]}>
-                                            {Number(item.price)?.round()} €
-                                        </Text>
-                                    </View>
-                                );
-                            })}
-
-                            <View style={{ borderBottomWidth: 1, borderBottomColor: '#000', marginTop: 5, marginBottom: 5 }} />
-                        </>
                     )}
 
-
-                    {priceOfferDetails.is_vat && (
-                        <View>
-                            <View style={styles.footerRow}>
-                            <Text style={styles.priceCell}>Základ DPH:</Text>
-                            <Text style={[{ width: 'auto' }, styles.priceCell]}>
-                                {Number(priceOfferDetails.vatBase)?.round()} €
-                            </Text>
-                            </View>
-                            
-                            <View style={styles.footerRow}>
-                            <Text style={styles.priceCell}>DPH:</Text>
-                            <Text style={[{ width: 'auto' }, styles.priceCell]}>
-                                {Number(priceOfferDetails.vat)?.round()} €
-                            </Text>
-                            </View>
-                            
-                            <View style={{ borderBottomWidth: 1, borderBottomColor: '#000', marginTop: 5 }} />
-                        </View>
-                        )}
-
-                    <View style={styles.footerRow}>
-                        <Text style={styles.totalPriceCell}>Celkom:</Text>
-                        <Text style={[{width: 'auto'}, styles.totalPriceCell]}>{Number(priceOfferDetails.is_vat ? priceOfferDetails.total : priceOfferDetails.vatBase)?.round()} €</Text>
-                    </View>
+                <View style={styles.footerRow}>
+                    <Text style={styles.totalPriceCell}>Celkom:</Text>
+                    <Text style={[{width: 'auto'}, styles.totalPriceCell]}>{Number(priceOfferDetails?.is_vat ? priceOfferDetails?.total : priceOfferDetails?.vatBase)?.round()} €</Text>
                 </View>
-            </Page>
-        </Document>
-    }
-    </>
+            </View>
+        </Page>
+    </Document>
   );
 };
 
