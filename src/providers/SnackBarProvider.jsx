@@ -1,6 +1,6 @@
 import { createContext, useRef, useState } from 'react';
 import CustomSnackbar from '../components/utilities/CustomSnackbar';
-
+import { useSnackbar, SnackbarProvider as SnackBarProviderNotiStack } from 'notistack';
 
 export const SnackBarContext = createContext(null);
 
@@ -11,16 +11,19 @@ export const SnackBarContext = createContext(null);
  * @returns {JSX.Element}
  */
 export const SnackBarProvider = ({ children }) => {
+  const { enqueueSnackbar } = useSnackbar();
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const snackbarMessage = useRef('');
     const snackbarSeverity = useRef('');
-  
+
     const handleSnackbarOpen = (message, severityType) => {
       snackbarMessage.current = message;
       snackbarSeverity.current = severityType;
-      setSnackbarOpen(true);
+      // setSnackbarOpen(true);
+
+      enqueueSnackbar(message, { variant: severityType });
     };
-  
+
     const handleSnackbarClose = (event, reason) => {
       if (reason === 'clickaway') {
         return;
@@ -40,4 +43,12 @@ export const SnackBarProvider = ({ children }) => {
             />
         </SnackBarContext.Provider>
     );
+};
+
+export const SnackBarWrapper = ({ children }) => {
+  return (
+    <SnackBarProviderNotiStack maxSnack={3} autoHideDuration={2000}>
+      <SnackBarProvider>{children}</SnackBarProvider>
+    </SnackBarProviderNotiStack>
+  );
 };
