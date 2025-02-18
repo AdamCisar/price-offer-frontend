@@ -48,22 +48,16 @@ const ItemSearchModal = React.memo(({ open, onClose, focusInputRef, styles }) =>
       return;
     }
 
-    let existingItems = {};
-
-    for (let item of selectedItems.current.items) {
-      existingItems[item.title] = addPriceOfferItemToContext(item);
-    }
-    
+    const existingItems = addPriceOfferItemToContext(selectedItems.current.items);
     let messageText = selectedItems.current.items.length === 1 ? 'Produkt bol pridaný do ponuky.' : 'Produkty boli pridané do ponuky.';
     let severity = 'success';
 
-    if (Object.values(existingItems).includes(false)) {
+    if (existingItems.length) {
       messageText = 'Niektoré z vybraných produktov neboli pridané do ponuky, pretože sa už v nej nachádzajú.';
       severity = 'warning';
     }
 
     handleSnackbarOpen(messageText, severity);
-
     onCloseModal();
   };
 

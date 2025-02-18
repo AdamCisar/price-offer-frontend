@@ -3,6 +3,7 @@ import { useUniversalPost } from "../api/UniversalPost";
 import { SnackBarContext } from "../providers/SnackBarProvider";
 import { PriceOfferContext } from "../providers/price_offer_providers/PriceOfferProvider";
 import useValidate from "./useValidate";
+import { isArray } from "lodash";
 
 const initialState = {
     title: "",
@@ -47,28 +48,45 @@ const useSubmitPriceOfferItem = (onClose) => {
         }
     };
 
-    const addPriceOfferItemToContext = (priceOfferItem) => {
+    /**
+     * Add price offer item/items to context
+     * 
+     * @param {object|object[]} priceOfferItems
+     */
+    const addPriceOfferItemToContext = (priceOfferItems) => {
 
-        if (!priceOfferItem) {
+        if (!priceOfferItems) {
             return false;
         }
 
-        if (priceOfferDetails.items?.find((item) => item.item_id === priceOfferItem.item_id)) {
-            return false;
+        const itemsList = isArray(priceOfferItems) ? priceOfferItems : [priceOfferItems];
+        
+        let filteredOutItems = [];
+        const filteredItems = itemsList.filter(priceOfferItem => {
+            if (priceOfferDetails.items?.find(item => item.item_id === priceOfferItem.item_id)) {
+                filteredOutItems[priceOfferItem.item_id] = priceOfferItem;
+                return false;
+            }
+          
+            if (!priceOfferItem.quantity) {
+              priceOfferItem.quantity = 1;
+            }
+          
+            if (!priceOfferItem.total) {
+              priceOfferItem.total = priceOfferItem.price;
+            }
+
+            return true;
+        });
+
+        if (filteredItems.length) {
+            setPriceOfferDetails((prevData) => ({
+              ...prevData,
+              'items': [...(prevData?.items || []), ...filteredItems],
+            }));
         }
 
-        if (!priceOfferItem.quantity) {
-            priceOfferItem.quantity = 1;
-        }
-
-        if (!priceOfferItem.total) {
-            priceOfferItem.total = priceOfferItem.price;
-        }
-
-        setPriceOfferDetails((prevData) => ({
-          ...prevData,
-          'items': [...(prevData?.items || []), priceOfferItem],
-        }));
+        return filteredOutItems;
     };
 
     return {
