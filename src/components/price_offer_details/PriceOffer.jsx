@@ -131,7 +131,7 @@ const PriceOffer = () => {
                           }
 
                           return (
-                            <Box display="flex" justifyContent="space-between">
+                            <Box key={index} display="flex" justifyContent="space-between">
                               <Typography variant="body1" style={{ color: '#cb1819' }}>{item.title}</Typography>
                               <Typography variant="body1" style={{ color: '#cb1819' }}>{Number(item.price)?.round()} €</Typography>
                             </Box>

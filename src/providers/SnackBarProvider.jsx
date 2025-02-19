@@ -47,7 +47,7 @@ export const SnackBarProvider = ({ children }) => {
 
 export const SnackBarWrapper = ({ children }) => {
   return (
-    <SnackBarProviderNotiStack maxSnack={3} autoHideDuration={2000}>
+    <SnackBarProviderNotiStack maxSnack={3} autoHideDuration={2500}>
       <SnackBarProvider>{children}</SnackBarProvider>
     </SnackBarProviderNotiStack>
   );

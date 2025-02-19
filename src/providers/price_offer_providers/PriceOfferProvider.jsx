@@ -36,51 +36,25 @@ export function PriceOfferProvider({ children }) {
       return {total: total, vatBase: vatBase, vat: vat, discount: discount};
   }, []);
 
-  const setPriceOfferDetails = useCallback((updater) => {
+  const setPriceOfferDetails = (updater) => {
     setPriceOfferDetailsState((prevData) => {
-      const newData = typeof updater === 'function' ? updater(prevData) : updater;
+      let newData = typeof updater === 'function' ? updater(prevData) : updater;
+      newData = { ...newData, ...calculateTotal(newData.items) };
   
+      isInitialized && handleSavePriceOfferDetails(newData);
       setCachedData(newData);
       return newData;
     });
-
-  }, [setCachedData]);
+  };
   
   useEffect(() => {
-    if (!priceOffer) {
+    if (!priceOffer || isInitialized) {
       return;
     }
+
     setPriceOfferDetails(priceOffer);
+    setIsInitialized(true);
   }, [priceOffer]);
-
-  useEffect(() => {
-    if (!priceOfferDetails?.items) {
-      return;
-    }
-
-    const totalPrice = calculateTotal(priceOfferDetails.items);
-
-    if (priceOfferDetails.total === totalPrice.total && priceOfferDetails.vatBase === totalPrice.vatBase && priceOfferDetails.vat === totalPrice.vat && priceOfferDetails.discount === totalPrice.discount) {
-      return;
-    }
-
-    setPriceOfferDetails(prevData => ({
-      ...prevData,
-      total: totalPrice.total,
-      vatBase: totalPrice.vatBase,
-      vat: totalPrice.vat,
-      discount: totalPrice.discount,
-    }));
-  }, [priceOfferDetails, calculateTotal]); 
-
-  useEffect(() => {
-    if (!isLoading && !isFetching && !isInitialized && priceOfferDetails?.vat !== undefined) {
-      setIsInitialized(true);
-      return;
-    }
-    
-    handleSavePriceOfferDetails(priceOfferDetails);
-  }, [priceOfferDetails]);
 
   return (
     <PriceOfferContext.Provider value={{ priceOfferDetails, isLoading, isFetching, error, setPriceOfferDetails }}>
