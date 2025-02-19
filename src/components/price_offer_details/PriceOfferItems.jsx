@@ -41,15 +41,15 @@ const PriceOfferItems = React.memo(({
   const rows = useMemo(() => priceOfferItems, [priceOfferItems]);
 
   const columns = [
-    { field: 'title', headerName: 'Názov', width: 320, editable: true },
-    { field: 'unit', headerName: 'Merná jednotka', width: 120, editable: true },
-    { field: 'quantity', headerName: 'Množstvo', width: 130, editable: true,
+    { field: 'title', headerName: 'Názov', width: (isVat ? 425 : 510), editable: true },
+    { field: 'unit', headerName: 'Merná jednotka', width: 80, editable: true },
+    { field: 'quantity', headerName: 'Množstvo', width: 100, editable: true,
       renderCell: (params) => (Number(params.value).round()),
       valueParser: (value, row, column, apiRef) => {
         return handleCellEditChange(value);
       },
     },
-    { field: 'price', headerName: (isVat ? 'Cena bez DPH' : 'Cena'), width: 130, 
+    { field: 'price', headerName: (isVat ? 'Cena bez DPH' : 'Cena'), width: 110, 
       renderCell: (params) => (Number(params.value).round()), editable: true,
       valueParser: (value, row, column, apiRef) => {
         return handleCellEditChange(value);
@@ -62,7 +62,7 @@ const PriceOfferItems = React.memo(({
         },
         valueGetter: (params) => params ?? 23,
     }] : []),
-    { field: 'total', headerName: (isVat ? 'Spolu bez DPH' : 'Spolu'), width: 130,
+    { field: 'total', headerName: (isVat ? 'Spolu bez DPH' : 'Spolu'), width: 115,
       renderCell: (params) => (Number(params.value).round()),
       valueParser: (value, row, column, apiRef) => {
         return handleCellEditChange(value);
