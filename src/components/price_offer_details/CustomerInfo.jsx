@@ -23,11 +23,17 @@ const CustomerInfo = React.memo(({customerInfo, setPriceOfferDetails}) => {
     const [customer, setCustomer] = React.useState(customerInfo);
 
     const handleSelectedCustomer = (customer) => {
+        setCustomer({
+            name: customer.name,
+            address: customer.address,
+            city: customer.city,
+            zip: customer.zip
+        })
+
         setPriceOfferDetails((prevData) => ({
             ...prevData,
             "customer": 
                 {
-                    id: prevData.customer.id,
                     name: customer.name,
                     address: customer.address,
                     city: customer.city,
