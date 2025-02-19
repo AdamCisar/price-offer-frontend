@@ -27,10 +27,6 @@ const Items = () => {
         return <Loading />
     }
   
-    if (error) {
-        return <p>Error: {error.message}</p>;
-    }
-
     return (
         <Box {...boxStyles}>
             <Grid2 container spacing={2} sx={{ flexDirection: 'column', width: '100%' }}>

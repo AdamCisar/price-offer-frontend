@@ -29,13 +29,13 @@ import {
    *  endpoint constant suffix
    * @returns [data, isLoading, error] 
    */
-  export const useUniversalGet = (endpoint, id=undefined) => {
+  export const useUniversalGet = (endpoint, id = undefined, refetchOnMount = false) => {
     const Id = id ? id : '';
     const queryClient = useQueryClient();
     const { data, isLoading, isFetching, error } = useQuery({
       queryKey: [endpoint+Id],    
       queryFn: ({ signal }) => fetchData(endpoint, Id, signal),
-      refetchOnMount: false, 
+      refetchOnMount: refetchOnMount, 
     });
 
     const setCachedData = (data) => queryClient.setQueryData([endpoint + Id], data);

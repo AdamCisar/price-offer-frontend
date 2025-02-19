@@ -6,7 +6,7 @@ import useDeleteItem from "../hooks/useDeleteItem";
 export const ItemsContext = React.createContext(null);
 
 export function ItemsProvider({ children }) {
-  const [data, isLoading, isFetching, error, setCachedData] = useUniversalGet('ITEM');
+  const [data, isLoading, isFetching, error, setCachedData] = useUniversalGet('ITEM', undefined, true);
   const { deleteItem } = useDeleteItem('ITEM');
   const [items, setItemsState] = useState([]);
   const { setIsEditing } = useContext(PencilEditContext);
