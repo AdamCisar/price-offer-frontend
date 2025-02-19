@@ -29,8 +29,12 @@ const Items = () => {
   
     return (
         <Box {...boxStyles}>
-            <Grid2 container spacing={2} sx={{ flexDirection: 'column', width: '100%' }}>
-                <Grid2 item xs={12}>
+            <div style={{ minWidth: '100%' }}>
+                <div style={{
+                    margin: '0 auto',
+                    width: '50%',
+                    marginBottom: '20px',
+                }}>
                     <TextField
                         id="search"
                         label="Filtrovať"
@@ -38,20 +42,20 @@ const Items = () => {
                         fullWidth
                         onChange={handleSearchChange}
                         value={searchTerm}
-                        sx={{ mb: 2 , width: '20%'}} 
                     />
-                </Grid2>
-  
-                <Grid2 item xs={12}>
-                    {filteredItems && filteredItems.length > 0 && (
-                        <Grid2 container spacing={1}>
-                            {filteredItems.map((item) => (
-                                <ItemCard key={item.id} item={item} setItems={setItems}/>
-                            ))}
-                        </Grid2>
-                    )}
-                </Grid2>
-            </Grid2>
+                </div>
+
+                <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 0fr))',
+                    gap: '16px',
+                    justifyContent: 'center'
+                }}>
+                    {filteredItems && filteredItems.map((item) => (
+                        <ItemCard key={item.id} item={item} setItems={setItems}/>
+                    ))}
+                </div>
+            </div>
         </Box>
     );
 }
