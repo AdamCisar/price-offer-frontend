@@ -81,6 +81,10 @@ const PriceOfferItems = React.memo(({
       item.item_id === newRow.item_id ? calculatedItem : item
     );
 
+    if (JSON.stringify(priceOfferItems) === JSON.stringify(items)) {
+      return newRow;
+    }
+
     setPriceOfferDetails(prevData => ({
       ...prevData,
       items,

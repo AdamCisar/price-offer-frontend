@@ -24,13 +24,15 @@ export function PriceOfferProvider({ children }) {
       let discount = 0;
 
       for (let item of items) {
-        item.vat = item.price < 0 ? 0 : item.vat;
-        const itemVat = typeof item.vat !== 'undefined' ? item.vat : 23; 
+        const price = Number(item.price);
+        const quantity = Number(item.quantity);
+        const itemVat = Number(item.price) < 0 ? 0 : 23;
+        item.vat = itemVat;
 
-        vatBase += item.price * item.quantity;
-        vat += (item.price * item.quantity) * (itemVat / 100);
-        total += (item.price * item.quantity) * (itemVat / 100 + 1);
-        discount += item.price < 0 ? Number(item.price) : 0;
+        vatBase += price * quantity
+        vat += (price * quantity) * (itemVat / 100);
+        total += (price * quantity) * (itemVat / 100 + 1);
+        discount += price < 0 ? price : 0;
       }
 
       return {total: total, vatBase: vatBase, vat: vat, discount: discount};

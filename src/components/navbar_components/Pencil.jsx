@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import { PencilEditContext } from '../../providers/PencilEditProvider';
 
 const Pencil = () => {
-    const { setIsEditing } = useContext(PencilEditContext);
+    const { isEditing, setIsEditing } = useContext(PencilEditContext);
 
     const handleEditClick = () => {
         setIsEditing((prev) => !prev);
@@ -11,7 +11,13 @@ const Pencil = () => {
 
     return (
         <div onClick={handleEditClick} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer' }}>
-            <EditIcon />
+            <EditIcon 
+                sx={{
+                    color: isEditing ? 'black' : 'inherit',
+                    stroke: isEditing ? 'white' : 'none',
+                    strokeWidth: isEditing ? 1.8 : 0,
+                }}
+            />
         </div>
     )
 }
