@@ -20,21 +20,38 @@ const ItemCard = (props) => {
     };
 
     return (
-        <Grid2 className="item-card" item xs={12} sm={6} md={4} lg={3} key={item.id} onClick={handleSelectClick} style={!isEditing ? {} : {cursor: 'pointer' }} >
-            <Card sx={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', position: 'relative' }}>
-                <CardContent sx={{ flex: 'auto', minWidth: 250, maxWidth: 250, minHeight: 100, maxHeight: 100 }}>
+        <div
+            className="item-card"
+            key={item.id}
+            onClick={handleSelectClick}
+            style={!isEditing ? {} : { cursor: 'pointer' }}
+            >
+            <Card
+                sx={{
+                width: '100%',
+                width: 300,
+                height: 200,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'flex-start',
+                position: 'relative',
+                }}
+            >
+                <CardContent sx={{ flex: 'auto' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-                        <Typography sx={{ fontWeight: '500', borderBottom: '1px solid #ccc', paddingBottom: '5px', width: '100%' }}>{item.title}</Typography>
+                        <Typography sx={{ fontWeight: '500', borderBottom: '1px solid #ccc', paddingBottom: '5px', width: '100%' }}>
+                        {item.title}
+                        </Typography>
                     </div>
                 </CardContent>
                 <Box sx={{ position: 'absolute', bottom: 12, left: 12 }}>
                     <Typography variant="p3">{item.price} €</Typography>
                 </Box>
-                {isEditing && <CheckIcon selected={selected} />}
+                    {isEditing && <CheckIcon selected={selected} />}
                 <Box sx={{ position: 'absolute', bottom: 10, right: 10 }}>
                     <AppButtonModal
                         styles={{ variant: 'outlined', color: 'primary' }}
-                        title={"Upraviť"} 
+                        title={"Upraviť"}
                         Button={Button}
                         ModalComponent={ItemEditModal}
                         item={item}
@@ -43,7 +60,7 @@ const ItemCard = (props) => {
                     />
                 </Box>
             </Card>
-        </Grid2>
+        </div>
     );
 }
 

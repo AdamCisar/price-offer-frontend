@@ -23,6 +23,7 @@ import PdfPreviewer from '../price_offer_pdf/PdfPreviewer';
 import PdfDownloadLink from '../price_offer_pdf/PdfDownloadLink';
 import UserInfo from './UserInfo';
 import CustomerInfo from './CustomerInfo';
+import PriceOfferNotes from './PriceOfferNotes';
 
 const boxStyles = {
       display: "flex",
@@ -62,6 +63,7 @@ const PriceOffer = () => {
       {...boxStyles}
     >
     {priceOfferDetails && userInfo && typeof priceOfferDetails.is_vat !== 'undefined' &&
+        <>
         <Card sx={{ width: '100%', maxWidth: 1000 }}>
           <CardContent>
             <Typography variant="h4" gutterBottom sx={{ marginBottom: 5 }}>
@@ -174,6 +176,8 @@ const PriceOffer = () => {
             </Box>
           </CardContent>
         </Card>
+        <PriceOfferNotes />
+        </>
     }
     </Box>
   );
