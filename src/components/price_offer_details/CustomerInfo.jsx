@@ -7,15 +7,6 @@ import SearchedResultRow from "../styled_components/SearchedResultRow";
 import styled, { css } from "styled-components";
 import { SnackBarContext } from "../../providers/SnackBarProvider";
 
-const CustomersDivWrapper = styled('div')(
-    ({ theme }) => css`
-    padding: '20px';
-    borderRadius: '8px';
-    backgroundColor: '#f0f0f0';
-    marginBottom: '20px';
-    `
-);
-
 const CustomerInfo = React.memo(({customerInfo, setPriceOfferDetails}) => {
     const { searchedResults, setSearchedResults, debouncedSearch, isLoading, error } = useSearch("PRICE_OFFER_CUSTOMER_SEARCH");
       const { handleSnackbarOpen } = useContext(SnackBarContext);
@@ -96,17 +87,20 @@ const CustomerInfo = React.memo(({customerInfo, setPriceOfferDetails}) => {
         ) : (
             searchedResults && searchedResults.length > 0 ? (
             <div
-            style={{
-                padding: '20px',
-                borderRadius: '8px',
-                backgroundColor: '#f0f0f0',
-                marginBottom: '20px',
-            }}
+                style={{
+                    height: 300,
+                    overflowY: 'auto',
+                    justifyContent: 'center',
+                    padding: '20px',
+                    borderRadius: '4px',
+                    border: '1px solid #ccc',
+                    marginBottom: '20px',
+                }}
             >
-            <CustomersDivWrapper>
                 <Typography variant="h6" gutterBottom sx={{ marginBottom: 2, color: '#333' }}>
-                Nájdení zákazníci:
+                    Nájdení zákazníci:
                 </Typography>
+                  
                 {searchedResults.map((customer, index) => (
                 <SearchedResultRow
                     key={index}
@@ -125,7 +119,6 @@ const CustomerInfo = React.memo(({customerInfo, setPriceOfferDetails}) => {
                     </Typography>
                 </SearchedResultRow>
                 ))}
-            </CustomersDivWrapper>
             </div>
         ) : (
             null

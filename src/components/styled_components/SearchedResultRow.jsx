@@ -17,16 +17,16 @@ const SearchedResultRow = styled('div')`
   padding: 10px;
   margin: auto;
   margin-bottom: 10px;
+  border-radius: 4px;
   width: 85%;
   align-items: center;
   cursor: pointer;
   border: 1px solid #ccc;
-  transition: background-color 0.3s ease;
-  animation: ${fadeIn} 0.5s ease-in-out forwards; 
+  transition: box-shadow 0.3s ease;
+  animation: ${fadeIn} 0.4s ease-in-out forwards; 
 
   &:hover {
-    background-color: black;
-    color: white;
+    box-shadow: 0px 0px 14px rgba(70, 70, 70, 0.5);
   }
 `;
 

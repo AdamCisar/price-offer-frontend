@@ -1,5 +1,5 @@
-import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button } from '@mui/material';
-import React, { useContext, useRef } from 'react';
+import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button, Checkbox } from '@mui/material';
+import React, { useCallback, useContext, useRef } from 'react';
 import { useSearch } from '../../api/Search';
 import Loading from '../utilities/Loading';
 import useSubmitPriceOfferItem from '../../hooks/useSubmitPriceOfferItem';
@@ -11,45 +11,16 @@ const ItemSearchModal = React.memo(({ open, onClose, focusInputRef, styles }) =>
   const { searchedResults, setSearchedResults, debouncedSearch, isLoading, error } = useSearch("ITEM_SEARCH");
   const { handleSnackbarOpen } = useContext(SnackBarContext);
   const { addPriceOfferItemToContext } = useSubmitPriceOfferItem(onClose);
-  const selectedItems = useRef({
-    items: [],
-    elems: []
-  });
-
-  const handleItemClick = (item) => {
-    for (let i = 0; i < selectedItems.current.items.length; i++) {
-      if (selectedItems.current.items[i] === item) {
-        selectedItems.current.items.splice(i, 1);
-        selectedItems.current.elems[item.item_id].style.backgroundColor = 'white';
-        selectedItems.current.elems[item.item_id].style.color = 'black';
-        return;
-      }
-    }
-
-    selectedItems.current.elems[item.item_id].style.backgroundColor = 'black';
-    selectedItems.current.elems[item.item_id].style.color = 'white';
-    selectedItems.current.items.push(item);
-  };
-
-  const onCloseModal = () => {
-    onClose();
-    setTimeout(() => {
-      setSearchedResults([]);
-      selectedItems.current = {
-        items: [],
-        elems: []
-      };
-    }, 500);
-  }
+  const [selectedItems, setSelectedItems] = React.useState({});
 
   const onSubmit = () => {
-    if (selectedItems.current.items.length === 0) {
+    if (selectedItems.length === 0) {
       onClose();
       return;
     }
 
-    const existingItems = addPriceOfferItemToContext(selectedItems.current.items);
-    let messageText = selectedItems.current.items.length === 1 ? 'Produkt bol pridaný do ponuky.' : 'Produkty boli pridané do ponuky.';
+    const existingItems = addPriceOfferItemToContext(Object.values(selectedItems));
+    let messageText = selectedItems.length === 1 ? 'Produkt bol pridaný do ponuky.' : 'Produkty boli pridané do ponuky.';
     let severity = 'success';
 
     if (existingItems.length) {
@@ -58,14 +29,32 @@ const ItemSearchModal = React.memo(({ open, onClose, focusInputRef, styles }) =>
     }
 
     handleSnackbarOpen(messageText, severity);
-    onCloseModal();
+    setSelectedItems({});
+    setSearchedResults([]);
+    onClose();
   };
+
+  const handleItemClick = useCallback((item) => {
+    setSelectedItems((prevItems) => {
+      const newItems = { ...prevItems };
+
+      if (newItems[item.item_id]) {
+        delete newItems[item.item_id];
+      } else {
+        newItems[item.item_id] = item;
+      }
+
+      return newItems;
+    });
+  }, []);
 
   return (
     <div>
-      <Dialog open={open} onClose={onCloseModal}
+      <Dialog open={open} onClose={onClose}
             PaperProps={{
-                style: { width: 500 }
+                style: { 
+                  width: 500,
+                }
             }} 
 
             onKeyUp={(e) => {
@@ -84,27 +73,40 @@ const ItemSearchModal = React.memo(({ open, onClose, focusInputRef, styles }) =>
             variant="outlined"
             inputRef={focusInputRef}
             onChange={debouncedSearch}
+            style={{
+              width: '97%',
+            }}
         />
         </DialogContent>
-        {isLoading ? 
-          <Loading height={'10vh'} /> :
-          searchedResults && 
-          searchedResults.map((item) => (
-              <SearchedResultRow
-                key={item.item_id}
-                ref={el => selectedItems.current.elems[item.item_id] = el}
-                onClick={() => handleItemClick(item)}
-                >
-                <span style={{ display: 'flex', alignItems: 'center', marginRight: 10 }}>
-                  <img style={{ width: 30, height: 25 }} src={IMAGES_FOLDER + item.img_url} alt={' '} />
-                </span>
-                <span style={{ flexGrow: 1 }}>{item.title}</span>
-                <span>{item.price} €</span>
-              </SearchedResultRow>
-            ))
-        }
+        <div
+          style={{
+            height: 300,
+            overflowY: 'auto',
+            justifyContent: 'center',
+          }}
+        >
+          {isLoading ? 
+            <Loading height={'10vh'} /> :
+            searchedResults && 
+            searchedResults.map((item) => (
+                <SearchedResultRow
+                  key={item.item_id}
+                  onClick={() => handleItemClick(item)}
+                  >
+                  <Checkbox 
+                    checked={!!selectedItems[item.item_id]}
+                  />
+                  <span style={{ display: 'flex', alignItems: 'center', marginRight: 10 }}>
+                    {/* <img style={{ width: 30, height: 25 }} src={IMAGES_FOLDER + item.img_url} alt={' '} /> */}
+                  </span>
+                  <span style={{ flexGrow: 1 }}>{item.title}</span>
+                  <span>{item.price} €</span>
+                </SearchedResultRow>
+              ))
+          }
+        </div>
         <DialogActions>
-          <Button onClick={onCloseModal} color="secondary">
+          <Button onClick={onClose} color="secondary">
             Zatvoriť
           </Button>
           <Button onClick={onSubmit} color="primary">
