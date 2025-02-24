@@ -17,6 +17,7 @@ const SearchedResultRow = styled('div')`
   padding: 10px;
   margin: auto;
   margin-bottom: 10px;
+  margin-top: 10px;
   border-radius: 4px;
   width: 85%;
   align-items: center;
