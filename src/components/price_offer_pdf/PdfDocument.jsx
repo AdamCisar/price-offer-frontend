@@ -210,37 +210,6 @@ const PdfDocument = ({ priceOfferDetails, userInfo }) => {
             </View>
 
             <View style={styles.footer}>
-                {priceOfferDetails?.discount < 0 && (
-                    <>
-                        {/* <View style={styles.footerRow}>
-                            <Text style={[styles.priceCell]}>
-                                Spolu bez zľavy:
-                            </Text>
-                            <Text style={[{ width: 'auto' }, styles.priceCell]}>
-                                {((priceOfferDetails.is_vat ? priceOfferDetails.total : priceOfferDetails.vatBase) - priceOfferDetails.discount).round()} €
-                            </Text>
-                        </View> */}
-
-                        {priceOfferDetails.items.map((item, index) => {
-                            if (item.price >= 0) {
-                                return null;
-                            }
-
-                            return (
-                                <View key={index} style={styles.footerRow}>
-                                    <Text style={[styles.priceCell, { color: '#cb1819' }]}>{item.title}:</Text>
-                                    <Text style={[{ width: 'auto', color: '#cb1819' }, styles.priceCell]}>
-                                        {Number(item.price)?.round()} €
-                                    </Text>
-                                </View>
-                            );
-                        })}
-
-                        <View style={{ borderBottomWidth: 1, borderBottomColor: '#000', marginTop: 5, marginBottom: 5 }} />
-                    </>
-                )}
-
-
                 {priceOfferDetails?.is_vat && (
                     <View>
                         <View style={styles.footerRow}>
@@ -256,10 +225,38 @@ const PdfDocument = ({ priceOfferDetails, userInfo }) => {
                             {Number(priceOfferDetails.vat)?.round()} €
                         </Text>
                         </View>
+
+                        <View style={styles.footerRow}>
+                            <Text style={styles.priceCell}>Spolu s DPH:</Text>
+                            <Text style={[{ width: 'auto' }, styles.priceCell]}>
+                                {(priceOfferDetails.total + Math.abs(priceOfferDetails.discount)).round()} €
+                            </Text>
+                        </View>
                         
                         <View style={{ borderBottomWidth: 1, borderBottomColor: '#000', marginTop: 5 }} />
                     </View>
-                    )}
+                )}
+
+                {priceOfferDetails?.discount < 0 && (
+                    <>
+                        {priceOfferDetails.items.map((item, index) => {
+                            if (item.price >= 0) {
+                                return null;
+                            }
+
+                            return (
+                                <View key={index} style={{...styles.footerRow, marginTop: 5}}>
+                                    <Text style={[styles.priceCell, { color: '#cb1819' }]}>{item.title}:</Text>
+                                    <Text style={[{ width: 'auto', color: '#cb1819' }, styles.priceCell]}>
+                                        {Number(item.price)?.round()} €
+                                    </Text>
+                                </View>
+                            );
+                        })}
+
+                        <View style={{ borderBottomWidth: 1, borderBottomColor: '#000', marginTop: 5, marginBottom: 5 }} />
+                    </>
+                )}  
 
                 <View style={styles.footerRow}>
                     <Text style={styles.totalPriceCell}>Celkom:</Text>

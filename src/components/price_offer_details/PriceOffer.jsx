@@ -125,22 +125,6 @@ const PriceOffer = () => {
               isVat={priceOfferDetails.is_vat}
             />
             <Divider sx={{ margin: '20px 0' }} />
-            {priceOfferDetails.discount < 0 && (
-                  <>
-                      {priceOfferDetails.items.map((item, index) => {
-                          if (item.price >= 0) {
-                              return null;
-                          }
-
-                          return (
-                            <Box key={index} display="flex" justifyContent="space-between">
-                              <Typography variant="body1" style={{ color: '#cb1819' }}>{item.title}</Typography>
-                              <Typography variant="body1" style={{ color: '#cb1819' }}>{Number(item.price)?.round()} €</Typography>
-                            </Box>
-                          );
-                      })}
-                  </>
-              )}
             {
               priceOfferDetails.is_vat &&
               <div>
@@ -152,8 +136,32 @@ const PriceOffer = () => {
                   <Typography variant="body1">DPH:</Typography>
                   <Typography variant="body1">{priceOfferDetails.vat?.round()} €</Typography>
                 </Box>
+                <Box display="flex" justifyContent="space-between">
+                  <Typography variant="body1">Spolu s DPH:</Typography>
+                  <Typography variant="body1">{(priceOfferDetails.total + Math.abs(priceOfferDetails.discount)).round()} €</Typography>
+                </Box>
+                <Divider sx={{ margin: '20px 0' }} />
               </div>
             }
+            {priceOfferDetails.discount < 0 && (
+                  <>
+                      {priceOfferDetails.items.map((item, index) => {
+                          if (item.price >= 0) {
+                              return null;
+                          }
+
+                          return (
+                            <>
+                            <Box key={index} display="flex" justifyContent="space-between">
+                              <Typography variant="body1" style={{ color: '#cb1819' }}>{item.title}</Typography>
+                              <Typography variant="body1" style={{ color: '#cb1819' }}>{Number(item.price)?.round()} €</Typography>
+                            </Box>
+                            <Divider sx={{ margin: '20px 0' }} />
+                            </>
+                          );
+                      })}
+                  </>
+              )}
             <Box display="flex" justifyContent="space-between">
             <Typography variant="h5">Celkom:</Typography>
               <Typography variant="h5">{priceOfferDetails.is_vat ? priceOfferDetails.total?.round() : priceOfferDetails.vatBase?.round()} €</Typography>

@@ -29,10 +29,13 @@ export function PriceOfferProvider({ children }) {
         const itemVat = Number(item.price) < 0 ? 0 : 23;
         item.vat = itemVat;
 
-        vatBase += price * quantity
-        vat += (price * quantity) * (itemVat / 100);
         total += (price * quantity) * (itemVat / 100 + 1);
         discount += price < 0 ? price : 0;
+        
+        if (price > 0) {
+          vatBase += price * quantity
+          vat += (price * quantity) * (itemVat / 100);
+        }
       }
 
       return {total: total, vatBase: vatBase, vat: vat, discount: discount};
