@@ -36,6 +36,7 @@ import {
       queryKey: [endpoint+Id],    
       queryFn: ({ signal }) => fetchData(endpoint, Id, signal),
       refetchOnMount: refetchOnMount, 
+      refetchOnWindowFocus: false
     });
 
     const setCachedData = (data) => queryClient.setQueryData([endpoint + Id], data);
