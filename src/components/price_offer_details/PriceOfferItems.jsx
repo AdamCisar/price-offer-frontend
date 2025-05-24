@@ -1,7 +1,8 @@
-import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
 import React, { useCallback, useMemo } from 'react';
 import _ from 'lodash';
+import { DataGrid, GridRow, GridCell } from '@mui/x-data-grid';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 const localeText = {
   // Pagination
@@ -15,6 +16,45 @@ const localeText = {
   columnMenuUnsort: 'Zrušiť triedenie',
   columnMenuSortAsc: 'Triediť vzostupne',
   columnMenuSortDesc: 'Triediť zostupne',
+};
+
+const CustomRowWrapper = ({ row, index, ...rest }) => {
+  const rowRef = React.useRef(null);
+  return (
+    <Draggable
+      key={`row-${row.id}`}
+      draggableId={`row-${row.id}`}
+      index={index}
+    >
+      {(provided, snapshot) => {
+        return (
+          <GridRow
+            index={index}
+            row={row}
+            {...rest}
+            ref={(el) => {
+              rowRef.current = el;
+              provided.innerRef(el);
+            }}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            style={{
+              ...provided.draggableProps.style,
+              backgroundColor: snapshot.isDragging ? '#f2f2f2' : 'inherit',
+              borderBottom: snapshot.isDragging ? '1px solid var(--DataGrid-rowBorderColor)' : 'inherit',
+              top: rest.offsetTop,
+              left: rest.offsetLeft
+            }}
+          >
+            <GridCell>{row.id}</GridCell>
+            <GridCell>{row.name}</GridCell>
+            <GridCell>{row.age}</GridCell>
+          </GridRow>
+            
+        );
+      }}
+    </Draggable>
+  );
 };
 
 const handleCellEditChange = (value) => {
@@ -70,6 +110,26 @@ const PriceOfferItems = React.memo(({
     },
   ];
 
+  const onDragEnd = (result) => {
+    if (!result.destination) {
+      return;
+    }
+
+    const newReorderedItems = Array.from(rows);
+    const [removed] = newReorderedItems.splice(result.source.index, 1);
+    newReorderedItems.splice(result.destination.index, 0, removed);
+
+    const updatedItems = newReorderedItems.map((item, index) => ({
+      ...item,
+      ordering: index + 1,
+    }));
+
+    setPriceOfferDetails(prevData => ({
+      ...prevData,
+      items: updatedItems
+    }))
+  };
+  
   const handleItemSelection = useCallback((ids) => {
     setSelectedItems(ids);
     toggleSelectedRowButton(ids);
@@ -99,21 +159,33 @@ const PriceOfferItems = React.memo(({
 
   return (
     <Paper sx={{ height: 'auto', width: '100%' }}>
-      <DataGrid
-        checkboxSelection
-        disableColumnResize 
-        localeText={localeText}
-        autoHeight
-        rows={rows}
-        columns={columns}
-        getRowId={(row) => row.item_id ?? row.id}
-        pageSizeOptions={[5, 10, 25, 50, 100]}
-        onRowSelectionModelChange={handleItemSelection}
-        processRowUpdate={processRowUpdate}
-        onProcessRowUpdateError={handleProcessRowUpdateError}
-        disableRowSelectionOnClick
-        sx={{ border: 0 }} 
-      />
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="data-grid">
+            {(provided) => (
+              <div ref={provided.innerRef} {...provided.droppableProps}>
+                <DataGrid
+                  checkboxSelection
+                  disableColumnResize 
+                  localeText={localeText}
+                  autoHeight
+                  rows={rows}
+                  columns={columns}
+                  getRowId={(row) => row.item_id ?? row.id}
+                  pageSizeOptions={[5, 10, 25, 50, 100]}
+                  onRowSelectionModelChange={handleItemSelection}
+                  processRowUpdate={processRowUpdate}
+                  onProcessRowUpdateError={handleProcessRowUpdateError}
+                  disableRowSelectionOnClick
+                  sx={{ border: 0 }} 
+                  slots={{
+                    row: CustomRowWrapper,
+                  }}
+                />
+                    {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+      </DragDropContext>
     </Paper>
   );
 }, (prevProps, nextProps) => {
