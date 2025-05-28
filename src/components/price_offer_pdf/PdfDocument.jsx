@@ -147,6 +147,9 @@ const styles = StyleSheet.create({
 });
 
 const PdfDocument = ({ priceOfferDetails, userInfo }) => {
+    const expirationDate = new Date();
+    expirationDate.setDate(expirationDate.getDate() + 30);
+
   return (
     <Document title={`cenova_ponuka_${priceOfferDetails?.customer?.name}`}>
         <Page size="A4" style={styles.page}>
@@ -168,9 +171,12 @@ const PdfDocument = ({ priceOfferDetails, userInfo }) => {
                 <Text style={styles.text}>{userInfo?.zip}</Text>
             </View>
 
-            <View style={[styles.section, { flexDirection: 'row', justifyContent: 'flex-end'}]}>
+            <View style={[styles.section, { flexDirection: 'column', justifyContent: 'flex-end' }]}>
                 <Text style={[styles.text, { textAlign: 'right' }]}>
                     Vypracované dňa: {new Date().toLocaleDateString()}
+                </Text>
+                    <Text style={[styles.text, { textAlign: 'right' }]}>
+                    Dátum platnosti: {expirationDate.toLocaleDateString()}
                 </Text>
             </View>
             
