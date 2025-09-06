@@ -39,8 +39,6 @@ const useSubmitPriceOffer = (onClose, duplicateFromId = undefined, priceOfferId 
                 if (priceOfferId) {
                     return prevList.map(item => item.id === priceOfferId ? priceOffer : item)
                 } 
-                
-                priceOffer.created_at = new Date().toISOString();
 
                 return [priceOffer, ...prevList];
             });
