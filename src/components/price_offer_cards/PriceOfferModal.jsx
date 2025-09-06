@@ -1,16 +1,13 @@
-import React, { useContext } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button } from '@mui/material';
 import useSubmitPriceOffer from '../../hooks/useSubmitPriceOffer';
-import { PriceOfferListContext } from '../../providers/PriceOfferListProvider';
 
 const PriceOfferModal = ({ open, onClose, focusInputRef, modalTitle, submitButtonText, duplicateFromId, priceOfferValues }) => {
-    const { setPriceOfferList } = useContext(PriceOfferListContext);
     const {
         handleSubmit,
         handleInputChange,
         errors,
         isLoading,
-    } = useSubmitPriceOffer(onClose, setPriceOfferList, duplicateFromId, priceOfferValues?.id);
+    } = useSubmitPriceOffer(onClose, duplicateFromId, priceOfferValues?.id);
 
     return (
         <Dialog aria-labelledby="dialog-title" aria-describedby="dialog-description"

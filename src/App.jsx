@@ -68,7 +68,7 @@ function App() {
         <Routes>
             <Route path="/" element={<Navigate to="/cenove-ponuky" replace />} />
             <Route path="/cenove-ponuky" element={
-                                  <PriceOfferListProviders><Layout children={<PriceOfferList />} isPencilWrapper={true} />
+                                  <PriceOfferListProviders><Layout children={<PriceOfferList />} isPencilWrapper={true} isAddInvoiceButton={true} />
                                   </PriceOfferListProviders>
                                 } />
             <Route path="/cenove-ponuky/:id" element={<PriceOfferProviders><Layout children={<PriceOfferDetails />}/></PriceOfferProviders>} />

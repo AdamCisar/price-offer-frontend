@@ -8,7 +8,7 @@ export const PencilWrapper = () => {
     
     return (
         <>
-            {isEditing ? <TrashCan /> : null}
+            {/* {isEditing ? <TrashCan /> : null} */}
             <Pencil />
         </>
     )

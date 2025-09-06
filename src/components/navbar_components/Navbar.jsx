@@ -5,7 +5,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { PencilWrapper } from './PencilWrapper';
 import ResizeWindow from './ResizeWindow';
 import AppButtonModal from '../utilities/AppButtonModal';
@@ -13,45 +13,20 @@ import ProfileEditModal from '../profile/ProfileEditModal';
 import PersonIcon from '@mui/icons-material/Person';
 import { UserInfoContext } from '../../providers/UserInfoProvider';
 import Logout from '../auth/Logout';
-import ConfirmDialog from '../utilities/ConfirmDialog';
+import { IconButton, Tooltip } from '@mui/material';
+import PriceOfferModal from '../price_offer_cards/PriceOfferModal';
+import AddIcon from '@mui/icons-material/Add';
 
-const Navbar = ({isPencilWrapper}) => {
+const Navbar = ({isPencilWrapper, isAddInvoiceButton}) => {
     const {userInfo, isLoading} = useContext(UserInfoContext);
     const navigate = useNavigate();
-    const location = useLocation();
-    const { id } = useParams(); 
-    const [open, setOpen] = useState(false);
-    const [nextPath, setNextPath] = useState('');
   
     const handleClick = (event, path) => {
         navigate(path);
-
-    //   if (!location.pathname.includes('cenove-ponuky') || !id) {
-    //     navigate(path);
-    //     return;
-    //   }
-
-    //   event.preventDefault();
-    //   setNextPath(path);
-    //   setOpen(true);
     };
   
     return (
         <AppBar position="static" sx={{ height: '70px' }}>
-            {/* <ConfirmDialog 
-                open={open} 
-                onClose={() => {
-                    setOpen(false);
-                  }} 
-                onConfirm={() => {
-                        setOpen(false);
-                        navigate(nextPath);
-                    }} 
-                cancelButtonText={"Vrátiť sa"}
-                confirmButtonText={"Pokračovať"}
-                title={"Upozornenie"} 
-                message={"Uložili ste vykonané zmeny?"} 
-            /> */}
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     <Typography
@@ -86,21 +61,65 @@ const Navbar = ({isPencilWrapper}) => {
                     </Box>
 
                     <div style={{gap: '10px', display: 'flex'}}>
-                        
-                        {isPencilWrapper ? <PencilWrapper /> : null}
+                        {isAddInvoiceButton ? 
+                        <Tooltip title="Vytvorenie cenovej ponuky">
+                            <span className='create-price-offer' style={{ display: 'flex', alignItems: 'center' }}>
+                                <AppButtonModal
+                                    Button={IconButton}
+                                    ModalComponent={PriceOfferModal}
+                                    InnerComponent={AddIcon}
+                                    divStyles={{
+                                        display: 'flex', 
+                                        justifyContent: 'center', 
+                                        alignItems: 'center', 
+                                    }}
+                                    sx={{
+                                        width: 20,
+                                        height: 20,
+                                        borderRadius: '100%',
+                                        backgroundColor: 'darkgrey',
+                                        color: 'white',
+                                        '&:hover': {
+                                            backgroundColor: 'grey',
+                                        },
+                                    }}
+                                />
+                            </span>
+                        </Tooltip>
+                        : ''}
 
-                        <Logout />
+                        {isPencilWrapper ? 
+                            <Tooltip title="Prepnutie do režimu úpravy">
+                                <span style={{ display: 'flex', alignItems: 'center' }}>
+                                    <PencilWrapper />
+                                </span>
+                            </Tooltip> 
+                            : null
+                        }
 
-                        <AppButtonModal
-                            sx={{ fontSize: 30, cursor: 'pointer' }}
-                            title={''}
-                            Button={PersonIcon}
-                            ModalComponent={ProfileEditModal}
-                        />
+                        <Tooltip title="Odhlásenie">
+                            <span style={{ display: 'flex', alignItems: 'center' }}>
+                                <Logout />
+                            </span>
+                        </Tooltip>
 
-                        <ResizeWindow />  
+                        <Tooltip title="Úprava profilu">
+                            <span style={{ display: 'flex', alignItems: 'center' }}>
+                                <AppButtonModal
+                                    sx={{ fontSize: 30, cursor: 'pointer' }}
+                                    title={''}
+                                    Button={PersonIcon}
+                                    ModalComponent={ProfileEditModal}
+                                />
+                            </span>
+                        </Tooltip>
+
+                        <Tooltip title="Zväčšenie na celú obrazovku">
+                            <span style={{ display: 'flex', alignItems: 'center' }}>
+                                <ResizeWindow />  
+                            </span>
+                        </Tooltip>
                     </div>
-
                 </Toolbar>
             </Container>
         </AppBar>

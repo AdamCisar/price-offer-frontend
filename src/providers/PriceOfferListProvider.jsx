@@ -5,8 +5,14 @@ import { PencilEditContext } from "./PencilEditProvider";
 
 export const PriceOfferListContext = React.createContext(null);
 
+const pageSize = 21;
+
 export function PriceOfferListProvider({ children }) {
-  const [priceOffer, isLoading, isFetching, error, setCachedData] = useUniversalGet('PRICE_OFFER');
+  const [offset, setOffset] = useState(0);
+  const [pageCount, setPageCount] = useState(0);
+  const [page, setPage] = useState(1);
+
+  const [data, isLoading, isFetching, error, setCachedData] = useUniversalGet('PRICE_OFFER', undefined, false, { offset });
   const [priceOfferList, setPriceOfferListState] = useState({});
   const { deletePriceOffer } = useDeletePriceOffer();
   const { setIsEditing } = useContext(PencilEditContext);
@@ -14,6 +20,10 @@ export function PriceOfferListProvider({ children }) {
   const setPriceOfferList = useCallback((updater) => {
     setPriceOfferListState((prevData) => {
       const newData = typeof updater === 'function' ? updater(prevData) : updater;
+
+      if (newData.length > pageSize) {
+        delete newData[newData.length - 1];
+      }
   
       setCachedData(newData);
       return newData;
@@ -21,11 +31,13 @@ export function PriceOfferListProvider({ children }) {
   }, [setCachedData]);
 
   useEffect(() => {
-    if (!priceOffer) {
+    if (!data) {
       return;
     }
-      setPriceOfferList(priceOffer); 
-  }, [priceOffer]);
+    
+    setPageCount(Math.ceil(data.count / pageSize));
+    setPriceOfferList(data.priceOffers);
+  }, [data]);
 
   const deleteFromContext = async (idList) => {
     const deletedIds = await deletePriceOffer(idList);
@@ -40,11 +52,24 @@ export function PriceOfferListProvider({ children }) {
       );
     }
 
+    setOffset(0);
+    setPage(1);
     setIsEditing(false);
   }
 
   return (
-    <PriceOfferListContext.Provider value={{ priceOffer: priceOfferList, isLoading, isFetching, error, setPriceOfferList, deleteFromContext }}>
+    <PriceOfferListContext.Provider value={{ 
+        priceOffer: priceOfferList, 
+        isLoading, 
+        isFetching, 
+        error, 
+        setPriceOfferList, 
+        deleteFromContext, 
+        setOffset, 
+        pageCount, 
+        page, 
+        setPage 
+      }}>
       {children}
     </PriceOfferListContext.Provider>
   );

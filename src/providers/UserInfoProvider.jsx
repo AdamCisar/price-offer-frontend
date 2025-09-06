@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { useUniversalGet } from "../api/UniversalGet";
+import Tutorial from "../components/utilities/Tutorial";
 
 export const UserInfoContext = createContext(null);
 
@@ -13,7 +14,13 @@ export function UserInfoProvider ({ children }) {
 
     return (
         <UserInfoContext.Provider value={{ userInfo, setUserInfo, isLoading, error }}>
+        <>
             {children}
+            
+            {!isLoading && userInfo && (
+                <Tutorial />
+            )}
+        </>
         </UserInfoContext.Provider>
     );
 }

@@ -37,7 +37,7 @@ const Items = () => {
                 }}>
                     <TextField
                         id="search"
-                        label="Filtrovať"
+                        label="Vyhľadať..."
                         variant="outlined"
                         fullWidth
                         onChange={handleSearchChange}

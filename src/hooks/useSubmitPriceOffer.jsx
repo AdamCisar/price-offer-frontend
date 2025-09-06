@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { useUniversalPost } from "../api/UniversalPost";
 import { SnackBarContext } from "../providers/SnackBarProvider";
 import useValidate from "./useValidate";
+import { PriceOfferListContext } from "../providers/PriceOfferListProvider";
 
 const initialState = {
     title: "",
@@ -12,8 +13,8 @@ const initialState = {
     }
 };
 
-const useSubmitPriceOffer = (onClose, setPriceOfferList, duplicateFromId = undefined, priceOfferId = undefined) => {
-    
+const useSubmitPriceOffer = (onClose, duplicateFromId = undefined, priceOfferId = undefined) => {
+    const { setPriceOfferList, setPage, setOffset } = useContext(PriceOfferListContext);
     const [formData, setFormData] = useState(initialState);
     const { handleSnackbarOpen } = useContext(SnackBarContext);
     const [sendData, isLoading, error] = useUniversalPost("PRICE_OFFER");
@@ -39,10 +40,14 @@ const useSubmitPriceOffer = (onClose, setPriceOfferList, duplicateFromId = undef
                     return prevList.map(item => item.id === priceOfferId ? priceOffer : item)
                 } 
 
-                return [...prevList, priceOffer];
+                return [priceOffer, ...prevList];
             });
+
             setFormData(initialState);
             onClose();
+            setOffset(0);
+            setPage(1);
+            
           } catch (err) {
             handleSnackbarOpen(`Cenovú ponuku sa nepodarilo ${priceOfferId ? 'upraviť' : 'vytvoriť'}!`, 'error');
             console.log(err);

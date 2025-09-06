@@ -3,7 +3,7 @@ import { styled } from '@mui/system';
 
 const CardSkeleton = (props) => {
     return (
-        <div style={{ position: 'relative' }}>
+        <div className='card' style={{ position: 'relative' }}>
             <BounceCard
                 onClick={props.cardCallback} 
                 isEditing={props.isEditing}

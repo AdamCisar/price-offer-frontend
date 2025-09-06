@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
 import Navbar from '../components/navbar_components/Navbar';
 
-const Layout = ({children, isPencilWrapper}) => {
+const Layout = ({children, isPencilWrapper, isAddInvoiceButton}) => {
   return (
     <div>
       <header>
-        <Navbar isPencilWrapper={isPencilWrapper}/>
+        <Navbar isPencilWrapper={isPencilWrapper} isAddInvoiceButton={isAddInvoiceButton}/>
       </header>
 
       <main>
