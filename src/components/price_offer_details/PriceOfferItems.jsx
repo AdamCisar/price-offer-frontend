@@ -1,8 +1,9 @@
 import Paper from '@mui/material/Paper';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useRef, useState, useEffect } from 'react';
 import _ from 'lodash';
 import { DataGrid, GridRow, GridCell } from '@mui/x-data-grid';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import Editor from '../utilities/Editor';
 
 const localeText = {
   // Pagination
@@ -17,6 +18,38 @@ const localeText = {
   columnMenuSortAsc: 'Triediť vzostupne',
   columnMenuSortDesc: 'Triediť zostupne',
 };
+
+function RichTextEditCell(props) {
+  const { id, field, value, api } = props;
+  const divRef = useRef(null);
+
+  useEffect(() => {
+    if (divRef.current && value !== divRef.current.innerHTML) {
+      divRef.current.innerHTML = value || "";
+    }
+  }, [value]);
+
+  const handleInput = () => {
+    const html = divRef.current.innerHTML;
+    api.setEditCellValue({ id, field, value: html });
+  };
+
+  return (
+    <div
+      ref={divRef}
+      contentEditable
+      suppressContentEditableWarning
+      onInput={handleInput}
+      style={{
+        outline: "none",
+        width: "100%",
+        height: "100%",
+        marginLeft: "10px",
+        cursor: "text",
+      }}
+    />
+  );
+}
 
 const CustomRowWrapper = ({ row, index, ...rest }) => {
   const rowRef = React.useRef(null);
@@ -58,16 +91,16 @@ const CustomRowWrapper = ({ row, index, ...rest }) => {
 };
 
 const handleCellEditChange = (value) => {
-    let cleanedInput = value.replace(/,/g, '.');
+  let cleanedInput = value.replace(/,/g, '.');
 
-    const validInput = cleanedInput.replace(/(?!^-)[^0-9.]/g, '');
-    const dotCount = validInput.split('.').length - 1;
+  const validInput = cleanedInput.replace(/(?!^-)[^0-9.]/g, '');
+  const dotCount = validInput.split('.').length - 1;
 
-    if (dotCount > 1) {
-        return validInput.split('.')[0] + '.' + validInput.split('.').slice(1).join('').substring(0, validInput.indexOf('.') + 1);
-    }
-    
-    return validInput;
+  if (dotCount > 1) {
+      return validInput.split('.')[0] + '.' + validInput.split('.').slice(1).join('').substring(0, validInput.indexOf('.') + 1);
+  }
+
+  return validInput;
 };
 
 const PriceOfferItems = React.memo(({ 
@@ -78,10 +111,22 @@ const PriceOfferItems = React.memo(({
   calculateTotalPriceForItem,
   isVat
 }) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [element, setElement] = useState(null);
+  const dataGridRef = useRef(null);
   const rows = useMemo(() => priceOfferItems, [priceOfferItems]);
 
   const columns = [
-    { field: 'title', headerName: 'Názov', width: (isVat ? 425 : 510), editable: true },
+    {
+      field: "title",
+      headerName: "Názov",
+      width: isVat ? 425 : 510,
+      editable: true,
+      renderEditCell: (params) => <RichTextEditCell {...params} />,
+      renderCell: (params) => (
+        <div dangerouslySetInnerHTML={{ __html: params.value }} />
+      ),
+    },
     { field: 'unit', headerName: 'Merná jednotka', width: 80, editable: true },
     { field: 'quantity', headerName: 'Množstvo', width: 100, editable: true,
       renderCell: (params) => (Number(params.value).round()),
@@ -157,6 +202,44 @@ const PriceOfferItems = React.memo(({
     console.error('processRowUpdateError', error);
   };
 
+  const handleEditStart = (params) => {
+    if (params.field !== 'title') {
+      return;
+    }
+
+    const cell = document.querySelector(
+      `[data-id='${params.id}'] [data-field='${params.field}']`
+    );
+
+    if (!cell) {
+      return;
+    }
+
+    setElement(cell);
+    setIsEditing(true);
+  };
+
+  const onStop = () => {
+    const field = element.getAttribute('data-field');
+
+    if (field !== 'title') {
+      return;
+    }
+
+    dataGridRef.current.stopCellEditMode({id: element.closest('.MuiDataGrid-row').getAttribute('data-id'),  field});
+
+    setElement(null);
+    setIsEditing(false);
+  };
+
+  const handleEditStop = (params, event) => {
+    if (!event?.target?.closest('.editor')) {
+      return;
+    }
+
+    event.defaultMuiPrevented = true;
+  };
+
   return (
     <Paper sx={{ height: 'auto', width: '100%' }}>
         <DragDropContext onDragEnd={onDragEnd}>
@@ -164,6 +247,7 @@ const PriceOfferItems = React.memo(({
             {(provided) => (
               <div ref={provided.innerRef} {...provided.droppableProps}>
                 <DataGrid
+                  apiRef={dataGridRef}
                   checkboxSelection
                   disableColumnResize 
                   localeText={localeText}
@@ -180,12 +264,22 @@ const PriceOfferItems = React.memo(({
                   slots={{
                     row: CustomRowWrapper,
                   }}
+                  onCellEditStart={handleEditStart}
+                  onCellEditStop={handleEditStop}
                 />
                     {provided.placeholder}
               </div>
             )}
           </Droppable>
       </DragDropContext>
+
+       {isEditing && (
+        <Editor
+          show={isEditing}
+          element={element}
+          onStop={onStop}
+        />
+      )}
     </Paper>
   );
 }, (prevProps, nextProps) => {

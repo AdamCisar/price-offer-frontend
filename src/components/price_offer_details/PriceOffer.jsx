@@ -55,7 +55,23 @@ const PriceOffer = () => {
   }
 
   if (error) {
-    return <Typography color="error">Error loading price offer details.</Typography>
+    return (
+      <Box
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="100vh"
+        textAlign="center"
+      >
+        <Typography variant="h1" sx={{ mb: 2, color: 'text.secondary' }}>
+          🤔
+        </Typography>
+        <Typography variant="h6" color="text.secondary">
+          Cenová ponuka sa nenašla...
+        </Typography>
+      </Box>
+    );
   }
 
   return (
@@ -152,8 +168,8 @@ const PriceOffer = () => {
 
                           return (
                             <>
-                            <Box key={index} display="flex" justifyContent="space-between">
-                              <Typography variant="body1" style={{ color: '#cb1819' }}>{item.title}</Typography>
+                            <Box key={index} display="flex" justifyContent="space-between" style={{ padding: 5 }}>
+                              <Typography variant="body1" style={{ color: '#cb1819' }} dangerouslySetInnerHTML={{ __html: item.title }}/>
                               <Typography variant="body1" style={{ color: '#cb1819' }}>{Number(item.price)?.round()} €</Typography>
                             </Box>
                             <Divider sx={{ margin: '20px 0' }} />
@@ -162,8 +178,8 @@ const PriceOffer = () => {
                       })}
                   </>
               )}
-            <Box display="flex" justifyContent="space-between">
-            <Typography variant="h5">Celkom:</Typography>
+            <Box display="flex" justifyContent="space-between" style={{ padding: 5 }}>
+              <Typography variant="h5">Celkom:</Typography>
               <Typography variant="h5">{priceOfferDetails.is_vat ? priceOfferDetails.total?.round() : priceOfferDetails.vatBase?.round()} €</Typography>
             </Box>
           </CardContent>

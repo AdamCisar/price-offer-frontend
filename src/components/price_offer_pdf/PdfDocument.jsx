@@ -1,14 +1,17 @@
 import { Document, Page, Text, View, StyleSheet, Font, Image } from '@react-pdf/renderer';
 import logo from '../../assets/cisar_logo.png';
+import parse, { domToReact } from "html-react-parser";
 
 Font.register({
-    family: 'NotoSans',
-    fonts: [
-        {
-            src: '/fonts/NotoSans-Regular.ttf',
-        }
-    ]
+  family: 'NotoSans',
+  fonts: [
+    { src: '/fonts/NotoSans-Regular.ttf', fontWeight: 'normal' },
+    { src: '/fonts/NotoSans-Medium.ttf', fontWeight: '500' },
+    { src: '/fonts/NotoSans-Bold.ttf', fontWeight: 'bold' },
+    { src: '/fonts/NotoSans-SemiBold.ttf', fontWeight: '600' },
+  ],
 });
+
 
 const styles = StyleSheet.create({
     page: {
@@ -40,14 +43,14 @@ const styles = StyleSheet.create({
     },
     totalLabel: {
         fontSize: 12,
-        fontWeight: 'bold',
+        fontWeight: '500',
         padding: 2,
         borderRight: '1px solid #000',
         backgroundColor: '#f0f0f0', 
     },
     totalAmount: {
         fontSize: 12,
-        fontWeight: 'bold',
+        fontWeight: '500',
         padding: 2,
         textAlign: 'right', 
         backgroundColor: '#f0f0f0', 
@@ -55,7 +58,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 24,
         marginBottom: 20,
-        fontWeight: 'bold',
+        fontWeight: '500',
     },
     section: {
         marginBottom: 10,
@@ -80,7 +83,7 @@ const styles = StyleSheet.create({
         padding: 5,
     },
     itemHeader: {
-        fontWeight: 'bold',
+        fontWeight: '500',
         textDecoration: 'underline'
     },
     itemCell: {
@@ -94,12 +97,12 @@ const styles = StyleSheet.create({
     },
     subTitle: {
         fontSize: 12,
-        fontWeight: 'bold',
+        fontWeight: '500',
         textDecoration: 'underline',
         marginBottom: 5,
     },
     totalPriceCell: {
-        fontWeight: 'bold',
+        fontWeight: '500',
         padding: 5,
     },
     priceCell: {
@@ -122,10 +125,15 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderColor: '#000',
         borderStyle: 'solid',
+    },    
+    tableRowLast: {
+        flexDirection: 'row',
+        borderColor: '#000',
+        borderStyle: 'solid',
     },
     tableHeader: {
         backgroundColor: '#f0f0f0',
-        fontWeight: 'bold',
+        fontWeight: '500',
     },
     tableCol: {
         padding: 5,
@@ -133,6 +141,11 @@ const styles = StyleSheet.create({
         borderRightWidth: 1,
         borderColor: '#000',
         borderStyle: 'solid',
+        textAlign: 'center',
+    },
+    tableColLast: {
+        padding: 5,
+        fontSize: 10,
         textAlign: 'center',
     },
     tableColTitle: {
@@ -183,14 +196,14 @@ const PdfDocument = ({ priceOfferDetails, userInfo }) => {
             <View style={styles.table}>
                 <View style={[styles.tableRow, styles.tableHeader]}>
                     <Text style={[styles.tableCol, { flex: 1 }]}>Názov položky</Text>
-                    <Text style={[styles.tableCol, { flex: 1 }]}>Merná jednotka</Text>
-                    <Text style={[styles.tableCol, { flex: 1 }]}>Množstvo</Text>
-                    <Text style={[styles.tableCol, { flex: 1 }]}>Cena {priceOfferDetails?.is_vat ? 'bez DPH' : ''}</Text>
+                    <Text style={[styles.tableCol, { width: 60 }]}>Merná jednotka</Text>
+                    <Text style={[styles.tableCol, { width: 60 }]}>Množstvo</Text>
+                    <Text style={[styles.tableCol, { width: 60 }]}>Cena {priceOfferDetails?.is_vat ? 'bez DPH' : ''}</Text>
                     {
                         priceOfferDetails?.is_vat &&
-                            <Text style={[styles.tableCol, { flex: 1 }]}>DPH %</Text>
+                            <Text style={[styles.tableCol, { width: 50 }]}>DPH %</Text>
                     }
-                    <Text style={[styles.tableCol, { flex: 1 }]}>Spolu {priceOfferDetails?.is_vat ? 'bez DPH' : ''}</Text>
+                    <Text style={[styles.tableColLast, { width: 60 }]}>Spolu {priceOfferDetails?.is_vat ? 'bez DPH' : ''}</Text>
                 </View>
                 
                 {priceOfferDetails?.items?.map((item, index) => {
@@ -199,16 +212,16 @@ const PdfDocument = ({ priceOfferDetails, userInfo }) => {
                     }
 
                     return (
-                        <View key={index} style={styles.tableRow}>
-                            <Text style={[styles.tableCol, { flex: 1, textAlign: 'left' }]}>{item.title}</Text>
-                            <Text style={[styles.tableCol, { flex: 1 }]}>{item.unit}</Text>
-                            <Text style={[styles.tableCol, { flex: 1 }]}>{item.quantity}</Text>
-                            <Text style={[styles.tableCol, { flex: 1 }]}>{Number(item.price)?.round()}</Text>
+                        <View key={index} style={index === priceOfferDetails?.items?.length - 1 ? styles.tableRowLast : styles.tableRow}>
+                            <Text style={[styles.tableCol, { flex: 1, textAlign: 'left' } ]}>{htmlParser(item.title)}</Text>
+                            <Text style={[styles.tableCol, { width: 60 }]}>{item.unit}</Text>
+                            <Text style={[styles.tableCol, { width: 60 }]}>{item.quantity}</Text>
+                            <Text style={[styles.tableCol, { width: 60 }]}>{Number(item.price)?.round()}</Text>
                             {
                                 priceOfferDetails.is_vat && 
-                                    <Text style={[styles.tableCol, { flex: 1 }]}>{23}</Text>
+                                    <Text style={[styles.tableCol, { width: 50 }]}>{23}</Text>
                             }
-                            <Text style={[styles.tableCol, { flex: 1 }]}>{Number(item.total)?.round()}</Text>
+                            <Text style={[styles.tableColLast, { width: 60 }]}>{Number(item.total)?.round()}</Text>
                         </View>
                     );
                 })}
@@ -275,3 +288,45 @@ const PdfDocument = ({ priceOfferDetails, userInfo }) => {
 };
 
 export default PdfDocument;
+
+const htmlParser = (taskDescription) => {
+  if (!taskDescription) return null;
+
+  const options = {
+    replace: (domNode) => {
+      if (!domNode.name) return;
+
+      const children = domToReact(domNode.children, options);
+
+      let style = {};
+
+      if (domNode.name === "font" && domNode.attribs?.color) {
+        style.color = domNode.attribs.color;
+      }
+
+      switch (domNode.name) {
+        case "b":
+          return (
+            <Text key={Math.random()} style={{ fontWeight: "700", ...style }}>
+              {children}
+            </Text>
+          );
+        case "i":
+          return (
+            <Text key={Math.random()} style={{ fontStyle: "italic", ...style }}>
+              {children}
+            </Text>
+          );
+        case "font":
+          return <Text key={Math.random()} style={style}>{children}</Text>;
+        case "br":
+          return <Text key={Math.random()}>{'\n'}</Text>;
+        default:
+          return <Text key={Math.random()}>{children}</Text>;
+      }
+    },
+  };
+
+  return <>{parse(taskDescription, options)}</>;
+};
+

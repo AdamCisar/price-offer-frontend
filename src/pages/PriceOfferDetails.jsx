@@ -4,18 +4,7 @@ import Loading from "../components/utilities/Loading";
 import PriceOffer from "../components/price_offer_details/PriceOffer";
 
 const PriceOfferDetails = () => {
-    const { priceOffer, isLoading, error } = useContext(PriceOfferContext);
-
-    // useEffect(() => {
-    //     const handleBeforeUnload = (event) => {
-    //         event.preventDefault();
-    //         event.returnValue = "";
-    //     };
-    //     window.addEventListener("beforeunload", handleBeforeUnload);
-    //     return () => {
-    //         window.removeEventListener("beforeunload", handleBeforeUnload);
-    //     };
-    // }, []);
+    const { isLoading } = useContext(PriceOfferContext);
 
     return (
         <div>
