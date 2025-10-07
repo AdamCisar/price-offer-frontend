@@ -12,7 +12,7 @@ export function PriceOfferListProvider({ children }) {
   const [pageCount, setPageCount] = useState(0);
   const [page, setPage] = useState(1);
 
-  const [data, isLoading, isFetching, error, setCachedData] = useUniversalGet('PRICE_OFFER', undefined, false, { offset });
+  const [data, isLoading, isFetching, error, setCachedData] = useUniversalGet('PRICE_OFFER', undefined, true, { offset });
   const [priceOfferList, setPriceOfferListState] = useState({});
   const { deletePriceOffer } = useDeletePriceOffer();
   const { setIsEditing } = useContext(PencilEditContext);
