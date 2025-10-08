@@ -24,6 +24,8 @@ import PdfDownloadLink from '../price_offer_pdf/PdfDownloadLink';
 import UserInfo from './UserInfo';
 import CustomerInfo from './CustomerInfo';
 import PriceOfferNotes from './PriceOfferNotes';
+import PriceRefresher from '../items/PriceRefresher';
+import ProgressDivider from '../utilities/ProgressDivider';
 
 const boxStyles = {
       display: "flex",
@@ -45,6 +47,8 @@ const PriceOffer = () => {
 
   const [isRowSelected, setRowSelected] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
+
+  const [refreshing, setRefreshing] = useState(false);
 
   const toggleSelectedRowButton = useCallback((ids) => {
     setRowSelected(ids.length > 0);
@@ -94,9 +98,9 @@ const PriceOffer = () => {
                   <UserInfo userInfo={userInfo} />
                 </div>
             </Box>
-            <Divider sx={{ margin: '20px 0' }} />
-            <Box display="flex" justifyContent={'space-between'} gap={1} style={{ marginBottom: 5 }}>
-              <Box display="flex" gap={1}>
+            <ProgressDivider progress={0} refreshing={refreshing} />
+            <Box display="flex" justifyContent="space-between" alignItems="center" style={{ marginBottom: 5 }}>
+              <Box display="flex" gap={1} alignItems="center">
                 <AppButtonModal 
                   styles={{ variant: 'contained', color: '' }}
                   title={"Pridať položku"} 
@@ -110,28 +114,39 @@ const PriceOffer = () => {
                   ModalComponent={ItemCreateModal}
                 />
                 <FormControlLabel
-                  control={<Switch
-                    checked={priceOfferDetails.is_vat}
-                    onChange={() => setPriceOfferDetails({ ...priceOfferDetails, is_vat: !priceOfferDetails.is_vat })}
-                    color="primary"
-                    />}
-                    label={'Použiť DPH'}
+                  control={
+                    <Switch
+                      checked={priceOfferDetails.is_vat}
+                      onChange={() => setPriceOfferDetails({ ...priceOfferDetails, is_vat: !priceOfferDetails.is_vat })}
+                      color="primary"
+                    />
+                  }
+                  label={'Použiť DPH'}
                 />
+
+                {isRowSelected && (
+                  <Box display="flex" gap={1}>
+                    <AppButtonModal
+                      styles={{ variant: 'contained', color: 'secondary' }}
+                      title={"Upraviť hromadne ceny"} 
+                      Button={Button}
+                      ModalComponent={BulkPriceEditModal}
+                      handleEditSelectedPriceOfferItemsPrices={handleEditSelectedPriceOfferItemsPrices} 
+                      selectedItems={selectedItems}
+                    />
+                    <Button 
+                      variant="contained" 
+                      color="error" 
+                      onClick={() => handleDeleteSelectedPriceOfferItems(selectedItems)}
+                    >
+                      Vymazať
+                    </Button>
+                  </Box>
+                )}
               </Box>
-              {isRowSelected && 
-              <Box display="flex" gap={1}>
-                <AppButtonModal
-                  styles={{ variant: 'contained', color: 'secondary' }}
-                  title={"Upraviť hromadne ceny"} 
-                  Button={Button}
-                  ModalComponent={BulkPriceEditModal}
-                  handleEditSelectedPriceOfferItemsPrices={handleEditSelectedPriceOfferItemsPrices} 
-                  selectedItems={selectedItems}
-                />
-                <Button variant="contained" color="error" onClick={() => handleDeleteSelectedPriceOfferItems(selectedItems)} >Vymazať</ Button>
-              </Box>
-              }
+              <PriceRefresher refreshing={refreshing} setRefreshing={setRefreshing} />
             </Box>
+
             <PriceOfferItems 
               priceOfferItems={priceOfferDetails.items} 
               toggleSelectedRowButton={toggleSelectedRowButton} 
