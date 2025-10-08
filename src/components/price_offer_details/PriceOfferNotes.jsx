@@ -42,6 +42,18 @@ const PriceOfferNotes = () => {
     }
 
     useEffect(() => {
+        const el = notesElement.current?.querySelector('textarea');
+        
+        if (!el) {
+            return;
+        }
+
+        el.style.height = 'auto';
+        el.style.height = `${el.scrollHeight}px`;
+
+    }, [notes]);
+
+    useEffect(() => {
         const handleScroll = () => {
             setScrollY(window.scrollY);
         };

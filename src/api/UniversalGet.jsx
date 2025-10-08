@@ -41,12 +41,12 @@ import {
     const { data, isLoading, isFetching, error } = useQuery({
       queryKey: [endpoint+Id, params],    
       queryFn: ({ signal }) => fetchData(endpoint, Id, params, signal),
-      refetchOnMount: refetchOnMount, 
-      refetchOnWindowFocus: false
+      refetchOnMount: true,
+      refetchOnWindowFocus: false,
+      staleTime: 0,
+      cacheTime: 0, 
     });
 
-    const setCachedData = (data) => queryClient.setQueryData([endpoint + Id], data);
-  
-    return [data, isLoading, isFetching, error, setCachedData];
+    return [data, isLoading, isFetching, error];
   };
   

@@ -13,9 +13,8 @@ export function PriceOfferProvider({ children }) {
     handleSavePriceOfferDetails, 
   } = useUpdatePriceOfferDetails();
   const { id } = useParams();
-  const [priceOffer, isLoading, isFetching, error, setCachedData] = useUniversalGet('PRICE_OFFER', id);
+  const [priceOffer, isLoading, isFetching, error] = useUniversalGet('PRICE_OFFER', id);
   const [priceOfferDetails, setPriceOfferDetailsState] = useState({});
-  const [isInitialized, setIsInitialized] = useState(false);
 
   const calculateTotal = useCallback((items) => {
       let total = 0;
@@ -41,25 +40,24 @@ export function PriceOfferProvider({ children }) {
       return {total: total, vatBase: vatBase, vat: vat, discount: discount};
   }, []);
 
-  const setPriceOfferDetails = (updater) => {
+  const setPriceOfferDetails = (updater, autoSave = true) => {
     setPriceOfferDetailsState((prevData) => {
       let newData = typeof updater === 'function' ? updater(prevData) : updater;
       newData = { ...newData, ...calculateTotal(newData.items) };
   
-      isInitialized && handleSavePriceOfferDetails(newData);
-      setCachedData(newData);
+      autoSave && handleSavePriceOfferDetails(newData);
+      
       return newData;
     });
   };
   
   useEffect(() => {
-    if (!priceOffer || isInitialized) {
+    if (!priceOffer || isFetching) {
       return;
     }
 
-    setPriceOfferDetails(priceOffer);
-    setIsInitialized(true);
-  }, [priceOffer]);
+    setPriceOfferDetails(priceOffer, false);
+  }, [priceOffer, isFetching]);
 
   return (
     <PriceOfferContext.Provider value={{ priceOfferDetails, isLoading, isFetching, error, setPriceOfferDetails }}>
