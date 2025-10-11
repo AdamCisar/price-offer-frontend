@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useCallback, useContext, useMemo, useState } from 'react';
 import {
   Box,
   Card,
@@ -26,6 +26,7 @@ import CustomerInfo from './CustomerInfo';
 import PriceOfferNotes from './PriceOfferNotes';
 import PriceRefresher from '../items/PriceRefresher';
 import ProgressDivider from '../utilities/ProgressDivider';
+import useUpdateItemPrices from '../../hooks/useUpdateItemPrices';
 
 const boxStyles = {
       display: "flex",
@@ -41,6 +42,7 @@ const PriceOffer = () => {
       } = useUpdatePriceOfferDetails();
 
   const { handleEditSelectedPriceOfferItemsPrices, calculateTotalPriceForItem } = usePriceOfferCalculation();
+  const { updatingItemPrices, updateItemPrices } = useUpdateItemPrices();
 
   const { priceOfferDetails, isLoading, isFetching, error, setPriceOfferDetails } = useContext(PriceOfferContext);
   const { userInfo } = useContext(UserInfoContext);
@@ -48,7 +50,10 @@ const PriceOffer = () => {
   const [isRowSelected, setRowSelected] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
 
-  const [refreshing, setRefreshing] = useState(false);
+  const itemIds = useMemo(
+    () => priceOfferDetails.items?.map(item => item.id) ?? [],
+    [priceOfferDetails.items]
+  );
 
   const toggleSelectedRowButton = useCallback((ids) => {
     setRowSelected(ids.length > 0);
@@ -98,7 +103,7 @@ const PriceOffer = () => {
                   <UserInfo userInfo={userInfo} />
                 </div>
             </Box>
-            <ProgressDivider progress={0} refreshing={refreshing} />
+            <ProgressDivider progress={0} updatingItemPrices={updatingItemPrices} />
             <Box display="flex" justifyContent="space-between" alignItems="center" style={{ marginBottom: 5 }}>
               <Box display="flex" gap={1} alignItems="center">
                 <AppButtonModal 
@@ -144,7 +149,11 @@ const PriceOffer = () => {
                   </Box>
                 )}
               </Box>
-              <PriceRefresher refreshing={refreshing} setRefreshing={setRefreshing} />
+              <PriceRefresher 
+                updatingItemPrices={updatingItemPrices} 
+                updateItemPrices={updateItemPrices}
+                itemIds={itemIds}
+              />
             </Box>
 
             <PriceOfferItems 

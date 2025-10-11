@@ -1,30 +1,7 @@
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { Box, Tooltip } from '@mui/material';
-import { useContext } from 'react';
-import { SnackBarContext } from '../../providers/SnackBarProvider';
-import { useUniversalGet } from '../../api/UniversalGet';
 
-const PriceRefresher = ({ refreshing, setRefreshing }) => {
-  const { handleSnackbarOpen } = useContext(SnackBarContext);
-  const [data, isLoading, isFetching, error] = useUniversalGet('PRICE_OFFER');
-
-  const refreshItems = () => {
-    setRefreshing(true);
-    
-    if (!data || error) {
-      setRefreshing(false);
-      handleSnackbarOpen('Nastala chyba pri aktualizácii cien!', 'error');
-      return;
-    }
-
-    
-    
-    setTimeout(() => {
-      setRefreshing(false);
-      handleSnackbarOpen('Ceny boli aktualizované!', 'success', null);
-    }, 1000);
-  }
-  
+const PriceRefresher = ({ updatingItemPrices, updateItemPrices, itemIds }) => {
   return (
     <Tooltip title="Aktualizácia cien" placement="top">
       <span
@@ -32,7 +9,7 @@ const PriceRefresher = ({ refreshing, setRefreshing }) => {
             display: 'flex', 
             alignItems: 'center',
         }}
-        onClick={() => !refreshing && refreshItems()}
+        onClick={() => !updatingItemPrices && updateItemPrices(itemIds)}
       >
         <Box
           display="flex"
@@ -41,11 +18,11 @@ const PriceRefresher = ({ refreshing, setRefreshing }) => {
           gap={1}
           sx={{
             cursor: 'pointer',
-            cursor: refreshing ? 'not-allowed' : 'pointer',
+            cursor: updatingItemPrices ? 'not-allowed' : 'pointer',
             padding: '6px 12px',
             borderRadius: '16px',
-            backgroundColor: refreshing ? '#f0f0f0' : '#ffffff',
-            transform: refreshing ? 'scale(1.05)' : 'scale(1)',
+            backgroundColor: updatingItemPrices ? '#f0f0f0' : '#ffffff',
+            transform: updatingItemPrices ? 'scale(1.05)' : 'scale(1)',
             transition: 'all 0.3s ease',
             '&:hover': {
                 backgroundColor: '#f0f0f0',
@@ -56,10 +33,10 @@ const PriceRefresher = ({ refreshing, setRefreshing }) => {
         >
           <RefreshIcon
             sx={{
-              color: refreshing ? '#115293' : '#1976d2',
+              color: updatingItemPrices ? '#115293' : '#1976d2',
               fontSize: 28,
               transition: 'color 0.3s ease',
-              animation: refreshing
+              animation: updatingItemPrices
                 ? 'spinEase 2.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite'
                 : 'none',
               '@keyframes spinEase': {

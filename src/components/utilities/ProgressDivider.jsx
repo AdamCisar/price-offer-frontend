@@ -1,9 +1,9 @@
 import { Divider, Box } from '@mui/material';
 
-const ProgressDivider = ({ progress = 0, refreshing }) => {
+const ProgressDivider = ({ progress = 0, updatingItemPrices }) => {
   const safeProgress = Math.max(0, Math.min(progress, 100));
 
-  if (!progress && !refreshing) {
+  if (!progress && !updatingItemPrices) {
     return (
         <Divider sx={{ margin: '20px 0' }} />
     );
