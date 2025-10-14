@@ -42,7 +42,7 @@ const PriceOffer = () => {
       } = useUpdatePriceOfferDetails();
 
   const { handleEditSelectedPriceOfferItemsPrices, calculateTotalPriceForItem } = usePriceOfferCalculation();
-  const { updatingItemPrices, updateItemPrices } = useUpdateItemPrices();
+  const { updatingItemPrices, updateItemPrices, eventData } = useUpdateItemPrices();
 
   const { priceOfferDetails, isLoading, isFetching, error, setPriceOfferDetails } = useContext(PriceOfferContext);
   const { userInfo } = useContext(UserInfoContext);
@@ -103,7 +103,7 @@ const PriceOffer = () => {
                   <UserInfo userInfo={userInfo} />
                 </div>
             </Box>
-            <ProgressDivider progress={0} updatingItemPrices={updatingItemPrices} />
+            <ProgressDivider progress={Number(eventData?.notification?.body)} updatingItemPrices={updatingItemPrices} />
             <Box display="flex" justifyContent="space-between" alignItems="center" style={{ marginBottom: 5 }}>
               <Box display="flex" gap={1} alignItems="center">
                 <AppButtonModal 
