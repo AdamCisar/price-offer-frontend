@@ -9,6 +9,7 @@ const useUpdateItemPrices = () => {
     const { setPriceOfferDetails } = useContext(PriceOfferContext);
     const { broadcastData, closeBroadcast } = useBroadcast("item-price-update");
     const [updatingItemPrices, setUpdatingItemPrices] = useState(!!broadcastData);
+    const [finished, setFinished] = useState(false);
 
     useEffect(() => {
         setUpdatingItemPrices(!!broadcastData);
@@ -41,9 +42,13 @@ const useUpdateItemPrices = () => {
         handleSnackbarOpen('Začala sa aktualizácia cien!', 'info');
     }
 
-    if (broadcastData?.percentage === 100) {
+    if (broadcastData?.percentage === 100 && !finished) {
+        setFinished(true);
         setTimeout(() => {
+            setFinished(false);
             closeBroadcast();
+            setUpdatingItemPrices(false);
+            handleSnackbarOpen('Ceny boli aktualizované!', 'success');
 
             setPriceOfferDetails(prevData => ({
                 ...prevData,
@@ -52,9 +57,6 @@ const useUpdateItemPrices = () => {
                     price: item.price * 1.10,
                 })),
             }));
-        
-            setUpdatingItemPrices(false);
-            handleSnackbarOpen('Ceny boli aktualizované!', 'success');
         }, 1000);
     }
 
