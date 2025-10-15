@@ -23,5 +23,9 @@ export default function useBroadcast(eventName) {
     };
   }, [eventName]);
 
-  return data;
+  const closeBroadcast = () => {
+    setData(null);
+  }
+
+  return { broadcastData: data, closeBroadcast };
 }

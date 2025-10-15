@@ -4,10 +4,15 @@ import useBroadcast from "./useBroadcast";
 import ApiRoutes from '../configuration/api_routes/ApiRoutes';
 
 const useUpdateItemPrices = () => {
-    const eventData = useBroadcast("item-price-update");
+    const { broadcastData, closeBroadcast } = useBroadcast("item-price-update");
     const [updatingItemPrices, setUpdatingItemPrices] = useState(false);
     const { handleSnackbarOpen } = useContext(SnackBarContext);
 
+    if (broadcastData?.notification.body == 100) {
+        setUpdatingItemPrices(false);
+        closeBroadcast();
+    }
+    
     const fetchData = async (data) => {
         const response = await fetch(ApiRoutes['GET_UPDATED_ITEM_PRICES'], {
             method: "POST",
@@ -21,11 +26,12 @@ const useUpdateItemPrices = () => {
         return response;
     };
 
-    const updateItemPrices = async (itemIds) => {
+    const updateItemPrices = async (itemIds, priceOfferId = undefined) => {
         setUpdatingItemPrices(true);
 
         const response = await fetchData({
-            item_ids: itemIds
+            item_ids: itemIds,
+            price_offer_id: priceOfferId
         });
 
         if (response.status === 409) {
@@ -34,13 +40,13 @@ const useUpdateItemPrices = () => {
             return;
         }
 
-        handleSnackbarOpen('Ceny boli aktualizované!', 'success', null);
+        handleSnackbarOpen('Začala sa aktualizácia cien!', 'info', null);
     }
 
     return {
         updatingItemPrices,
         updateItemPrices,
-        eventData
+        eventData: broadcastData
     }
 }
 

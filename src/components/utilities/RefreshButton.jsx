@@ -1,7 +1,7 @@
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { Box, Tooltip } from '@mui/material';
 
-const PriceRefresher = ({ updatingItemPrices, updateItemPrices, itemIds }) => {
+const RefreshButton = ({ refreshing, activatedButtonCallback }) => {
   return (
     <Tooltip title="Aktualizácia cien" placement="top">
       <span
@@ -9,7 +9,7 @@ const PriceRefresher = ({ updatingItemPrices, updateItemPrices, itemIds }) => {
             display: 'flex', 
             alignItems: 'center',
         }}
-        onClick={() => !updatingItemPrices && updateItemPrices(itemIds)}
+        onClick={() => !refreshing && activatedButtonCallback()}
       >
         <Box
           display="flex"
@@ -18,11 +18,11 @@ const PriceRefresher = ({ updatingItemPrices, updateItemPrices, itemIds }) => {
           gap={1}
           sx={{
             cursor: 'pointer',
-            cursor: updatingItemPrices ? 'not-allowed' : 'pointer',
+            cursor: refreshing ? 'not-allowed' : 'pointer',
             padding: '6px 12px',
             borderRadius: '16px',
-            backgroundColor: updatingItemPrices ? '#f0f0f0' : '#ffffff',
-            transform: updatingItemPrices ? 'scale(1.05)' : 'scale(1)',
+            backgroundColor: refreshing ? '#f0f0f0' : '#ffffff',
+            transform: refreshing ? 'scale(1.05)' : 'scale(1)',
             transition: 'all 0.3s ease',
             '&:hover': {
                 backgroundColor: '#f0f0f0',
@@ -33,10 +33,10 @@ const PriceRefresher = ({ updatingItemPrices, updateItemPrices, itemIds }) => {
         >
           <RefreshIcon
             sx={{
-              color: updatingItemPrices ? '#115293' : '#1976d2',
+              color: refreshing ? '#115293' : '#1976d2',
               fontSize: 28,
               transition: 'color 0.3s ease',
-              animation: updatingItemPrices
+              animation: refreshing
                 ? 'spinEase 2.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite'
                 : 'none',
               '@keyframes spinEase': {
@@ -51,4 +51,4 @@ const PriceRefresher = ({ updatingItemPrices, updateItemPrices, itemIds }) => {
   );
 };
 
-export default PriceRefresher;
+export default RefreshButton;

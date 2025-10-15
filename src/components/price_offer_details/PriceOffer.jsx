@@ -24,7 +24,7 @@ import PdfDownloadLink from '../price_offer_pdf/PdfDownloadLink';
 import UserInfo from './UserInfo';
 import CustomerInfo from './CustomerInfo';
 import PriceOfferNotes from './PriceOfferNotes';
-import PriceRefresher from '../items/PriceRefresher';
+import RefreshButton from '../utilities/RefreshButton';
 import ProgressDivider from '../utilities/ProgressDivider';
 import useUpdateItemPrices from '../../hooks/useUpdateItemPrices';
 
@@ -54,6 +54,15 @@ const PriceOffer = () => {
     () => priceOfferDetails.items?.map(item => item.id) ?? [],
     [priceOfferDetails.items]
   );
+
+  const priceOfferId = useMemo(
+      () => priceOfferDetails.id ?? null,
+    [priceOfferDetails]
+  );
+
+  const handleUpdatePrices = useCallback(() => {
+    updateItemPrices(itemIds, priceOfferId);
+  }, [itemIds, priceOfferId, updateItemPrices]);
 
   const toggleSelectedRowButton = useCallback((ids) => {
     setRowSelected(ids.length > 0);
@@ -149,10 +158,9 @@ const PriceOffer = () => {
                   </Box>
                 )}
               </Box>
-              <PriceRefresher 
-                updatingItemPrices={updatingItemPrices} 
-                updateItemPrices={updateItemPrices}
-                itemIds={itemIds}
+              <RefreshButton 
+                refreshing={updatingItemPrices}
+                activatedButtonCallback={handleUpdatePrices}
               />
             </Box>
 
