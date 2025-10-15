@@ -26,7 +26,7 @@ import CustomerInfo from './CustomerInfo';
 import PriceOfferNotes from './PriceOfferNotes';
 import RefreshButton from '../utilities/RefreshButton';
 import ProgressDivider from '../utilities/ProgressDivider';
-import useUpdateItemPrices from '../../hooks/useUpdateItemPrices';
+import useUpdatePriceOfferItemPrices from '../../hooks/useUpdatePriceOfferItemPrices';
 
 const boxStyles = {
       display: "flex",
@@ -37,19 +37,9 @@ const boxStyles = {
 }
 
 const PriceOffer = () => {
-  const {
-        handleDeleteSelectedPriceOfferItems
-      } = useUpdatePriceOfferDetails();
-
-  const { handleEditSelectedPriceOfferItemsPrices, calculateTotalPriceForItem } = usePriceOfferCalculation();
-  const { updatingItemPrices, updateItemPrices, eventData } = useUpdateItemPrices();
-
   const { priceOfferDetails, isLoading, isFetching, error, setPriceOfferDetails } = useContext(PriceOfferContext);
   const { userInfo } = useContext(UserInfoContext);
-
-  const [isRowSelected, setRowSelected] = useState(false);
-  const [selectedItems, setSelectedItems] = useState([]);
-
+  
   const itemIds = useMemo(
     () => priceOfferDetails.items?.map(item => item.id) ?? [],
     [priceOfferDetails.items]
@@ -60,8 +50,21 @@ const PriceOffer = () => {
     [priceOfferDetails]
   );
 
+  const {
+        handleDeleteSelectedPriceOfferItems
+      } = useUpdatePriceOfferDetails();
+
+  const { handleEditSelectedPriceOfferItemsPrices, calculateTotalPriceForItem } = usePriceOfferCalculation();
+  const { updatingItemPrices, updateItemPrices, broadcastData } = useUpdatePriceOfferItemPrices(priceOfferId);
+
+  const [isRowSelected, setRowSelected] = useState(false);
+  const [selectedItems, setSelectedItems] = useState([]);
+
   const handleUpdatePrices = useCallback(() => {
-    updateItemPrices(itemIds, priceOfferId);
+    updateItemPrices({
+      item_ids: itemIds, 
+      price_offer_id: priceOfferId
+    });
   }, [itemIds, priceOfferId, updateItemPrices]);
 
   const toggleSelectedRowButton = useCallback((ids) => {
@@ -112,7 +115,7 @@ const PriceOffer = () => {
                   <UserInfo userInfo={userInfo} />
                 </div>
             </Box>
-            <ProgressDivider progress={Number(eventData?.notification?.body)} updatingItemPrices={updatingItemPrices} />
+            <ProgressDivider progress={Number(broadcastData?.percentage)} updatingItemPrices={updatingItemPrices} />
             <Box display="flex" justifyContent="space-between" alignItems="center" style={{ marginBottom: 5 }}>
               <Box display="flex" gap={1} alignItems="center">
                 <AppButtonModal 

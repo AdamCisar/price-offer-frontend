@@ -45,6 +45,11 @@ export function PriceOfferProvider({ children }) {
       let newData = typeof updater === 'function' ? updater(prevData) : updater;
       newData = { ...newData, ...calculateTotal(newData.items) };
   
+      newData.items = newData.items.map(item => ({
+          ...item,
+          total: item.price * item.quantity,
+      }));
+
       autoSave && handleSavePriceOfferDetails(newData);
       
       return newData;

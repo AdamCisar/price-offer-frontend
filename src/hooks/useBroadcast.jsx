@@ -9,11 +9,11 @@ export default function useBroadcast(eventName) {
     }
 
     const messageHandler = (event) => {
-      if (event.data.notification.title !== eventName) {
+      if (event.data.data.type !== eventName) {
         return;
       }
 
-      setData(event.data);
+      setData(event.data.data);
     };
 
     navigator.serviceWorker.addEventListener("message", messageHandler);

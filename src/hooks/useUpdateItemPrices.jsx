@@ -1,18 +1,19 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { SnackBarContext } from "../providers/SnackBarProvider";
 import useBroadcast from "./useBroadcast";
 import ApiRoutes from '../configuration/api_routes/ApiRoutes';
+import { PriceOfferContext } from "../providers/price_offer_providers/PriceOfferProvider";
 
 const useUpdateItemPrices = () => {
-    const { broadcastData, closeBroadcast } = useBroadcast("item-price-update");
-    const [updatingItemPrices, setUpdatingItemPrices] = useState(false);
     const { handleSnackbarOpen } = useContext(SnackBarContext);
+    const { setPriceOfferDetails } = useContext(PriceOfferContext);
+    const { broadcastData, closeBroadcast } = useBroadcast("item-price-update");
+    const [updatingItemPrices, setUpdatingItemPrices] = useState(!!broadcastData);
 
-    if (broadcastData?.notification.body == 100) {
-        setUpdatingItemPrices(false);
-        closeBroadcast();
-    }
-    
+    useEffect(() => {
+        setUpdatingItemPrices(!!broadcastData);
+    }, [broadcastData]);
+
     const fetchData = async (data) => {
         const response = await fetch(ApiRoutes['GET_UPDATED_ITEM_PRICES'], {
             method: "POST",
@@ -26,13 +27,10 @@ const useUpdateItemPrices = () => {
         return response;
     };
 
-    const updateItemPrices = async (itemIds, priceOfferId = undefined) => {
+    const updateItemPrices = async (data) => {
         setUpdatingItemPrices(true);
 
-        const response = await fetchData({
-            item_ids: itemIds,
-            price_offer_id: priceOfferId
-        });
+        const response = await fetchData(data);
 
         if (response.status === 409) {
             setUpdatingItemPrices(false);
@@ -40,13 +38,30 @@ const useUpdateItemPrices = () => {
             return;
         }
 
-        handleSnackbarOpen('Začala sa aktualizácia cien!', 'info', null);
+        handleSnackbarOpen('Začala sa aktualizácia cien!', 'info');
+    }
+
+    if (broadcastData?.percentage === 100) {
+        setTimeout(() => {
+            closeBroadcast();
+
+            setPriceOfferDetails(prevData => ({
+                ...prevData,
+                items: prevData?.items.map(item => ({
+                    ...item,
+                    price: item.price * 1.10,
+                })),
+            }));
+        
+            setUpdatingItemPrices(false);
+            handleSnackbarOpen('Ceny boli aktualizované!', 'success');
+        }, 1000);
     }
 
     return {
         updatingItemPrices,
         updateItemPrices,
-        eventData: broadcastData
+        broadcastData
     }
 }
 

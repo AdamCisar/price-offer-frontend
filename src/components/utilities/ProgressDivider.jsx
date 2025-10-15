@@ -1,7 +1,6 @@
 import { Divider, Box } from '@mui/material';
 
 const ProgressDivider = ({ progress = 0, updatingItemPrices }) => {
-  const safeProgress = Math.max(0, Math.min(progress, 100));
 
   if (!progress && !updatingItemPrices) {
     return (
@@ -19,7 +18,7 @@ const ProgressDivider = ({ progress = 0, updatingItemPrices }) => {
           top: 0,
           left: 0,
           height: 4,
-          width: `${safeProgress}%`,
+          width: `${progress}%`,
           bgcolor: '#1976d2',
           borderRadius: 2,
           transition: 'width 0.3s ease',
