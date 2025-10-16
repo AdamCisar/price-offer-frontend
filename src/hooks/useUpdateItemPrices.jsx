@@ -2,11 +2,9 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { SnackBarContext } from "../providers/SnackBarProvider";
 import useBroadcast from "./useBroadcast";
 import ApiRoutes from '../configuration/api_routes/ApiRoutes';
-import { PriceOfferContext } from "../providers/price_offer_providers/PriceOfferProvider";
 
 const useUpdateItemPrices = () => {
     const { handleSnackbarOpen } = useContext(SnackBarContext);
-    const { setPriceOfferDetails } = useContext(PriceOfferContext);
     
     const { broadcastData, closeBroadcast } = useBroadcast("item-price-update");
 
@@ -59,14 +57,6 @@ const useUpdateItemPrices = () => {
             closeBroadcast();
             setUpdatingItemPrices(false);
             handleSnackbarOpen('Ceny boli aktualizované!', 'success');
-
-            setPriceOfferDetails(prevData => ({
-                ...prevData,
-                items: prevData?.items.map(item => ({
-                    ...item,
-                    price: item.price * 1.10,
-                })),
-            }));
         }, 1000);
     }
 

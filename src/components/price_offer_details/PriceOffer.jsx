@@ -41,7 +41,7 @@ const PriceOffer = () => {
   const { userInfo } = useContext(UserInfoContext);
   
   const itemIds = useMemo(
-    () => priceOfferDetails.items?.map(item => item.id) ?? [],
+    () => priceOfferDetails.items?.map(item => item.item_id) ?? [],
     [priceOfferDetails.items]
   );
 
