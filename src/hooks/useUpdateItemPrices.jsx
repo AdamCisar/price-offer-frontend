@@ -12,6 +12,13 @@ const useUpdateItemPrices = () => {
     const [broadcastError, setBroadcastError] = useState(false);
     const finished = useRef(false);
 
+    if (broadcastData?.error) {
+
+        closeBroadcast();
+        setUpdatingItemPrices(false);
+        handleSnackbarOpen(broadcastData.error, 'error');
+    }
+
     useEffect(() => {
         setUpdatingItemPrices(!!broadcastData);
     }, [broadcastData]);
