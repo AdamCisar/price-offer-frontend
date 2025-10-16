@@ -55,7 +55,7 @@ const PriceOffer = () => {
       } = useUpdatePriceOfferDetails();
 
   const { handleEditSelectedPriceOfferItemsPrices, calculateTotalPriceForItem } = usePriceOfferCalculation();
-  const { updatingItemPrices, updateItemPrices, broadcastData } = useUpdatePriceOfferItemPrices(priceOfferId);
+  const { updatingItemPrices, updateItemPrices, broadcastData, broadcastError } = useUpdatePriceOfferItemPrices(priceOfferId);
 
   const [isRowSelected, setRowSelected] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
@@ -164,6 +164,7 @@ const PriceOffer = () => {
               <RefreshButton 
                 refreshing={updatingItemPrices}
                 activatedButtonCallback={handleUpdatePrices}
+                error={broadcastError}
               />
             </Box>
 

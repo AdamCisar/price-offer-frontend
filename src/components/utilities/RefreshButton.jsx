@@ -1,7 +1,7 @@
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { Box, Tooltip } from '@mui/material';
 
-const RefreshButton = ({ refreshing, activatedButtonCallback }) => {
+const RefreshButton = ({ refreshing, activatedButtonCallback, error }) => {
   return (
     <Tooltip title="Aktualizácia cien" placement="top">
       <span
@@ -29,6 +29,15 @@ const RefreshButton = ({ refreshing, activatedButtonCallback }) => {
                 transform: 'scale(1.05)',
             },
             border: '2px solid transparent',
+            animation: error
+              ? 'shake 0.4s cubic-bezier(.36,.07,.19,.97) both'
+              : 'none',
+            '@keyframes shake': {
+              '10%, 90%': { transform: 'translateX(-1px)' },
+              '20%, 80%': { transform: 'translateX(2px)' },
+              '30%, 50%, 70%': { transform: 'translateX(-4px)' },
+              '40%, 60%': { transform: 'translateX(4px)' },
+            },
           }}
         >
           <RefreshIcon

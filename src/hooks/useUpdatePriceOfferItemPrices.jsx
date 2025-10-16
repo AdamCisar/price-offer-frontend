@@ -1,7 +1,7 @@
 import useUpdateItemPrices from "./useUpdateItemPrices";
 
 const useUpdatePriceOfferItemPrices = (priceOfferId) => {
-    const { updatingItemPrices, updateItemPrices, broadcastData } = useUpdateItemPrices(priceOfferId);
+    const { updatingItemPrices, updateItemPrices, broadcastData, broadcastError } = useUpdateItemPrices(priceOfferId);
 
     if (broadcastData && broadcastData?.price_offer_id !== priceOfferId) {
         return {
@@ -14,7 +14,8 @@ const useUpdatePriceOfferItemPrices = (priceOfferId) => {
     return {
         updatingItemPrices,
         updateItemPrices,
-        broadcastData
+        broadcastData,
+        broadcastError
     }
 }
 

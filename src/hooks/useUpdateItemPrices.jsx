@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { SnackBarContext } from "../providers/SnackBarProvider";
 import useBroadcast from "./useBroadcast";
 import ApiRoutes from '../configuration/api_routes/ApiRoutes';
@@ -7,9 +7,12 @@ import { PriceOfferContext } from "../providers/price_offer_providers/PriceOffer
 const useUpdateItemPrices = () => {
     const { handleSnackbarOpen } = useContext(SnackBarContext);
     const { setPriceOfferDetails } = useContext(PriceOfferContext);
+    
     const { broadcastData, closeBroadcast } = useBroadcast("item-price-update");
+
     const [updatingItemPrices, setUpdatingItemPrices] = useState(!!broadcastData);
-    const [finished, setFinished] = useState(false);
+    const [broadcastError, setBroadcastError] = useState(false);
+    const finished = useRef(false);
 
     useEffect(() => {
         setUpdatingItemPrices(!!broadcastData);
@@ -29,6 +32,14 @@ const useUpdateItemPrices = () => {
     };
 
     const updateItemPrices = async (data) => {
+        if (!data.item_ids || data.item_ids.length === 0) {
+            setBroadcastError(true);
+            setTimeout(() => {
+                setBroadcastError(false);
+            }, 500);
+            return;
+        }
+
         setUpdatingItemPrices(true);
 
         const response = await fetchData(data);
@@ -41,11 +52,10 @@ const useUpdateItemPrices = () => {
 
         handleSnackbarOpen('Začala sa aktualizácia cien!', 'info');
     }
-
-    if (broadcastData?.percentage === 100 && !finished) {
-        setFinished(true);
+ 
+    if (broadcastData?.percentage === 100 && !finished.current) {
+        finished.current = true;
         setTimeout(() => {
-            setFinished(false);
             closeBroadcast();
             setUpdatingItemPrices(false);
             handleSnackbarOpen('Ceny boli aktualizované!', 'success');
@@ -63,7 +73,8 @@ const useUpdateItemPrices = () => {
     return {
         updatingItemPrices,
         updateItemPrices,
-        broadcastData
+        broadcastData,
+        broadcastError
     }
 }
 
