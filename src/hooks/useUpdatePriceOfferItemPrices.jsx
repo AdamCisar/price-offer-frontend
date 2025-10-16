@@ -7,7 +7,7 @@ const useUpdatePriceOfferItemPrices = (priceOfferId) => {
     const { updatingItemPrices, updateItemPrices, broadcastData, broadcastError } = useUpdateItemPrices(priceOfferId);
     
     useEffect(() => {
-        if (!priceOfferDetails.items || !broadcastData?.item_id) {
+        if (!priceOfferDetails.items || !broadcastData?.item_id || broadcastData?.price_offer_id !== priceOfferId) {
             return;
         }
         
