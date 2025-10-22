@@ -90,7 +90,7 @@ const Navbar = ({isPencilWrapper, isAddInvoiceButton}) => {
 
                         {isPencilWrapper ? 
                             <Tooltip title="Prepnutie do režimu úpravy">
-                                <span style={{ display: 'flex', alignItems: 'center' }}>
+                                <span style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                                     <PencilWrapper />
                                 </span>
                             </Tooltip> 
