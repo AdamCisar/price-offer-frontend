@@ -4,10 +4,9 @@ import { useState } from 'react';
 const RefreshPriceLoginModal = ({ open, onClose, refreshing, activatedButtonCallback, error }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [withVat, setWithVat] = useState(false);
 
     const onSubmit = async () => {
-        !refreshing && activatedButtonCallback({ email, password, withVat });
+        !refreshing && activatedButtonCallback({ email, password });
         onClose();
     };
 
@@ -42,17 +41,6 @@ const RefreshPriceLoginModal = ({ open, onClose, refreshing, activatedButtonCall
                     fullWidth
                     type="password"
                     onChange={(e) => setPassword(e.target.value)}
-                />
-                <FormControlLabel
-                    style={{ marginTop: 10 }}
-                    control={
-                        <Checkbox 
-                        name="withVat" 
-                        checked={withVat} 
-                        onChange={(e) => setWithVat(e.target.checked)}
-                        />
-                    }
-                    label="s DPH"
                 />
             </DialogContent>
             <DialogActions>
