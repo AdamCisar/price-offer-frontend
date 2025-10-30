@@ -1,15 +1,14 @@
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { Box, Tooltip } from '@mui/material';
 
-const RefreshButton = ({ refreshing, activatedButtonCallback, error }) => {
+const RefreshButton = ({ onClick, refreshing, error }) => {
   return (
-    <Tooltip title="Aktualizácia cien" placement="top">
+    <Tooltip title="Aktualizácia cien" placement="top" onClick={onClick}>
       <span
         style={{ 
             display: 'flex', 
             alignItems: 'center',
         }}
-        onClick={() => !refreshing && activatedButtonCallback()}
       >
         <Box
           display="flex"

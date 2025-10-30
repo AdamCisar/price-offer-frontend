@@ -27,6 +27,7 @@ import PriceOfferNotes from './PriceOfferNotes';
 import RefreshButton from '../utilities/RefreshButton';
 import ProgressDivider from '../utilities/ProgressDivider';
 import useUpdatePriceOfferItemPrices from '../../hooks/useUpdatePriceOfferItemPrices';
+import RefreshPriceLoginModal from './RefreshPriceLoginModal';
 
 const boxStyles = {
       display: "flex",
@@ -60,10 +61,11 @@ const PriceOffer = () => {
   const [isRowSelected, setRowSelected] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
 
-  const handleUpdatePrices = useCallback(() => {
+  const handleUpdatePrices = useCallback((data) => {
     updateItemPrices({
       item_ids: itemIds, 
-      price_offer_id: priceOfferId
+      price_offer_id: priceOfferId,
+      ...data
     });
   }, [itemIds, priceOfferId, updateItemPrices]);
 
@@ -161,7 +163,11 @@ const PriceOffer = () => {
                   </Box>
                 )}
               </Box>
-              <RefreshButton 
+              <AppButtonModal
+                styles={{ variant: 'outlined', color: 'primary' }}
+                title={"Upraviť"}
+                Button={RefreshButton}
+                ModalComponent={RefreshPriceLoginModal}
                 refreshing={updatingItemPrices}
                 activatedButtonCallback={handleUpdatePrices}
                 error={broadcastError}

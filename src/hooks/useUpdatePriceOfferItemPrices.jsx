@@ -4,7 +4,7 @@ import { PriceOfferContext } from "../providers/price_offer_providers/PriceOffer
 
 const useUpdatePriceOfferItemPrices = (priceOfferId) => {
     const { setPriceOfferDetails, priceOfferDetails } = useContext(PriceOfferContext);
-    const { updatingItemPrices, updateItemPrices, broadcastData, broadcastError } = useUpdateItemPrices(priceOfferId);
+    const { updatingItemPrices, updateItemPrices, broadcastData, broadcastError } = useUpdateItemPrices();
     
     useEffect(() => {
         if (!priceOfferDetails.items || !broadcastData?.item_id || broadcastData?.price_offer_id !== priceOfferId) {
