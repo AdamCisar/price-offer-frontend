@@ -10,7 +10,7 @@ const usePriceOfferCalculation = () => {
         }
         
         const updatedItems = priceOfferDetails.items.map((item) => {
-            if (ids.includes(item.id)) {
+            if (ids.includes(item.item_id)) {
                 item.price = item.price * (1 + percentage / 100);
                 return {
                     ...item,

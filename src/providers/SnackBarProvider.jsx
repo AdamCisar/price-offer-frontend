@@ -1,33 +1,50 @@
 import { createContext, useRef, useState } from 'react';
 import CustomSnackbar from '../components/utilities/CustomSnackbar';
-import { useSnackbar, SnackbarProvider as SnackBarProviderNotiStack } from 'notistack';
+import { closeSnackbar, useSnackbar, SnackbarProvider as SnackBarProviderNotiStack } from 'notistack';
+import CloseIcon from '@mui/icons-material/Close';
+import { IconButton } from '@mui/material';
 
 export const SnackBarContext = createContext(null);
 
-/**
- * 
- * @param {Object} props
- * @param {JSX.Element} props.children 
- * @returns {JSX.Element}
- */
 export const SnackBarProvider = ({ children }) => {
   const { enqueueSnackbar } = useSnackbar();
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const snackbarMessage = useRef('');
     const snackbarSeverity = useRef('');
 
-    const handleSnackbarOpen = (message, severityType) => {
+    const handleSnackbarOpen = (message, severityType, duration = 2500) => {
       snackbarMessage.current = message;
       snackbarSeverity.current = severityType;
-      // setSnackbarOpen(true);
 
-      enqueueSnackbar(message, { variant: severityType });
+      enqueueSnackbar(message, { 
+        variant: severityType,
+        autoHideDuration: duration,
+        action: (key) => (
+          <IconButton
+            onClick={() => closeSnackbar(key)}
+            size="small"
+            sx={{
+              color: '#ffffff',
+              backgroundColor: 'rgba(0,0,0,0.2)',
+              ml: 1,
+              '&:hover': {
+                backgroundColor: 'rgba(0,0,0,0.4)',
+                transform: 'rotate(90deg) scale(1.05)',
+              },
+              transition: 'all 0.3s ease',
+            }}
+          >
+            <CloseIcon sx={{ fontSize: 14 }} />
+          </IconButton>
+        ),
+      });
     };
 
     const handleSnackbarClose = (event, reason) => {
       if (reason === 'clickaway') {
         return;
       }
+
       setSnackbarOpen(false);
     };
 

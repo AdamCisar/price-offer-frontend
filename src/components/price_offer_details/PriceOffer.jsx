@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useCallback, useContext, useMemo, useState } from 'react';
 import {
   Box,
   Card,
@@ -24,6 +24,10 @@ import PdfDownloadLink from '../price_offer_pdf/PdfDownloadLink';
 import UserInfo from './UserInfo';
 import CustomerInfo from './CustomerInfo';
 import PriceOfferNotes from './PriceOfferNotes';
+import RefreshButton from '../utilities/RefreshButton';
+import ProgressDivider from '../utilities/ProgressDivider';
+import useUpdatePriceOfferItemPrices from '../../hooks/useUpdatePriceOfferItemPrices';
+import RefreshPriceLoginModal from './RefreshPriceLoginModal';
 
 const boxStyles = {
       display: "flex",
@@ -34,17 +38,36 @@ const boxStyles = {
 }
 
 const PriceOffer = () => {
+  const { priceOfferDetails, isLoading, isFetching, error, setPriceOfferDetails } = useContext(PriceOfferContext);
+  const { userInfo } = useContext(UserInfoContext);
+  
+  const itemIds = useMemo(
+    () => priceOfferDetails.items?.map(item => item.item_id) ?? [],
+    [priceOfferDetails.items]
+  );
+
+  const priceOfferId = useMemo(
+      () => priceOfferDetails.id ?? null,
+    [priceOfferDetails]
+  );
+
   const {
         handleDeleteSelectedPriceOfferItems
       } = useUpdatePriceOfferDetails();
 
   const { handleEditSelectedPriceOfferItemsPrices, calculateTotalPriceForItem } = usePriceOfferCalculation();
-
-  const { priceOfferDetails, isLoading, isFetching, error, setPriceOfferDetails } = useContext(PriceOfferContext);
-  const { userInfo } = useContext(UserInfoContext);
+  const { updatingItemPrices, updateItemPrices, broadcastData, broadcastError } = useUpdatePriceOfferItemPrices(priceOfferId);
 
   const [isRowSelected, setRowSelected] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
+
+  const handleUpdatePrices = useCallback((data) => {
+    updateItemPrices({
+      item_ids: itemIds, 
+      price_offer_id: priceOfferId,
+      ...data
+    });
+  }, [itemIds, priceOfferId, updateItemPrices]);
 
   const toggleSelectedRowButton = useCallback((ids) => {
     setRowSelected(ids.length > 0);
@@ -94,9 +117,9 @@ const PriceOffer = () => {
                   <UserInfo userInfo={userInfo} />
                 </div>
             </Box>
-            <Divider sx={{ margin: '20px 0' }} />
-            <Box display="flex" justifyContent={'space-between'} gap={1} style={{ marginBottom: 5 }}>
-              <Box display="flex" gap={1}>
+            <ProgressDivider progress={Number(broadcastData?.percentage)} updatingItemPrices={updatingItemPrices} />
+            <Box display="flex" justifyContent="space-between" alignItems="center" style={{ marginBottom: 5 }}>
+              <Box display="flex" gap={1} alignItems="center">
                 <AppButtonModal 
                   styles={{ variant: 'contained', color: '' }}
                   title={"Pridať položku"} 
@@ -110,28 +133,47 @@ const PriceOffer = () => {
                   ModalComponent={ItemCreateModal}
                 />
                 <FormControlLabel
-                  control={<Switch
-                    checked={priceOfferDetails.is_vat}
-                    onChange={() => setPriceOfferDetails({ ...priceOfferDetails, is_vat: !priceOfferDetails.is_vat })}
-                    color="primary"
-                    />}
-                    label={'Použiť DPH'}
+                  control={
+                    <Switch
+                      checked={priceOfferDetails.is_vat}
+                      onChange={() => setPriceOfferDetails({ ...priceOfferDetails, is_vat: !priceOfferDetails.is_vat })}
+                      color="primary"
+                    />
+                  }
+                  label={'Použiť DPH'}
                 />
+
+                {isRowSelected && (
+                  <Box display="flex" gap={1}>
+                    <AppButtonModal
+                      styles={{ variant: 'contained', color: 'secondary' }}
+                      title={"Upraviť hromadne ceny"} 
+                      Button={Button}
+                      ModalComponent={BulkPriceEditModal}
+                      handleEditSelectedPriceOfferItemsPrices={handleEditSelectedPriceOfferItemsPrices} 
+                      selectedItems={selectedItems}
+                    />
+                    <Button 
+                      variant="contained" 
+                      color="error" 
+                      onClick={() => handleDeleteSelectedPriceOfferItems(selectedItems)}
+                    >
+                      Vymazať
+                    </Button>
+                  </Box>
+                )}
               </Box>
-              {isRowSelected && 
-              <Box display="flex" gap={1}>
-                <AppButtonModal
-                  styles={{ variant: 'contained', color: 'secondary' }}
-                  title={"Upraviť hromadne ceny"} 
-                  Button={Button}
-                  ModalComponent={BulkPriceEditModal}
-                  handleEditSelectedPriceOfferItemsPrices={handleEditSelectedPriceOfferItemsPrices} 
-                  selectedItems={selectedItems}
-                />
-                <Button variant="contained" color="error" onClick={() => handleDeleteSelectedPriceOfferItems(selectedItems)} >Vymazať</ Button>
-              </Box>
-              }
+              <AppButtonModal
+                styles={{ variant: 'outlined', color: 'primary' }}
+                title={"Upraviť"}
+                Button={RefreshButton}
+                ModalComponent={RefreshPriceLoginModal}
+                refreshing={updatingItemPrices}
+                activatedButtonCallback={handleUpdatePrices}
+                error={broadcastError}
+              />
             </Box>
+
             <PriceOfferItems 
               priceOfferItems={priceOfferDetails.items} 
               toggleSelectedRowButton={toggleSelectedRowButton} 

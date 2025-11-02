@@ -11,6 +11,7 @@ const ApiRoutes = {
 
     ITEM_SEARCH: `${API_BASE_URL}/items/search`,
     ITEM: `${API_BASE_URL}/items`,
+    GET_UPDATED_ITEM_PRICES: `${API_BASE_URL}/items/update-prices`,
     
     LOGIN: `${API_BASE_URL}/login`,
     LOGOUT: `${API_BASE_URL}/logout`,

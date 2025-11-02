@@ -4,7 +4,6 @@ import _ from 'lodash';
 import { useSearch } from "../../api/Search";
 import Loading from "../utilities/Loading";
 import SearchedResultRow from "../styled_components/SearchedResultRow";
-import styled, { css } from "styled-components";
 import { SnackBarContext } from "../../providers/SnackBarProvider";
 
 const CustomerInfo = React.memo(({customerInfo, setPriceOfferDetails}) => {
