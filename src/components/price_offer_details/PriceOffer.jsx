@@ -27,7 +27,7 @@ import PriceOfferNotes from './PriceOfferNotes';
 import RefreshButton from '../utilities/RefreshButton';
 import ProgressDivider from '../utilities/ProgressDivider';
 import useUpdatePriceOfferItemPrices from '../../hooks/useUpdatePriceOfferItemPrices';
-import RefreshPriceLoginModal from './RefreshPriceLoginModal';
+import RefreshPriceModal from './RefreshPriceModal';
 
 const boxStyles = {
       display: "flex",
@@ -167,7 +167,7 @@ const PriceOffer = () => {
                 styles={{ variant: 'outlined', color: 'primary' }}
                 title={"Upraviť"}
                 Button={RefreshButton}
-                ModalComponent={RefreshPriceLoginModal}
+                ModalComponent={RefreshPriceModal}
                 refreshing={updatingItemPrices}
                 activatedButtonCallback={handleUpdatePrices}
                 error={broadcastError}
