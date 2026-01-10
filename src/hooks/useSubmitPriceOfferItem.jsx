@@ -9,6 +9,7 @@ const initialState = {
     title: "",
     price: "",
     unit: "",
+    url: "",
     errors: {
         title: false,
         price: false,
@@ -34,6 +35,7 @@ const useSubmitPriceOfferItem = (onClose) => {
               title: formData.title,
               unit: formData.unit,
               price: formData.price,
+              url: [{'shop': 'ptacek', 'url': formData.ptacek}]
             });
             
             priceOfferItem.item_id = priceOfferItem.id;

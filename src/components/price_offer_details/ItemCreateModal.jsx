@@ -68,6 +68,18 @@ const ItemCreateModal = React.memo(({ open, onClose, focusInputRef }) => {
                 onChange={handleInputChange}
                 error={errors.price}
             />
+            <TextField
+                margin="dense"
+                name="ptacek"
+                label="PTACEK URL"
+                variant="outlined"
+                sx={textFieldStyle}
+
+                type="text"
+
+                onChange={handleInputChange}
+                error={errors.price}
+            />
         </Box>
         </DialogContent>
         <DialogActions>
