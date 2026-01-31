@@ -8,23 +8,27 @@ const PriceOfferCards = () => {
     const { priceOffer, isLoading, isFetching, error } = useContext(PriceOfferListContext);
 
     return (
-        <div style={{ padding: '10px', width: '100%' }}>
+        <div>
             {isLoading || isFetching ? (
                 <Loading height={'50vh'} />
             ) : (
-                <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-                    {priceOffer && priceOffer.length > 0 ? (
-                         <>
-                            {priceOffer.map((item, index) => (
-                                <React.Fragment key={item.id}>
-                                    <MonthDivider date={item.created_at} index={index} />
-                                    <PriceOfferSnapshot {...item} />
-                                </React.Fragment>
-                            ))}
-                        </>
-                    ) : (
-                        null
-                    )}
+                <div
+                    style={{
+                        display: "grid",
+                        gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+                        gridAutoRows: "minmax(50px, auto)",
+                        gap: "10px 0px"
+                    }}
+                >
+                    {priceOffer.length > 0 && priceOffer.map((item, index) => {
+                        const divider = MonthDivider({ date: item.created_at, index });
+                        return (
+                        <React.Fragment key={item.id}>
+                            {divider && <div style={{ gridColumn: "1 / -1" }}>{divider}</div>}
+                            <PriceOfferSnapshot {...item} />
+                        </React.Fragment>
+                        );
+                    })}
                 </div>
             )}
         </div>

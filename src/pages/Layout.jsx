@@ -2,7 +2,13 @@ import Navbar from '../components/navbar_components/Navbar';
 
 const Layout = ({children, isPencilWrapper, isAddInvoiceButton}) => {
   return (
-    <div>
+    <div
+      style={{ 
+        display: 'grid',
+        gridTemplateRows: 'auto 1fr auto',
+        minHeight: '100vh',
+      }}
+      >
       <header>
         <Navbar isPencilWrapper={isPencilWrapper} isAddInvoiceButton={isAddInvoiceButton}/>
       </header>

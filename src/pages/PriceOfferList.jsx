@@ -17,13 +17,14 @@ const PriceOfferList = () => {
 
     return (
         <Box
-          display="flex"
-          flexDirection="column"
-          justifyContent="space-between"
-          alignItems="center"
-          sx={{ backgroundColor: '#f5f5f5', minHeight: '100vh', width: '100%' }}
+          sx={{ 
+            height: '100%',
+            backgroundColor: '#f5f5f5', 
+            display: 'grid',
+            gridTemplateRows: '1fr auto',
+          }}
         >
-          <Box flexGrow={1} display="flex" justifyContent="center" alignItems="flex-start">
+          <Box>
             <PriceOfferCards />
           </Box>
 
