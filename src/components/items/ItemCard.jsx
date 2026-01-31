@@ -20,47 +20,72 @@ const ItemCard = (props) => {
     };
 
     return (
-        <div
+        <Card
             className="item-card"
             key={item.id}
             onClick={handleSelectClick}
-            style={!isEditing ? {} : { cursor: 'pointer' }}
-            >
-            <Card
-                sx={{
-                width: '100%',
-                width: 300,
-                height: 200,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'flex-start',
-                position: 'relative',
+            sx={{
+                ...(isEditing && { cursor: 'pointer' }),
+                height: '12em',
+                display: 'grid',
+                gridTemplateColumns: 'auto 1fr auto',
+                gridTemplateRows: '1.5fr 2fr 1fr',
+                gridTemplateAreas: `
+                "title title title"
+                ". . ."
+                "price . edit"
+                `,
+                padding: '5px',
+            }}
+        >
+            <Typography 
+                style={{ 
+                    width: '100%',
+                    gridArea: 'title',
+                    fontWeight: '500', 
+                    borderBottom: '1px solid #ccc',
+                    display: 'flex',
+                    alignItems: 'center',
                 }}
             >
-                <CardContent sx={{ flex: 'auto' }}>
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-                        <Typography sx={{ fontWeight: '500', borderBottom: '1px solid #ccc', paddingBottom: '5px', width: '100%' }}>
-                        {item.title}
-                        </Typography>
-                    </div>
-                </CardContent>
-                <Box sx={{ position: 'absolute', bottom: 12, left: 12 }}>
-                    <Typography variant="p3">{item.price} €</Typography>
-                </Box>
-                    {isEditing && <CheckIcon selected={selected} />}
-                <Box sx={{ position: 'absolute', bottom: 10, right: 10 }}>
-                    <AppButtonModal
-                        styles={{ variant: 'outlined', color: 'primary' }}
-                        title={"Upraviť"}
-                        Button={Button}
-                        ModalComponent={ItemEditModal}
-                        item={item}
-                        setItems={setItems}
-                        disabled={isEditing}
-                    />
-                </Box>
-            </Card>
-        </div>
+                {item.title}
+            </Typography>
+
+            <Typography 
+                variant="p3"
+                style={{
+                    gridArea: 'price',
+                    alignSelf: 'center',
+                }}
+            >
+                {item.price} €
+            </Typography>
+                
+            {isEditing && <CheckIcon 
+                            selected={selected} 
+                            style={{ 
+                                gridArea: 'title',
+                                justifySelf: 'end',
+                            }}
+                        />
+            }
+
+            <AppButtonModal
+                divStyles={{
+                    gridArea: 'edit'
+                }}
+                styles={{ 
+                    variant: 'outlined', 
+                    color: 'primary',
+                }}
+                title={"Upraviť"}
+                Button={Button}
+                ModalComponent={ItemEditModal}
+                item={item}
+                setItems={setItems}
+                disabled={isEditing}
+            />
+        </Card>
     );
 }
 

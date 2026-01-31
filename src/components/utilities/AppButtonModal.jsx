@@ -2,7 +2,7 @@ import React, { useCallback, useRef } from 'react';
 import { useState } from 'react';
 import _ from 'lodash';
 
-const AppButtonModal = React.memo(({...props}) => {
+const AppButtonModal = React.memo((props) => {
     const [modalOpen, setModalOpen] = useState(false);
     const focusInputRef = useRef();
 

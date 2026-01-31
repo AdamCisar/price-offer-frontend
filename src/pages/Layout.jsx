@@ -17,7 +17,11 @@ const Layout = ({children, isPencilWrapper, isAddInvoiceButton}) => {
         {children}
       </main>
 
-      <footer>
+      <footer 
+        style={{
+          padding: "1em",
+        }}
+      >
         <p>&copy; 2024 Price Offer</p>
       </footer>
     </div>
