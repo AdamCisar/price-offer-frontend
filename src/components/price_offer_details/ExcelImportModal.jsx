@@ -71,10 +71,12 @@ const ExcelImportModal = ({ open, onClose, excelRows }) => {
   const headers = excelRows?.[headerRowIndex] ?? [];
   const allDataRows = excelRows?.slice(headerRowIndex + 1) ?? [];
   const dataRows = allDataRows;
-  const previewRows = allDataRows.filter(isDataRow).slice(0, 3);
+  const filteredDataRows = allDataRows.filter(isDataRow);
+  const previewRows = showAll ? filteredDataRows : filteredDataRows.slice(0, 3);
 
   const [mapping, setMapping] = useState(() => autoDetectMapping(headers));
   const [isImporting, setIsImporting] = useState(false);
+  const [showAll, setShowAll] = useState(false);
 
   const [sendData] = useUniversalPost('ITEM');
   const { handleSnackbarOpen } = useContext(SnackBarContext);
@@ -107,7 +109,7 @@ const ExcelImportModal = ({ open, onClose, excelRows }) => {
         if (!isValidItem(item)) continue;
 
         const payload = {
-          title: String(item.title).slice(0, 255),
+          title: String(item.title),
           unit: item.unit ? String(item.unit) : '',
           price: Number(item.price),
           url: [{ shop: 'ptacek', url: '' }],
@@ -180,11 +182,16 @@ const ExcelImportModal = ({ open, onClose, excelRows }) => {
             </TableBody>
           </Table>
         </Box>
-        <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
-          Zobrazené prvé 3 dátové riadky z {dataRows.length} riadkov.
-        </Typography>
+        <Box sx={{ mt: 1, display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Typography variant="caption" color="text.secondary">
+            {showAll ? `Zobrazených ${filteredDataRows.length} dátových riadkov.` : `Zobrazené prvé 3 dátové riadky z ${filteredDataRows.length} riadkov.`}
+          </Typography>
+          <Button size="small" onClick={() => setShowAll((prev) => !prev)}>
+            {showAll ? 'Zobraziť menej' : 'Zobraziť všetky'}
+          </Button>
+        </Box>
       </DialogContent>
-      <DialogActions>
+      <DialogActions sx={{ px: 3, py: 2, gap: 1 }}>
         <Button onClick={onClose} color="secondary" disabled={isImporting}>
           Zrušiť
         </Button>
