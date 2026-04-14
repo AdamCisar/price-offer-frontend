@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useMemo, useState } from 'react';
+import React, { useCallback, useContext, useMemo, useRef, useState } from 'react';
 import {
   Box,
   Card,
@@ -9,6 +9,7 @@ import {
   Switch,
   FormControlLabel,
 } from '@mui/material';
+import UploadFileIcon from '@mui/icons-material/UploadFile';
 import PriceOfferItems from './PriceOfferItems';
 import useUpdatePriceOfferDetails from '../../hooks/useUpdatePriceOfferDetails';
 import { PriceOfferContext } from '../../providers/price_offer_providers/PriceOfferProvider';
@@ -28,6 +29,8 @@ import RefreshButton from '../utilities/RefreshButton';
 import ProgressDivider from '../utilities/ProgressDivider';
 import useUpdatePriceOfferItemPrices from '../../hooks/useUpdatePriceOfferItemPrices';
 import RefreshPriceModal from './RefreshPriceModal';
+import ExcelImportModal from './ExcelImportModal';
+import * as XLSX from 'xlsx';
 
 const boxStyles = {
       display: "flex",
@@ -60,6 +63,25 @@ const PriceOffer = () => {
 
   const [isRowSelected, setRowSelected] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
+
+  const fileInputRef = useRef(null);
+  const [excelRows, setExcelRows] = useState(null);
+  const [importModalOpen, setImportModalOpen] = useState(false);
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      const workbook = XLSX.read(evt.target.result, { type: 'binary' });
+      const sheet = workbook.Sheets[workbook.SheetNames[0]];
+      const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+      setExcelRows(rows);
+      setImportModalOpen(true);
+    };
+    reader.readAsBinaryString(file);
+    e.target.value = '';
+  };
 
   const handleUpdatePrices = useCallback((data) => {
     updateItemPrices({
@@ -105,9 +127,25 @@ const PriceOffer = () => {
         <>
         <Card sx={{ width: '100%', maxWidth: 1000 }}>
           <CardContent>
-            <Typography variant="h4" gutterBottom sx={{ marginBottom: 5 }}>
-              Cenová ponuka
-            </Typography>
+            <Box display="flex" justifyContent="space-between" alignItems="center" sx={{ marginBottom: 5 }}>
+              <Typography variant="h4" gutterBottom>
+                Cenová ponuka
+              </Typography>
+              <Button
+                variant="outlined"
+                startIcon={<UploadFileIcon />}
+                onClick={() => fileInputRef.current.click()}
+              >
+                Importovať z Excelu
+              </Button>
+              <input
+                type="file"
+                accept=".xlsx,.xls"
+                ref={fileInputRef}
+                style={{ display: 'none' }}
+                onChange={handleFileChange}
+              />
+            </Box>
             <Box display="flex" flexDirection="row" justifyContent="space-between">
               <div style={{ display: 'flex', flexDirection: 'column', width: '40%' }}>
                 <CustomerInfo customerInfo={priceOfferDetails.customer} setPriceOfferDetails={setPriceOfferDetails} />
@@ -243,6 +281,13 @@ const PriceOffer = () => {
           </CardContent>
         </Card>
         <PriceOfferNotes />
+        {importModalOpen && excelRows && (
+          <ExcelImportModal
+            open={importModalOpen}
+            onClose={() => setImportModalOpen(false)}
+            excelRows={excelRows}
+          />
+        )}
         </>
     }
     </Box>
