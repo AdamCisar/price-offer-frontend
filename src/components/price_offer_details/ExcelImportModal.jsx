@@ -115,33 +115,28 @@ const ExcelImportModal = ({ open, onClose, excelRows }) => {
   const handleImport = async () => {
     setIsImporting(true);
     try {
-      const created = [];
-
-      for (const [index, row] of filteredDataRows.entries()) {
-        if (excludedRows.has(index)) continue;
-        const item = buildItemFromRow(row);
-        if (!isValidItem(item)) continue;
-
-        const payload = {
+      const itemsToImport = filteredDataRows
+        .filter((_, index) => !excludedRows.has(index))
+        .map((row) => buildItemFromRow(row))
+        .filter(isValidItem)
+        .map((item) => ({
           title: String(item.title),
           unit: item.unit ? String(item.unit) : '',
           price: Math.round(Number(item.price) * 100) / 100,
           url: [{ shop: 'ptacek', url: '' }],
-        };
+          ...(item.quantity && { quantity: Number(item.quantity) }),
+        }));
 
-        const result = await sendData(payload);
-        result.item_id = result.id;
-        if (item.quantity) result.quantity = Number(item.quantity);
-        created.push(result);
-      }
-
-      if (created.length > 0) {
-        addPriceOfferItemToContext(created);
-        handleSnackbarOpen(`Importovaných ${created.length} položiek`, 'success');
-      } else {
+      if (itemsToImport.length === 0) {
         handleSnackbarOpen('Žiadne položky na import', 'warning');
+        return;
       }
 
+      const results = await sendData(itemsToImport);
+      const created = results.map((result) => ({ ...result, item_id: result.id }));
+
+      addPriceOfferItemToContext(created);
+      handleSnackbarOpen(`Importovaných ${created.length} položiek`, 'success');
       onClose();
     } catch (err) {
       handleSnackbarOpen('Import zlyhal', 'error');
