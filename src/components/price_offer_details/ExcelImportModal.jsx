@@ -17,7 +17,9 @@ import {
   Typography,
   Box,
   CircularProgress,
+  IconButton,
 } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { useUniversalPost } from '../../api/UniversalPost';
 import { SnackBarContext } from '../../providers/SnackBarProvider';
 import useSubmitPriceOfferItem from '../../hooks/useSubmitPriceOfferItem';
@@ -60,6 +62,12 @@ const isDataRow = (row) => {
   return nonEmpty.length >= 2;
 };
 
+const formatCellValue = (value) => {
+  if (value === null || value === undefined || value === '') return '';
+  const num = Number(value);
+  return !isNaN(num) && value !== '' ? Math.round(num * 100) / 100 : value;
+};
+
 const isValidItem = (item) => {
   const hasTitle = item.title !== undefined && item.title !== null && String(item.title).trim() !== '';
   const hasPrice = item.price !== undefined && item.price !== null && !isNaN(Number(item.price)) && item.price !== '';
@@ -67,16 +75,17 @@ const isValidItem = (item) => {
 };
 
 const ExcelImportModal = ({ open, onClose, excelRows }) => {
+  const [showAll, setShowAll] = useState(false);
+  const [mapping, setMapping] = useState(() => autoDetectMapping(excelRows?.[detectHeaderRowIndex(excelRows ?? [])] ?? []));
+  const [isImporting, setIsImporting] = useState(false);
+  const [excludedRows, setExcludedRows] = useState(new Set());
+
   const headerRowIndex = detectHeaderRowIndex(excelRows ?? []);
   const headers = excelRows?.[headerRowIndex] ?? [];
   const allDataRows = excelRows?.slice(headerRowIndex + 1) ?? [];
   const dataRows = allDataRows;
   const filteredDataRows = allDataRows.filter(isDataRow);
   const previewRows = showAll ? filteredDataRows : filteredDataRows.slice(0, 3);
-
-  const [mapping, setMapping] = useState(() => autoDetectMapping(headers));
-  const [isImporting, setIsImporting] = useState(false);
-  const [showAll, setShowAll] = useState(false);
 
   const [sendData] = useUniversalPost('ITEM');
   const { handleSnackbarOpen } = useContext(SnackBarContext);
@@ -89,6 +98,10 @@ const ExcelImportModal = ({ open, onClose, excelRows }) => {
 
   const handleMappingChange = (colIndex, value) => {
     setMapping((prev) => ({ ...prev, [colIndex]: value }));
+  };
+
+  const handleRemoveRow = (index) => {
+    setExcludedRows((prev) => new Set([...prev, index]));
   };
 
   const buildItemFromRow = (row) => {
@@ -104,14 +117,15 @@ const ExcelImportModal = ({ open, onClose, excelRows }) => {
     try {
       const created = [];
 
-      for (const row of dataRows) {
+      for (const [index, row] of filteredDataRows.entries()) {
+        if (excludedRows.has(index)) continue;
         const item = buildItemFromRow(row);
         if (!isValidItem(item)) continue;
 
         const payload = {
           title: String(item.title),
           unit: item.unit ? String(item.unit) : '',
-          price: Number(item.price),
+          price: Math.round(Number(item.price) * 100) / 100,
           url: [{ shop: 'ptacek', url: '' }],
         };
 
@@ -145,6 +159,7 @@ const ExcelImportModal = ({ open, onClose, excelRows }) => {
           <Table size="small">
             <TableHead>
               <TableRow>
+                <TableCell sx={{ width: 40 }} />
                 {headers.map((header, i) => (
                   <TableCell key={i} sx={{ verticalAlign: 'bottom', pb: 1 }}>
                     <Typography variant="caption" display="block" sx={{ mb: 0.5, fontWeight: 600 }}>
@@ -172,19 +187,39 @@ const ExcelImportModal = ({ open, onClose, excelRows }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {previewRows.map((row, ri) => (
-                <TableRow key={ri}>
-                  {headers.map((_, ci) => (
-                    <TableCell key={ci}>{row[ci] ?? ''}</TableCell>
-                  ))}
-                </TableRow>
-              ))}
+              {previewRows.map((row, ri) => {
+                const originalIndex = filteredDataRows.indexOf(row);
+                return (
+                  <TableRow key={ri} sx={{ opacity: excludedRows.has(originalIndex) ? 0.35 : 1 }}>
+                    <TableCell sx={{ width: 40, p: 0 }}>
+                      <IconButton
+                        size="small"
+                        color={excludedRows.has(originalIndex) ? 'default' : 'error'}
+                        onClick={() => {
+                          if (excludedRows.has(originalIndex)) {
+                            setExcludedRows((prev) => { const next = new Set(prev); next.delete(originalIndex); return next; });
+                          } else {
+                            handleRemoveRow(originalIndex);
+                          }
+                        }}
+                      >
+                        <DeleteIcon fontSize="small" />
+                      </IconButton>
+                    </TableCell>
+                    {headers.map((_, ci) => (
+                      <TableCell key={ci}>{formatCellValue(row[ci])}</TableCell>
+                    ))}
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </Box>
         <Box sx={{ mt: 1, display: 'flex', alignItems: 'center', gap: 2 }}>
           <Typography variant="caption" color="text.secondary">
-            {showAll ? `Zobrazených ${filteredDataRows.length} dátových riadkov.` : `Zobrazené prvé 3 dátové riadky z ${filteredDataRows.length} riadkov.`}
+            {showAll
+              ? `Zobrazených ${filteredDataRows.length} riadkov, importovaných bude ${filteredDataRows.length - excludedRows.size}.`
+              : `Zobrazené prvé 3 riadky z ${filteredDataRows.length} (importovaných bude ${filteredDataRows.length - excludedRows.size}).`}
           </Typography>
           <Button size="small" onClick={() => setShowAll((prev) => !prev)}>
             {showAll ? 'Zobraziť menej' : 'Zobraziť všetky'}
