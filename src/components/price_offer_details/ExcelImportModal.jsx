@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useMemo } from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -80,6 +80,11 @@ const ExcelImportModal = ({ open, onClose, excelRows }) => {
   const { handleSnackbarOpen } = useContext(SnackBarContext);
   const { addPriceOfferItemToContext } = useSubmitPriceOfferItem(onClose);
 
+  const usedFields = useMemo(
+    () => new Set(Object.values(mapping).filter(Boolean)),
+    [mapping]
+  );
+
   const handleMappingChange = (colIndex, value) => {
     setMapping((prev) => ({ ...prev, [colIndex]: value }));
   };
@@ -130,7 +135,7 @@ const ExcelImportModal = ({ open, onClose, excelRows }) => {
   };
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
+    <Dialog open={open} onClose={onClose} maxWidth={false} PaperProps={{ sx: { width: '95vw', maxWidth: '95vw' } }}>
       <DialogTitle>Import z Excelu</DialogTitle>
       <Divider />
       <DialogContent>
@@ -139,9 +144,9 @@ const ExcelImportModal = ({ open, onClose, excelRows }) => {
             <TableHead>
               <TableRow>
                 {headers.map((header, i) => (
-                  <TableCell key={i}>
+                  <TableCell key={i} sx={{ verticalAlign: 'bottom', pb: 1 }}>
                     <Typography variant="caption" display="block" sx={{ mb: 0.5, fontWeight: 600 }}>
-                      {header}
+                      {String(header ?? '').charAt(0).toUpperCase() + String(header ?? '').slice(1)}
                     </Typography>
                     <FormControl size="small" fullWidth>
                       <Select
@@ -150,7 +155,11 @@ const ExcelImportModal = ({ open, onClose, excelRows }) => {
                         displayEmpty
                       >
                         {FIELD_OPTIONS.map((opt) => (
-                          <MenuItem key={opt.value} value={opt.value}>
+                          <MenuItem
+                            key={opt.value}
+                            value={opt.value}
+                            disabled={opt.value !== '' && usedFields.has(opt.value) && mapping[i] !== opt.value}
+                          >
                             {opt.label}
                           </MenuItem>
                         ))}
