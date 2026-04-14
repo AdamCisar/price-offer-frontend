@@ -1,0 +1,242 @@
+import React, { useState, useContext, useMemo } from 'react';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  Divider,
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+  Select,
+  MenuItem,
+  FormControl,
+  Typography,
+  Box,
+  CircularProgress,
+  IconButton,
+} from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { useUniversalPost } from '../../api/UniversalPost';
+import { SnackBarContext } from '../../providers/SnackBarProvider';
+import useSubmitPriceOfferItem from '../../hooks/useSubmitPriceOfferItem';
+
+const FIELD_OPTIONS = [
+  { value: '', label: 'Preskočiť' },
+  { value: 'title', label: 'Názov' },
+  { value: 'unit', label: 'Merná jednotka' },
+  { value: 'quantity', label: 'Množstvo' },
+  { value: 'price', label: 'Cena' },
+];
+
+// Keywords for auto-detecting column mapping from header text
+const AUTO_MAPPING_RULES = [
+  { field: 'title', keywords: ['popis', 'nazov', 'název', 'name', 'položka', 'polozka'] },
+  { field: 'unit', keywords: ['mj', 'jednotka', 'unit', 'merná'] },
+  { field: 'quantity', keywords: ['množstvo', 'mnozstvo', 'qty', 'quantity', 'počet', 'pocet'] },
+  { field: 'price', keywords: ['jednotková', 'jednotkova', 'unit price', 'cena/j', 'j.cena', 'cena bez'] },
+];
+
+const detectHeaderRowIndex = (rows) => {
+  for (let i = 0; i < rows.length; i++) {
+    const nonEmpty = rows[i].filter((cell) => cell !== null && cell !== undefined && cell !== '');
+    if (nonEmpty.length >= 3) return i;
+  }
+  return 0;
+};
+
+const autoDetectMapping = (headers) =>
+  headers.reduce((acc, header, i) => {
+    const normalized = String(header ?? '').toLowerCase().trim();
+    const matched = AUTO_MAPPING_RULES.find((rule) =>
+      rule.keywords.some((kw) => normalized.includes(kw))
+    );
+    return { ...acc, [i]: matched?.field ?? '' };
+  }, {});
+
+const isDataRow = (row) => {
+  const nonEmpty = row.filter((cell) => cell !== null && cell !== undefined && cell !== '');
+  return nonEmpty.length >= 2;
+};
+
+const formatCellValue = (value) => {
+  if (value === null || value === undefined || value === '') return '';
+  const num = Number(value);
+  return !isNaN(num) && value !== '' ? Math.round(num * 100) / 100 : value;
+};
+
+const isValidItem = (item) => {
+  const hasTitle = item.title !== undefined && item.title !== null && String(item.title).trim() !== '';
+  const hasPrice = item.price !== undefined && item.price !== null && !isNaN(Number(item.price)) && item.price !== '';
+  return hasTitle && hasPrice;
+};
+
+const ExcelImportModal = ({ open, onClose, excelRows }) => {
+  const [showAll, setShowAll] = useState(false);
+  const [mapping, setMapping] = useState(() => autoDetectMapping(excelRows?.[detectHeaderRowIndex(excelRows ?? [])] ?? []));
+  const [isImporting, setIsImporting] = useState(false);
+  const [excludedRows, setExcludedRows] = useState(new Set());
+
+  const headerRowIndex = detectHeaderRowIndex(excelRows ?? []);
+  const headers = excelRows?.[headerRowIndex] ?? [];
+  const allDataRows = excelRows?.slice(headerRowIndex + 1) ?? [];
+  const dataRows = allDataRows;
+  const filteredDataRows = allDataRows.filter(isDataRow);
+  const previewRows = showAll ? filteredDataRows : filteredDataRows.slice(0, 3);
+
+  const [sendData] = useUniversalPost('ITEM');
+  const { handleSnackbarOpen } = useContext(SnackBarContext);
+  const { addPriceOfferItemToContext } = useSubmitPriceOfferItem(onClose);
+
+  const usedFields = useMemo(
+    () => new Set(Object.values(mapping).filter(Boolean)),
+    [mapping]
+  );
+
+  const handleMappingChange = (colIndex, value) => {
+    setMapping((prev) => ({ ...prev, [colIndex]: value }));
+  };
+
+  const handleRemoveRow = (index) => {
+    setExcludedRows((prev) => new Set([...prev, index]));
+  };
+
+  const buildItemFromRow = (row) => {
+    const item = {};
+    Object.entries(mapping).forEach(([colIndex, field]) => {
+      if (field) item[field] = row[colIndex] ?? '';
+    });
+    return item;
+  };
+
+  const handleImport = async () => {
+    setIsImporting(true);
+    try {
+      const itemsToImport = filteredDataRows
+        .filter((_, index) => !excludedRows.has(index))
+        .map((row) => buildItemFromRow(row))
+        .filter(isValidItem)
+        .map((item) => ({
+          title: String(item.title),
+          unit: item.unit ? String(item.unit) : '',
+          price: Math.round(Number(item.price) * 100) / 100,
+          url: [{ shop: 'ptacek', url: '' }],
+          ...(item.quantity && { quantity: Number(item.quantity) }),
+        }));
+
+      if (itemsToImport.length === 0) {
+        handleSnackbarOpen('Žiadne položky na import', 'warning');
+        return;
+      }
+
+      const results = await sendData(itemsToImport);
+      const created = results.map((result) => ({ ...result, item_id: result.id }));
+
+      addPriceOfferItemToContext(created);
+      handleSnackbarOpen(`Importovaných ${created.length} položiek`, 'success');
+      onClose();
+    } catch (err) {
+      handleSnackbarOpen('Import zlyhal', 'error');
+    } finally {
+      setIsImporting(false);
+    }
+  };
+
+  return (
+    <Dialog open={open} onClose={onClose} maxWidth={false} PaperProps={{ sx: { width: '95vw', maxWidth: '95vw' } }}>
+      <DialogTitle>Import z Excelu</DialogTitle>
+      <Divider />
+      <DialogContent>
+        <Box sx={{ overflowX: 'auto' }}>
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell sx={{ width: 40 }} />
+                {headers.map((header, i) => (
+                  <TableCell key={i} sx={{ verticalAlign: 'bottom', pb: 1 }}>
+                    <Typography variant="caption" display="block" sx={{ mb: 0.5, fontWeight: 600 }}>
+                      {String(header ?? '').charAt(0).toUpperCase() + String(header ?? '').slice(1)}
+                    </Typography>
+                    <FormControl size="small" fullWidth>
+                      <Select
+                        value={mapping[i] ?? ''}
+                        onChange={(e) => handleMappingChange(i, e.target.value)}
+                        displayEmpty
+                      >
+                        {FIELD_OPTIONS.map((opt) => (
+                          <MenuItem
+                            key={opt.value}
+                            value={opt.value}
+                            disabled={opt.value !== '' && usedFields.has(opt.value) && mapping[i] !== opt.value}
+                          >
+                            {opt.label}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </TableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {previewRows.map((row, ri) => {
+                const originalIndex = filteredDataRows.indexOf(row);
+                return (
+                  <TableRow key={ri} sx={{ opacity: excludedRows.has(originalIndex) ? 0.35 : 1 }}>
+                    <TableCell sx={{ width: 40, p: 0 }}>
+                      <IconButton
+                        size="small"
+                        color={excludedRows.has(originalIndex) ? 'default' : 'error'}
+                        onClick={() => {
+                          if (excludedRows.has(originalIndex)) {
+                            setExcludedRows((prev) => { const next = new Set(prev); next.delete(originalIndex); return next; });
+                          } else {
+                            handleRemoveRow(originalIndex);
+                          }
+                        }}
+                      >
+                        <DeleteIcon fontSize="small" />
+                      </IconButton>
+                    </TableCell>
+                    {headers.map((_, ci) => (
+                      <TableCell key={ci}>{formatCellValue(row[ci])}</TableCell>
+                    ))}
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </Box>
+        <Box sx={{ mt: 1, display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Typography variant="caption" color="text.secondary">
+            {showAll
+              ? `Zobrazených ${filteredDataRows.length} riadkov, importovaných bude ${filteredDataRows.length - excludedRows.size}.`
+              : `Zobrazené prvé 3 riadky z ${filteredDataRows.length} (importovaných bude ${filteredDataRows.length - excludedRows.size}).`}
+          </Typography>
+          <Button size="small" onClick={() => setShowAll((prev) => !prev)}>
+            {showAll ? 'Zobraziť menej' : 'Zobraziť všetky'}
+          </Button>
+        </Box>
+      </DialogContent>
+      <DialogActions sx={{ px: 3, py: 2, gap: 1 }}>
+        <Button onClick={onClose} color="secondary" disabled={isImporting}>
+          Zrušiť
+        </Button>
+        <Button
+          onClick={handleImport}
+          color="primary"
+          variant="contained"
+          disabled={isImporting}
+          startIcon={isImporting ? <CircularProgress size={16} /> : null}
+        >
+          Importovať
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
+
+export default ExcelImportModal;
